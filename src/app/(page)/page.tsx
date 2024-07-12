@@ -2,6 +2,8 @@ import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { TeamSection } from './_components/team';
 import { HowToPlay } from './_components/how-to-play';
+import Link from 'next/link';
+import { FeatureCard } from './_components/features';
 
 export default function Home() {
   return (
@@ -17,7 +19,9 @@ export default function Home() {
               NFTs.
             </p>
           </div>
-          <Button>PLAY NOW</Button>
+          <Button>
+            <Link href={'/dashboard'}>PLAY NOW</Link>
+          </Button>
         </div>
         <div className="">
           <Image
@@ -35,38 +39,10 @@ export default function Home() {
           <h2>Fun way to learn about real estate.</h2>
         </div>
         <div className="flex items-start gap-5">
-          <div className="flex flex-col items-center gap-6">
-            <div className="rounded-lg bg-primary-300/35 p-1 backdrop-blur">
-              <div className="bg-primary p-6">
-                <Image src={'/images/feature-img-1.png'} alt="" width={246} height={255} />
-              </div>
-            </div>
-            <p className="text-[1rem]">win valuable NFTs</p>
-          </div>
-          <div className="flex flex-col items-center gap-6">
-            <div className="rounded-lg bg-primary-300/35 p-1 backdrop-blur">
-              <div className="bg-primary p-6">
-                <Image src={'/images/feature-img-1.png'} alt="" width={246} height={255} />
-              </div>
-            </div>
-            <p className="text-[1rem]">win valuable NFTs</p>
-          </div>
-          <div className="flex flex-col items-center gap-6">
-            <div className="rounded-lg bg-primary-300/35 p-1 backdrop-blur">
-              <div className="bg-primary p-6">
-                <Image src={'/images/feature-img-1.png'} alt="" width={246} height={255} />
-              </div>
-            </div>
-            <p className="text-[1rem]">win valuable NFTs</p>
-          </div>
-          <div className="flex flex-col items-center gap-6">
-            <div className="rounded-lg bg-primary-300/35 p-1 backdrop-blur">
-              <div className="bg-primary p-6">
-                <Image src={'/images/feature-img-1.png'} alt="" width={246} height={255} />
-              </div>
-            </div>
-            <p className="text-[1rem]">win valuable NFTs</p>
-          </div>
+          <FeatureCard title="Win valuable NFTs" />
+          <FeatureCard title="Real-time Leaderboards" />
+          <FeatureCard title="Earn tokens" />
+          <FeatureCard title="Trade your NFTs " />
         </div>
       </section>
       <section className="container mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-center gap-10 px-[100px] pb-[150px] pt-[100px]">
@@ -85,7 +61,9 @@ export default function Home() {
             <h3 className="font-heading text-[2.5rem]/[3rem] font-medium">Get started now.</h3>
             <p className="text-[1rem]/[1.5rem]">Ready to Start Guessing?</p>
           </div>
-          <Button>PLAY NOW</Button>
+          <Button asChild>
+            <Link href={'/dashboard'}>PLAY NOW</Link>
+          </Button>
         </div>
       </section>
     </>

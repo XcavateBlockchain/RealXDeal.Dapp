@@ -1,3 +1,4 @@
+import { team } from '@/config/team';
 import Image from 'next/image';
 
 type CardProps = {
@@ -16,15 +17,14 @@ export function TeamSection() {
         <h3 className="font-heading text-[1.3rem]/[1.8rem] font-medium">The team</h3>
         <p className="text-[1rem]/[1.5rem] font-light">Faces Behind the Magic</p>
       </div>
-      <TeamCard name="Richard X" title="Founder/CTO" img="/images/teams/richard-x.svg" />
-
+      <TeamCard name={team[0].name} title={team[0].role} img={team[0].image} />
       <div className="flex gap-[130px]">
-        <TeamCard name="Rene X" title="Developer" img="/images/teams/richard-x.svg" />
-        <TeamCard name="Rene X" title="Developer" img="/images/teams/richard-x.svg" />
-        <TeamCard name="Rene X" title="Developer" img="/images/teams/richard-x.svg" />
-        <TeamCard name="Rene X" title="Developer" img="/images/teams/richard-x.svg" />
+        <TeamCard name={team[1].name} title={team[1].role} img={team[1].image} />
+        <TeamCard name={team[2].name} title={team[2].role} img={team[2].image} />
+        <TeamCard name={team[3].name} title={team[3].role} img={team[3].image} />
+        <TeamCard name={team[4].name} title={team[4].role} img={team[4].image} />
       </div>
-      <TeamCard name="Richard X" title="Founder/CTO" img="/images/teams/richard-x.svg" />
+      <TeamCard name={team[5].name} title={team[5].role} img={team[5].image} />
     </section>
   );
 }

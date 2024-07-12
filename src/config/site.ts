@@ -8,7 +8,7 @@ export const siteConfig = {
   mainNav: [
     {
       title: 'Game',
-      href: '/home'
+      href: '/dashboard'
     },
     {
       title: 'How to play',

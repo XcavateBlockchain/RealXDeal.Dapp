@@ -10,7 +10,7 @@ type SocialLinkProps = {
 
 export default function SiteFooter() {
   return (
-    <footer className="flex flex-col gap-10 bg-primary">
+    <footer className="flex w-full flex-col gap-10 bg-primary">
       <div className="container mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-center gap-6 px-[100px] pt-[100px]">
         <Image src={'/images/logo.svg'} alt="logo" width={205} height={80} priority />
       </div>
