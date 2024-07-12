@@ -36,7 +36,7 @@ export default function Home() {
         </div>
         <div className="flex items-start gap-5">
           <div className="flex flex-col items-center gap-6">
-            <div className=" rounded-lg bg-primary-300/35 p-1 backdrop-blur">
+            <div className="rounded-lg bg-primary-300/35 p-1 backdrop-blur">
               <div className="bg-primary p-6">
                 <Image src={'/images/feature-img-1.png'} alt="" width={246} height={255} />
               </div>
@@ -44,7 +44,7 @@ export default function Home() {
             <p className="text-[1rem]">win valuable NFTs</p>
           </div>
           <div className="flex flex-col items-center gap-6">
-            <div className=" rounded-lg bg-primary-300/35 p-1 backdrop-blur">
+            <div className="rounded-lg bg-primary-300/35 p-1 backdrop-blur">
               <div className="bg-primary p-6">
                 <Image src={'/images/feature-img-1.png'} alt="" width={246} height={255} />
               </div>
@@ -52,7 +52,7 @@ export default function Home() {
             <p className="text-[1rem]">win valuable NFTs</p>
           </div>
           <div className="flex flex-col items-center gap-6">
-            <div className=" rounded-lg bg-primary-300/35 p-1 backdrop-blur">
+            <div className="rounded-lg bg-primary-300/35 p-1 backdrop-blur">
               <div className="bg-primary p-6">
                 <Image src={'/images/feature-img-1.png'} alt="" width={246} height={255} />
               </div>
@@ -60,7 +60,7 @@ export default function Home() {
             <p className="text-[1rem]">win valuable NFTs</p>
           </div>
           <div className="flex flex-col items-center gap-6">
-            <div className=" rounded-lg bg-primary-300/35 p-1 backdrop-blur">
+            <div className="rounded-lg bg-primary-300/35 p-1 backdrop-blur">
               <div className="bg-primary p-6">
                 <Image src={'/images/feature-img-1.png'} alt="" width={246} height={255} />
               </div>

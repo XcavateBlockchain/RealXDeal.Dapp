@@ -20,19 +20,19 @@ export function NFTCard({ isShadow, ...nft }: NFTCardProps) {
         isShadow ? 'shadow-header' : ''
       )}
     >
-      <div className="relative h-[234px] w-full ">
+      <div className="relative h-[234px] w-full">
         <Image
           src={nft.image}
           alt="nft"
           width={264}
           height={234}
-          className="absolute top-0 h-[234px] w-full rounded-t-lg  object-cover"
+          className="absolute top-0 h-[234px] w-full rounded-t-lg object-cover"
           priority
         />
       </div>
 
       <div className="flex flex-col gap-2.5 px-[17px] pb-[17px]">
-        <div className=" space-x-1 text-[0.9rem]  font-light">
+        <div className="space-x-1 text-[0.9rem] font-light">
           <span className="group-hover:text-primary-300">#{nft.nftId}</span> |{' '}
           <span className="ml-[2px]">{nft.type}</span>
         </div>

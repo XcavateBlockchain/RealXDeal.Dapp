@@ -48,9 +48,7 @@ export function HowToPlay() {
 
 const PlayCard = ({ title, desc, color }: PlayCardProps) => {
   return (
-    <div
-      className={cn('flex-col items-start  justify-end gap-4 rounded-lg  px-3 py-2', color)}
-    >
+    <div className={cn('flex-col items-start justify-end gap-4 rounded-lg px-3 py-2', color)}>
       <dt className="font-heading text-[1.2rem]/[1.8rem] font-medium">{title}</dt>
       <dd className="text-[0.875rem]/[1.5rem] font-light">{desc}</dd>
     </div>

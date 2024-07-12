@@ -40,7 +40,7 @@ export function WalletButton({ name, icon, isRecommended, ...props }: WalletButt
         <span className="text-[1rem]/[1.5rem]">{name}</span>
       </div>
       {isRecommended ? (
-        <span className="text-primary-300 rounded-lg bg-primary px-2 text-center text-[0.75rem]/[1.5rem] font-light">
+        <span className="rounded-lg bg-primary px-2 text-center text-[0.75rem]/[1.5rem] font-light text-primary-300">
           Recommended
         </span>
       ) : null}
@@ -114,7 +114,7 @@ function AddPlayerNameAction({ setIndex }: IProps) {
         </h1>
       </div>
       <input
-        className="border-primary-300/50 flex w-full rounded-lg bg-white/[0.31] p-4 text-[1.0625rem]/[1.5rem] font-light placeholder:text-white"
+        className="flex w-full rounded-lg border-primary-300/50 bg-white/[0.31] p-4 text-[1.0625rem]/[1.5rem] font-light placeholder:text-white"
         placeholder="Username"
         type="text"
       />
@@ -132,7 +132,7 @@ function ConnectedSuccessFull({ close }: IProps) {
         </button>
       </div>
       <div className="flex flex-col items-center justify-center gap-6">
-        <div className="bg-primary-300/[0.10] text-primary-300 flex size-[140px] items-center justify-center rounded-full">
+        <div className="flex size-[140px] items-center justify-center rounded-full bg-primary-300/[0.10] text-primary-300">
           <Icons.CheckCircle className="size-[75px]" />
         </div>
         <h1 className="font-heading text-[1rem]/[1.5rem] font-medium">
@@ -200,7 +200,7 @@ export default function ConnectWallet({ open = false }: { open?: boolean }) {
   return (
     <AlertDialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <AlertDialogTrigger asChild>
-        <button className="border-primary-300 font-heading text-primary-300 flex max-w-[250px] items-center gap-2 truncate rounded-lg border px-[45px] py-4 text-[1rem] font-medium hover:border-white hover:text-white">
+        <button className="flex max-w-[250px] items-center gap-2 truncate rounded-lg border border-primary-300 px-[45px] py-4 font-heading text-[1rem] font-medium text-primary-300 hover:border-white hover:text-white">
           {selectedAccount ? (
             <span className="">{formatAddress(address)}</span>
           ) : (

@@ -7,7 +7,7 @@ import ConnectWallet from './connect-wallet';
 export function SiteHeader() {
   return (
     <header className="w-full backdrop-blur">
-      <div className="container mx-auto flex w-full  max-w-screen-2xl items-center justify-between py-4 md:px-[100px]">
+      <div className="container mx-auto flex w-full max-w-screen-2xl items-center justify-between py-4 md:px-[100px]">
         <Link href={'/'}>
           <Image src={'/images/logo.svg'} alt="logo" width={183} height={72} priority />
         </Link>

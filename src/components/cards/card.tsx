@@ -27,7 +27,7 @@ export function Card({
       <div
         className={cn(
           'flex w-full gap-[18px]',
-          orientation === 'vertical' ? 'flex-col' : ' flex-row justify-between'
+          orientation === 'vertical' ? 'flex-col' : 'flex-row justify-between'
         )}
       >
         <h2 className="text-[1rem] font-medium">{title}</h2>
@@ -69,7 +69,7 @@ type TaskCardProps = {
 export function TaskCard({ title, description }: TaskCardProps) {
   return (
     <div className="flex flex-col items-start justify-start gap-4 rounded-lg bg-[#3E4F6D] px-6 py-10 backdrop-blur">
-      <dt className="flex items-start gap-2 ">
+      <dt className="flex items-start gap-2">
         <Icons.xLogo className="size-6" />{' '}
         <span className="font-heading text-[0.875rem]/[1.543m] font-medium">{title}</span>
       </dt>
@@ -89,7 +89,7 @@ export const NFTCard = ({ image, noOfNfts }: { image: string; noOfNfts: number }
         priority
         className="h-[152px] w-full"
       />{' '}
-      <div className=" absolute bottom-0 left-[53px] flex items-center justify-center rounded-t bg-primary-200 px-2">
+      <div className="absolute bottom-0 left-[53px] flex items-center justify-center rounded-t bg-primary-200 px-2">
         <span className="text-[1rem]/[1.2rem] font-light">{noOfNfts}</span>
       </div>
     </div>
