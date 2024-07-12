@@ -142,7 +142,7 @@ function ConnectedSuccessFull({ close }: IProps) {
           Guess correct property prices and win NFTs.
         </p>
         <Button asChild>
-          <Link href="/home">Continue</Link>
+          <Link href="/dashboard">Continue</Link>
         </Button>
       </div>
     </AlertDialogContent>

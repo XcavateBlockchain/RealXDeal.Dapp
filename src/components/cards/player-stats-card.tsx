@@ -1,3 +1,5 @@
+'use client';
+
 export const PlayerStats = ({ title, value }: { title: string; value: number }) => {
   return (
     <div className="flex w-full flex-col gap-2">
