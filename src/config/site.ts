@@ -26,7 +26,7 @@ export const siteConfig = {
   sideNav: [
     {
       title: 'Home',
-      href: '/home',
+      href: '/dashboard',
       icon: 'GameController'
     },
     {
@@ -51,7 +51,7 @@ export const siteConfig = {
     },
     {
       title: 'Settings',
-      href: '/settings',
+      href: '/dashboard',
       icon: 'GearSix'
     }
   ] satisfies NavItem[],

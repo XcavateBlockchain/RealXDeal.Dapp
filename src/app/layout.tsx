@@ -5,6 +5,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/sonner';
 import dynamic from 'next/dynamic';
+import { NodeSocketProvider, WalletProvider } from '@/context';
 
 const unbounded = Unbounded({
   style: 'normal',
@@ -36,7 +37,11 @@ export default function RootLayout({
           fontHeading.variable
         )}
       >
-        <SubstrateContextProvider>{children}</SubstrateContextProvider>
+        <NodeSocketProvider>
+          <WalletProvider>
+            <SubstrateContextProvider>{children}</SubstrateContextProvider>
+          </WalletProvider>
+        </NodeSocketProvider>
         <Toaster />
       </body>
     </html>
