@@ -48,12 +48,12 @@ export const siteConfig = {
       title: 'Marketplace',
       href: '/marketplace',
       icon: 'Storefront'
-    },
-    {
-      title: 'Settings',
-      href: '/dashboard',
-      icon: 'GearSix'
     }
+    // {
+    //   title: 'Settings',
+    //   href: '/dashboard',
+    //   icon: 'GearSix'
+    // }
   ] satisfies NavItem[],
   links: {
     twitter: '',
