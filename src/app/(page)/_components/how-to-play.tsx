@@ -11,15 +11,15 @@ export function HowToPlay() {
   return (
     <section
       id="how-to-play"
-      className="container mx-auto flex w-full max-w-screen-2xl flex-col gap-[100px] px-[100px] pb-[150px] pt-[100px]"
+      className="container mx-auto flex w-full max-w-screen-2xl flex-col gap-[100px] sm:px-[100px] px-[10px] pb-[150px] sm:pt[10px] sm:pt-[100px]"
     >
       <div className="flex items-start justify-start font-heading text-[1.3rem]/[1.5rem] font-medium">
-        <h3>How to play</h3>
+        <h3 className='px-6 sm:px-0'>How to play</h3>
       </div>
-      <div className="items-start] flex justify-between">
+      <div className="sm:items-start flex w-full flex-col sm:flex-row sm:justify-between">
         <Image src={'/images/how-to-play.png'} alt="" width={473} height={473} priority />
 
-        <div className="flex h-full w-[50%] flex-col items-start gap-6 bg-primary p-6">
+        <div className="flex h-full sm:w-[50%] w-[100%] flex-col items-start gap-6 bg-primary p-6">
           <PlayCard
             title="Complete Tasks to Earn Tokens"
             desc="Begin by completing tasks within the game to earn tokens, which you can use to make your guess. The more tasks you complete, the more tokens you'll accumulate to increase your chances of winning."
