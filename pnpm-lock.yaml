@@ -33,7 +33,7 @@ dependencies:
     specifier: ^2.1.7
     version: 2.1.7(react-dom@19.0.0-rc-f994737d14-20240522)(react@19.0.0-rc-f994737d14-20240522)
   '@polkadot/api':
-    specifier: latest
+    specifier: ^12.2.1
     version: 12.2.1
   '@polkadot/extension-dapp':
     specifier: ^0.48.2

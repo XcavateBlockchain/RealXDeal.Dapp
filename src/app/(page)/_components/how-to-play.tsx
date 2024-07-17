@@ -21,7 +21,7 @@ export function HowToPlay() {
 
         <div className="flex h-full w-[50%] flex-col items-start gap-6 bg-primary p-6">
           <PlayCard
-            title="Complete Tasks to Earn Tokens"
+            title="Complete Tasks to Earn Points"
             desc="Begin by completing tasks within the game to earn tokens, which you can use to make your guess. The more tasks you complete, the more tokens you'll accumulate to increase your chances of winning."
             color="bg-primary-200/[0.32]"
           />

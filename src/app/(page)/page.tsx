@@ -41,7 +41,7 @@ export default function Home() {
         <div className="flex items-start gap-5">
           <FeatureCard title="Win valuable NFTs" />
           <FeatureCard title="Real-time Leaderboards" />
-          <FeatureCard title="Earn tokens" />
+          <FeatureCard title="Earn points" />
           <FeatureCard title="Trade your NFTs " />
         </div>
       </section>

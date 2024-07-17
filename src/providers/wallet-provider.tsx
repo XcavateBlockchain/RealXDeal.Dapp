@@ -91,8 +91,27 @@ export function WalletContextProvider({ children }: Props) {
     [api]
   );
 
+  // const selectWallet = useCallback(
+  //   async (wallet: Wallet) => {
+  //     setCurrentWallet(wallet);
+
+  //     await wallet.enable();
+  //     setWalletKey(wallet.extensionName);
+
+  //     await afterSelectWallet(wallet);
+
+  //     return wallet;
+  //   },
+  //   [afterSelectWallet, currentWallet, setWalletKey]
+  // );
+
   const selectWallet = useCallback(
     async (wallet: Wallet) => {
+      if (!wallet) {
+        toast.error('Wallet is not defined');
+        return;
+      }
+
       setCurrentWallet(wallet);
 
       await wallet.enable();
