@@ -69,8 +69,8 @@ export async function checkResult(data: { guess: number; gameId: number; address
   console.log('Checking result');
   const gameInfo = (await getGameInfo(data.gameId)) as unknown as GameInfo;
   // await fetchPropertyData(gameInfo.property.id);
-  // const propertyData = await fetchPropertyData(139361966);
-  const propertyData = await fetchPropertyData(Number(gameInfo.property.id));
+  const propertyData = await fetchPropertyData(139361966);
+  // const propertyData = await fetchPropertyData(Number(gameInfo.property.id));
   const realPrice = propertyData!.price;
   const secret = {
     scheme: 'aes-256-cbc',
