@@ -50,7 +50,7 @@ import Image from 'next/image';
 type TConnectWallet = {
   onClose: () => void;
   onConnected: () => void;
-  setIndex?: Dispatch<SetStateAction<number>>;
+  setIndex: Dispatch<SetStateAction<number>>;
 };
 
 export default function ConnectWalletModal({
@@ -125,6 +125,9 @@ export default function ConnectWalletModal({
       return async () => {
         if (wallet.installed) {
           onSelectWallet(wallet.extensionName);
+          if (currentAddress) {
+            setIndex(2);
+          }
           router.refresh();
           onClose();
         }

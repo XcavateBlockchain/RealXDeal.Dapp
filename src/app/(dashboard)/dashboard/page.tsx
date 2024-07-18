@@ -35,7 +35,7 @@ export default async function Page() {
         </div>
       </section>
       <section className="flex items-start gap-[54px]">
-        <Card className="h-[468px] w-2/5" title="Top 5 players">
+        <Card className="h-full w-2/5" title="Top 5 players">
           <div className="flex w-full flex-col gap-3">
             {boardList.map((list: any, index: number) => (
               <LeadBoardCard
