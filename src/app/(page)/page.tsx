@@ -15,8 +15,8 @@ export default function Home() {
               Think you are good at guessing real estate prices?
             </h1>
             <p className="text-[1rem]/[1.5rem] font-light">
-              Are you willing to stake your tokens on it? guess correct property prices and win
-              NFTs.
+              Are you willing to stake your reputation on it? guess correct property prices and
+              win NFTs.
             </p>
           </div>
           <Button>

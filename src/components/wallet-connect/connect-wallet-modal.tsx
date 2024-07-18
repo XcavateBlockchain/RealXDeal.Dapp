@@ -125,6 +125,8 @@ export default function ConnectWalletModal({
       return async () => {
         if (wallet.installed) {
           onSelectWallet(wallet.extensionName);
+          router.refresh();
+          onClose();
         }
       };
     },
@@ -135,7 +137,7 @@ export default function ConnectWalletModal({
     <AlertDialogContent className="gap-6">
       <div className="flex items-center justify-between">
         <h1 className="text-[1.0625rem]/[1.5rem] font-medium">Connect wallet</h1>
-        <button onClick={close}>
+        <button onClick={() => onClose()}>
           <Icons.close className="size-6 stroke-white hover:stroke-primary-foreground" />
         </button>
       </div>
@@ -157,7 +159,7 @@ export default function ConnectWalletModal({
                 <Image src={wallet.logo?.src} alt="" width={42} height={42} priority />
                 <span className="text-[1rem]/[1.5rem]">{wallet.title}</span>
               </div>
-              {wallet.installed && (
+              {wallet.installed ? null : (
                 <Link
                   href={wallet.installUrl}
                   className="rounded-lg bg-primary px-2 text-center text-[0.75rem]/[1.5rem] font-light text-primary-300"
@@ -174,7 +176,7 @@ export default function ConnectWalletModal({
       <div className="flex items-center justify-center py-6">
         <Link
           href={''}
-          className="text-[0.75rem]/[1.5rem] font-light text-primary hover:underline"
+          className="text-[0.75rem]/[1.5rem] font-light text-primary-foreground hover:underline"
         >
           What is wallet?
         </Link>

@@ -1,4 +1,10 @@
 import { getApi } from './polkadot';
+import { getCookieStorage } from './storage';
+
+export async function getUser() {
+  const address = await getCookieStorage('accountKey');
+  return { address };
+}
 
 export async function getAvailableNFTs(collectionId?: number) {
   const api = await getApi();
@@ -11,7 +17,7 @@ export async function getLeadBoards() {
   const api = await getApi();
   const result = await api.query.gameModule.leaderboard();
   const output = result.toHuman();
-  return output;
+  return output as [];
 }
 
 export async function getNextGameID() {
@@ -43,7 +49,7 @@ export async function getUserData(address: string) {
   const api = await getApi();
   const result = await api.query.gameModule.users(address);
   const output = result.toHuman();
-  return output;
+  return output as any;
 }
 
 export async function getListings() {

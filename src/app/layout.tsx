@@ -5,7 +5,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/sonner';
 import dynamic from 'next/dynamic';
-import { NodeSocketProvider, WalletProvider } from '@/context';
+// import { NodeSocketProvider, WalletProvider } from '@/context';
 
 const unbounded = Unbounded({
   style: 'normal',
@@ -14,7 +14,16 @@ const unbounded = Unbounded({
   variable: '--font-unbounded'
 });
 
-const SubstrateContextProvider = dynamic(() => import('@/context/polkadot-contex'), {
+// const NodeSocketProvider = dynamic(() => import('@/context'), {
+//   ssr: false
+// });
+const NodeSocketProvider = dynamic(
+  () => import('@/context').then(mod => mod.NodeSocketProvider),
+  {
+    ssr: false
+  }
+);
+const WalletProvider = dynamic(() => import('@/context').then(mod => mod.WalletProvider), {
   ssr: false
 });
 
@@ -38,9 +47,7 @@ export default function RootLayout({
         )}
       >
         <NodeSocketProvider>
-          <WalletProvider>
-            <SubstrateContextProvider>{children}</SubstrateContextProvider>
-          </WalletProvider>
+          <WalletProvider>{children}</WalletProvider>
         </NodeSocketProvider>
         <Toaster />
       </body>

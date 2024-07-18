@@ -22,7 +22,7 @@ export function HowToPlay() {
         <div className="flex h-full w-[50%] flex-col items-start gap-6 bg-primary p-6">
           <PlayCard
             title="Complete Tasks to Earn Points"
-            desc="Begin by completing tasks within the game to earn tokens, which you can use to make your guess. The more tasks you complete, the more tokens you'll accumulate to increase your chances of winning."
+            desc="Begin by completing tasks within the game to earn points, which you can use to make your guess. The more tasks you complete, the more points you'll accumulate to increase your chances of winning."
             color="bg-primary-200/[0.32]"
           />
           <PlayCard
@@ -32,7 +32,7 @@ export function HowToPlay() {
           />
           <PlayCard
             title="Reveal Property Data and Countdown"
-            desc="Once you've earned enough tokens and selected your player level, reveal the property data for the current round and see the countdown clock ticking down. Time is of the essence, so act quickly!"
+            desc="Once you've earned enough points and selected your player level, reveal the property data for the current round and see the countdown clock ticking down. Time is of the essence, so act quickly!"
             color="bg-primary-400/[0.50]"
           />
           <PlayCard

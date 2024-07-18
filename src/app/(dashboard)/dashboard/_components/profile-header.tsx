@@ -1,15 +1,20 @@
 'use client';
 
 import ConnectWallet from '@/components/layouts/connect-wallet';
+import WalletConnect from '@/components/wallet-connect/wallet-connect';
 import { useSubstrateContext } from '@/context/polkadot-contex';
-import { formatAddress, formatNumber } from '@/lib/utils';
+import { WalletContext } from '@/context/wallet-context';
+import { formatAddress } from '@/lib/formaters';
+import { formatNumber } from '@/lib/utils';
 import Image from 'next/image';
+import { useContext } from 'react';
 
 export default function ProfileHeader({ points }: { points: number }) {
-  const { address, isConnected } = useSubstrateContext();
+  const walletContext = useContext(WalletContext);
+  const selectedAddress = walletContext.selectedAccount?.[0]?.address;
 
   return (
-    <div className="flex w-full items-center justify-between pb-10">
+    <div className="flex w-full items-center justify-between pb-5">
       <div className="flex items-center gap-[17px]">
         <Image
           src={'/images/profile.jpeg'}
@@ -21,17 +26,17 @@ export default function ProfileHeader({ points }: { points: number }) {
         />
         <div>
           <span className="rounded-3xl bg-[#DC7DA6]/[0.25] px-2 py-[2px] text-[0.875rem]/[0.025rem] font-extralight">
-            {formatAddress(address)}
+            {formatAddress(selectedAddress)}
           </span>
         </div>
       </div>
-      {isConnected ? (
+      {selectedAddress ? (
         <div className="space-x-2 text-[1.0625rem]/[1.5rem] font-light">
           <span>Points:</span>
           <span className="text-primary-400">{formatNumber(points)}X</span>
         </div>
       ) : (
-        <ConnectWallet open={isConnected === false ? true : false} />
+        <WalletConnect open={selectedAddress ? false : true} />
       )}
     </div>
   );

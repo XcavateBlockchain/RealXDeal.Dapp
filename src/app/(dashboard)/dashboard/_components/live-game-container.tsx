@@ -5,28 +5,21 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import GameMode from './game-mode';
 import { GuessFail, GuessPass } from './success-failure';
-
 import { Icons } from '@/components/icons';
 import { playGame } from '@/lib/extrinsic';
 import { useSubstrateContext } from '@/context/polkadot-contex';
 import { set } from 'zod';
+import { useWalletContext } from '@/context/wallet-context';
+import { toast } from 'sonner';
+import { formatNumber } from '@/lib/utils';
+
 interface IGamePlaySection {
   [key: string]: ReactNode;
 }
 
-type Player = {
-  Player: 1;
-};
-
-type Practice = {
-  Practice: 0;
-};
-
-// type GameType = Player | Practice;
-
 type GameType = 0 | 1;
 
-export default function LiveGamePlay({ type }: { type: GameType }) {
+export default function LiveGamePlay({ type, points }: { type: GameType; points: number }) {
   const [openGameSheet, setOpenGameSheet] = useState<boolean>(false);
   const [gameId, setGameId] = useState(null);
   const [propertyDisplay, setPropertyDisplay] = useState<any>();
@@ -40,6 +33,7 @@ export default function LiveGamePlay({ type }: { type: GameType }) {
     start: (
       <StartGame
         type={type}
+        points={points}
         setDisplay={setDisplay}
         close={closeGameSheet}
         setPropertyDisplay={setPropertyDisplay}
@@ -48,6 +42,7 @@ export default function LiveGamePlay({ type }: { type: GameType }) {
     ),
     play: (
       <GameMode
+        points={points}
         data={propertyDisplay}
         setDisplay={setDisplay}
         close={closeGameSheet}
@@ -84,28 +79,40 @@ export default function LiveGamePlay({ type }: { type: GameType }) {
 
 interface GameProps {
   type: GameType;
+  points: number;
   setDisplay: Dispatch<SetStateAction<'start' | 'play' | 'success' | 'fail'>>;
   setPropertyDisplay: Dispatch<SetStateAction<any>>;
   setGameId: Dispatch<SetStateAction<any>>;
   close: () => void;
 }
 
-function StartGame({ type, close, setDisplay, setPropertyDisplay, setGameId }: GameProps) {
-  const { address } = useSubstrateContext();
+function StartGame({
+  type,
+  points,
+  close,
+  setDisplay,
+  setPropertyDisplay,
+  setGameId
+}: GameProps) {
+  const walletContext = useWalletContext();
+  const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
   const [isLoading, setIsLoading] = useState(false);
-
-  // const [isPending, startTransition] = useTransition();
 
   async function onPlay() {
     try {
-      setIsLoading(true);
-      await playGame(type, address, async (data, gameId) => {
-        setPropertyDisplay(await data);
-        setGameId(gameId);
-        setDisplay('play');
-      });
-
-      setIsLoading(false);
+      if (selectedAddress) {
+        setIsLoading(true);
+        await playGame(type, selectedAddress, async (data, gameId) => {
+          setPropertyDisplay(await data);
+          setGameId(gameId);
+          setDisplay('play');
+        });
+        setIsLoading(false);
+      } else {
+        toast.warning('Wallet not connected', {
+          description: 'Please connect your wallet to start game.'
+        });
+      }
     } catch (error) {
       console.log(error);
       setIsLoading(false);
@@ -119,9 +126,9 @@ function StartGame({ type, close, setDisplay, setPropertyDisplay, setGameId }: G
           <Icons.CaretLeft className="size-6" />
           Return
         </Button>
-        <div className="space-x-[15px]">
-          <span>points</span>
-          <span className="text-primary-400">1500</span>
+        <div className="space-x-2.5">
+          <span>Points:</span>
+          <span className="text-primary-400">{formatNumber(points)}</span>
         </div>
       </div>
       <div className="flex items-center justify-center p-[200px]">
