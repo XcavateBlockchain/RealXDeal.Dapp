@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 // import Form, { useZodForm } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import useLiveCountdown from '@/hooks/use-live-countdown';
-import { cn } from '@/lib/utils';
+import { cn, formatNumber } from '@/lib/utils';
 import { gameSchema, GuessInput } from '@/lib/validations/game';
 import Image from 'next/image';
 import {
@@ -21,6 +21,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
+  useContext,
   useEffect,
   useState,
   useTransition
@@ -30,28 +31,23 @@ import { getNextGameID } from '@/lib/queries';
 import { submitGameAnswer } from '@/lib/extrinsic';
 import Form, { useZodForm } from '@/components/ui/form';
 import { GameData } from '@/types';
+import { useWalletContext, WalletContext } from '@/context/wallet-context';
 
 interface GameProps {
+  points: number;
   data: GameData;
   setDisplay: Dispatch<SetStateAction<'start' | 'play' | 'success' | 'fail'>>;
   close: () => void;
   gameId: any;
 }
 
-export default function GameMode({ data, setDisplay, close, gameId }: GameProps) {
+export default function GameMode({ points, data, setDisplay, close, gameId }: GameProps) {
   // const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(false);
   // const [gameId, setGameID] = useState<any>();
-  const { address } = useSubstrateContext();
-
+  const walletContext = useContext(WalletContext);
+  const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
   const { seconds } = useLiveCountdown(60);
-
-  // const getGameId = useCallback(async () => {
-  //   const id = await getNextGameID();
-  //   if (id !== null) {
-  //     setGameID(id);
-  //   }
-  // }, []);
 
   const form = useZodForm({
     schema: gameSchema
@@ -64,7 +60,7 @@ export default function GameMode({ data, setDisplay, close, gameId }: GameProps)
       const formData = new FormData(event.currentTarget);
       const guess = Number(formData.get('guess') as string);
       console.log(guess);
-      await submitGameAnswer(address, guess, gameId);
+      await submitGameAnswer(selectedAddress, guess, gameId);
       setDisplay('success');
       setIsLoading(false);
     } catch (error) {
@@ -73,17 +69,11 @@ export default function GameMode({ data, setDisplay, close, gameId }: GameProps)
     }
   }
 
-  // useEffect(() => {
-  //   getGameId();
-  // });
-
   useEffect(() => {
     if (seconds <= 0) {
       setDisplay('fail');
     }
   });
-
-  // console.log('GameID', gameId);
 
   return (
     <div className="space-y-[44px]">
@@ -92,9 +82,9 @@ export default function GameMode({ data, setDisplay, close, gameId }: GameProps)
           <Icons.CaretLeft className="size-6" />
           Return
         </Button>
-        <div className="space-x-[15px]">
-          <span>points</span>
-          <span className="text-primary-400">1500</span>
+        <div className="space-x-2.5">
+          <span>Pints:</span>
+          <span className="text-primary-400">{formatNumber(points)}</span>
         </div>
       </div>
       <div className="inline-flex size-full items-start gap-6 rounded-lg border border-primary bg-white/[0.20] p-6 backdrop-blur">
@@ -154,7 +144,7 @@ export default function GameMode({ data, setDisplay, close, gameId }: GameProps)
           </Carousel>
         </div>
         {/* data */}
-        <div className="flex w-full max-w-[439px] flex-col gap-6 px-4">
+        <div className="flex h-full w-full max-w-[500px] flex-col gap-6 px-4">
           <div className="space-y-[18px]">
             <h1 className="text-[0.875rem] font-medium">Property 1</h1>
             <DescriptionList title="Type" description={data.type} />
@@ -177,7 +167,6 @@ export default function GameMode({ data, setDisplay, close, gameId }: GameProps)
                 type="number"
                 placeholder="Enter your guess"
                 className="py-5 outline-none placeholder:text-center placeholder:text-[1rem] placeholder:font-medium placeholder:opacity-50"
-                {...form.register('guess')}
               />
               <Button type="submit" fullWidth disabled={isLoading}>
                 Guess Now

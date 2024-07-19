@@ -40,13 +40,13 @@ export async function playGame(
             const gameId = gameStartedEvent.event.data[1].toString();
             console.log(`GameStarted event found with game_id: ${gameId}`);
             const gameInfo = (await getGameInfo(parseInt(gameId))) as unknown as GameInfo;
-            console.log('The game info is: ', gameInfo);
-
+            // console.log('The game info is: ', gameInfo);
+            // const propertyDisplay = await fetchPropertyForDisplay(
+            //   Number(gameInfo.property.id)
+            // );
             const propertyDisplay = await fetchPropertyForDisplay(139361966);
             handlePropertyDisplay(propertyDisplay, gameId);
-
             // console.log(propertyDisplay);
-
             toast.success(status.asInBlock.toString());
             console.log(`Completed at block hash #${status.asInBlock.toString()}`);
             unsub();

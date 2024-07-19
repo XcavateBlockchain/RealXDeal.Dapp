@@ -1,5 +1,5 @@
 import { Wallet, WalletAccount } from '@subwallet/wallet-connect/types';
-import React from 'react';
+import React, { useContext } from 'react';
 
 export interface WalletContextInterface {
   wallet?: Wallet;
@@ -35,3 +35,7 @@ export const OpenSelectWallet = React.createContext<OpenSelectWalletInterface>({
   open: () => {},
   close: () => {}
 });
+
+export function useWalletContext() {
+  return useContext(WalletContext);
+}

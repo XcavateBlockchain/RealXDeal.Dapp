@@ -138,3 +138,30 @@ export const siteConfig = {
 };
 
 export type SiteConfig = typeof siteConfig;
+
+export const staleBoard = [
+  ['5DUDYoT7tefEi1LETr3dLRAdqNFFFoYiT8N9axZCQUxb3vvf', 280],
+  ['5FEda1GYvjMYcBiuRE7rb85QbD5bQNHuZajhRvHYTxm4PPz5', 275],
+  ['5G6WMtWFYJ4YZo3GZBXzoBLbxN1rpFsvCdXPj3uWVELyDe6A', 155],
+  ['5Di7RnyX8TXwM9C9RCVHWTuXemwmRiJLiX3wapYgN588qB2E', 155],
+  ['5Di7RnyX8TXwM9C9RCVHWTuXemwmRiJLiX3wapYgN588qB2E', 155],
+  ['5Di7RnyX8TXwM9C9RCVHWTuXemwmRiJLiX3wapYgN588qB2E', 155]
+];
+
+export const staleUser = {
+  points: 0,
+  wins: 0,
+  losses: 0,
+  practiseRounds: 0,
+  lastPlayedRound: 0,
+  nfts: {
+    xorange: 0,
+    xpink: 0,
+    xblue: 0,
+    xcyan: 0,
+    xcoral: 0,
+    xpurple: 0,
+    xleafgreen: 0,
+    xgreen: 0
+  }
+};

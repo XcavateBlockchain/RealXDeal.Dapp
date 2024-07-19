@@ -2,13 +2,13 @@ import { useMediaQuery } from 'react-responsive';
 
 export const RESOLUTION_QUERY = {
   TABLET: { query: '(min-width: 768px)' },
-  DESKTOP: { query: '(min-width: 1280px)' },
+  DESKTOP: { query: '(min-width: 1280px)' }
 };
 
 export const SCREENS = {
   mobile: 'mobile',
   tablet: 'tablet',
-  desktop: 'desktop',
+  desktop: 'desktop'
 };
 
 export const useScreenSize = (): 'desktop' | 'tablet' | 'mobile' => {

@@ -4,10 +4,12 @@ import { cn } from '@/lib/utils';
 import { NavItem } from '@/types';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Icons } from '../icons';
 import { siteConfig } from '@/config/site';
 import { useSubstrateContext } from '@/context/polkadot-contex';
+import { WalletContext } from '@/context/wallet-context';
+import { useContext } from 'react';
 
 export default function SidebarNav() {
   return (
@@ -26,8 +28,10 @@ export default function SidebarNav() {
 }
 
 const SidebarNavList = ({ items }: { items: NavItem[] }) => {
-  const { isConnected, disconnectWallet } = useSubstrateContext();
   const path = usePathname();
+  const router = useRouter();
+  const walletContext = useContext(WalletContext);
+  const selectedAddress = walletContext.selectedAccount?.[0]?.address;
   return (
     <aside className="flex flex-col items-start gap-[131px]">
       <div className="flex flex-col items-start gap-6">
@@ -50,10 +54,13 @@ const SidebarNavList = ({ items }: { items: NavItem[] }) => {
           );
         })}
       </div>
-      {isConnected ? (
+      {selectedAddress ? (
         <button
           className="group flex w-[174px] items-center gap-2 rounded-lg p-2 text-white transition-colors duration-300 hover:bg-primary-400 hover:text-primary"
-          onClick={disconnectWallet}
+          onClick={async () => {
+            await walletContext.disconnectWallet();
+            router.refresh();
+          }}
         >
           <Icons.Power className="size-6 text-primary-300 group-hover:text-primary" /> Logout
         </button>
