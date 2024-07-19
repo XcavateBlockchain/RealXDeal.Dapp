@@ -17,7 +17,7 @@ export async function getLeadBoards() {
   const api = await getApi();
   const result = await api.query.gameModule.leaderboard();
   const output = result.toHuman();
-  return output as [];
+  return output;
 }
 
 export async function getNextGameID() {
@@ -49,7 +49,7 @@ export async function getUserData(address: string) {
   const api = await getApi();
   const result = await api.query.gameModule.users(address);
   const output = result.toHuman();
-  return output as any;
+  return output;
 }
 
 export async function getListings() {

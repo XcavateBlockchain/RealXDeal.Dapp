@@ -2,7 +2,7 @@
 
 import { WalletContext } from '@/context/wallet-context';
 import { Icons } from '../icons';
-import { AlertDialogContent } from '../ui/alert-dialog';
+import { AlertDialogContent, AlertDialogTitle } from '../ui/alert-dialog';
 import { Button } from '../ui/button';
 import { SCREENS, useScreenSize } from '@/lib/resolutionScreens';
 import { useContext, useEffect, useState } from 'react';
@@ -40,11 +40,10 @@ export default function ConnectedAccountModal({ onClose }: TConnectWallet) {
 
   return (
     <AlertDialogContent className="top-36 flex w-full flex-col gap-4">
+      <AlertDialogTitle hidden>Connect</AlertDialogTitle>
       <div className="flex w-full items-start justify-between">
         <div className="flex flex-col gap-2">
-          <h1 className="font-mona text-[1.125rem]/[1.5rem] font-semibold text-[#4E4E4E]">
-            Summary
-          </h1>
+          <h1 className="font-mona text-[1.125rem]/[1.5rem] font-semibold">Summary</h1>
           <div className="flex gap-2">
             {wallet ? (
               <Image

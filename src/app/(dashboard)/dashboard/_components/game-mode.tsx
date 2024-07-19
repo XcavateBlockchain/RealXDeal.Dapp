@@ -21,6 +21,7 @@ import {
   Dispatch,
   SetStateAction,
   useCallback,
+  useContext,
   useEffect,
   useState,
   useTransition
@@ -30,7 +31,7 @@ import { getNextGameID } from '@/lib/queries';
 import { submitGameAnswer } from '@/lib/extrinsic';
 import Form, { useZodForm } from '@/components/ui/form';
 import { GameData } from '@/types';
-import { useWalletContext } from '@/context/wallet-context';
+import { useWalletContext, WalletContext } from '@/context/wallet-context';
 
 interface GameProps {
   points: number;
@@ -44,7 +45,7 @@ export default function GameMode({ points, data, setDisplay, close, gameId }: Ga
   // const [isPending, startTransition] = useTransition();
   const [isLoading, setIsLoading] = useState(false);
   // const [gameId, setGameID] = useState<any>();
-  const walletContext = useWalletContext();
+  const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
   const { seconds } = useLiveCountdown(60);
 

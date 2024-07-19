@@ -1,15 +1,20 @@
 'use client';
 
-import { Dispatch, ReactNode, SetStateAction, useState, useTransition } from 'react';
+import {
+  Dispatch,
+  ReactNode,
+  SetStateAction,
+  useContext,
+  useState,
+  useTransition
+} from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Button } from '@/components/ui/button';
 import GameMode from './game-mode';
 import { GuessFail, GuessPass } from './success-failure';
 import { Icons } from '@/components/icons';
 import { playGame } from '@/lib/extrinsic';
-import { useSubstrateContext } from '@/context/polkadot-contex';
-import { set } from 'zod';
-import { useWalletContext } from '@/context/wallet-context';
+import { useWalletContext, WalletContext } from '@/context/wallet-context';
 import { toast } from 'sonner';
 import { formatNumber } from '@/lib/utils';
 
@@ -94,25 +99,19 @@ function StartGame({
   setPropertyDisplay,
   setGameId
 }: GameProps) {
-  const walletContext = useWalletContext();
+  const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
   const [isLoading, setIsLoading] = useState(false);
 
   async function onPlay() {
     try {
-      if (selectedAddress) {
-        setIsLoading(true);
-        await playGame(type, selectedAddress, async (data, gameId) => {
-          setPropertyDisplay(await data);
-          setGameId(gameId);
-          setDisplay('play');
-        });
-        setIsLoading(false);
-      } else {
-        toast.warning('Wallet not connected', {
-          description: 'Please connect your wallet to start game.'
-        });
-      }
+      setIsLoading(true);
+      await playGame(type, selectedAddress, async (data, gameId) => {
+        setPropertyDisplay(await data);
+        setGameId(gameId);
+        setDisplay('play');
+      });
+      setIsLoading(false);
     } catch (error) {
       console.log(error);
       setIsLoading(false);

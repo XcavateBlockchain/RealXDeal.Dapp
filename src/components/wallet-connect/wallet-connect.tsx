@@ -2,7 +2,7 @@
 
 import { Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
 import { AlertDialog, AlertDialogContent, AlertDialogTrigger } from '../ui/alert-dialog';
-import { ConnectWalletIcon, WalletIcon } from '../wallet-icon';
+import { ConnectWalletIcon } from '../wallet-icon';
 import { WalletContext } from '@/context/wallet-context';
 import { SCREENS, useScreenSize } from '@/lib/resolutionScreens';
 import { NodeContext } from '@/context';

@@ -1,6 +1,6 @@
 'use client';
 
-import { AlertDialogContent } from '../ui/alert-dialog';
+import { AlertDialogContent, AlertDialogTitle } from '../ui/alert-dialog';
 import { Icons } from '../icons';
 import Link from 'next/link';
 import React, {
@@ -125,9 +125,6 @@ export default function ConnectWalletModal({
       return async () => {
         if (wallet.installed) {
           onSelectWallet(wallet.extensionName);
-          if (currentAddress) {
-            setIndex(2);
-          }
           router.refresh();
           onClose();
         }
@@ -138,6 +135,8 @@ export default function ConnectWalletModal({
 
   return (
     <AlertDialogContent className="gap-6">
+      <AlertDialogTitle hidden>Connect</AlertDialogTitle>
+
       <div className="flex items-center justify-between">
         <h1 className="text-[1.0625rem]/[1.5rem] font-medium">Connect wallet</h1>
         <button onClick={() => onClose()}>
