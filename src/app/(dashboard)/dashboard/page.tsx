@@ -2,35 +2,34 @@ import { Shell } from '@/components/shell';
 import UserStats from './_components/user-stats';
 import { Card, CardWithoutHeading, TaskCard } from '@/components/cards/card';
 import { getLeadBoards, getUser, getUserData } from '@/lib/queries';
-import { getCookieStorage } from '@/lib/storage';
 import { LeadBoardCard } from '@/components/cards/leadboard-card';
 import Image from 'next/image';
 import ProfileHeader from './_components/profile-header';
 import { PlayerStats } from '@/components/cards/player-stats-card';
 import LiveGamePlay from './_components/live-game-container';
-import { staleBoard, staleUser } from '@/config/site';
+import { staleBoard } from '@/config/site';
 
 export default async function Page() {
   const { address } = await getUser();
   const boardList = (await getLeadBoards()) ?? staleBoard;
-  const user = (await getUserData(address ? address : '')) ?? staleUser;
+  const user = await getUserData(address ? address : '');
 
   return (
     <Shell>
       {/* <UserStats /> */}
-      <ProfileHeader points={user?.points} />
+      <ProfileHeader points={user?.points ?? 0} />
       <section className="flex w-full items-end gap-[54px]">
         <CardWithoutHeading className="w-2/5">
           <PlayerStats title="Guesses" value={Number(user?.wins) + Number(user?.losses)} />
-          <PlayerStats title="Correct " value={user?.wins} />
-          <PlayerStats title="Failed " value={user?.losses} />
+          <PlayerStats title="Correct " value={user?.wins ?? 0} />
+          <PlayerStats title="Failed " value={user?.losses ?? 0} />
         </CardWithoutHeading>
         <div className="flex w-3/5 items-start gap-[29px]">
           <div className="flex w-[172px] items-end justify-center rounded-lg border border-primary-400 bg-primary-400/[0.24] p-2.5">
-            <LiveGamePlay type={0} points={user?.points} />
+            <LiveGamePlay type={0} points={user?.points ?? 0} />
           </div>
           <div className="flex w-[172px] items-end justify-center rounded-lg border border-primary-200 bg-primary-200/[0.24] p-2.5">
-            <LiveGamePlay type={1} points={user?.points} />
+            <LiveGamePlay type={1} points={user?.points ?? 0} />
           </div>
         </div>
       </section>
@@ -51,17 +50,38 @@ export default async function Page() {
 
         <Card className="w-3/5" title="NFTs Collected">
           <div className="grid size-full grid-cols-4 gap-2">
-            <CollectionCard image="/images/nfts/x_orange.png" noOfNfts={user?.nfts?.xorange} />
-            <CollectionCard image="/images/nfts/x_pink.png" noOfNfts={user?.nfts?.xpink} />
-            <CollectionCard image="/images/nfts/x_blue.png" noOfNfts={user?.nfts?.xblue} />
-            <CollectionCard image="/images/nfts/x_cyan.png" noOfNfts={user?.nfts?.xorange} />
-            <CollectionCard image="/images/nfts/x_coral.png" noOfNfts={user?.nfts?.xcoral} />
-            <CollectionCard image="/images/nfts/x_purple.png" noOfNfts={user?.nfts?.xpurple} />
+            <CollectionCard
+              image="/images/nfts/x_orange.png"
+              noOfNfts={user?.nfts?.xorange ?? 0}
+            />
+            <CollectionCard
+              image="/images/nfts/x_pink.png"
+              noOfNfts={user?.nfts?.xpink ?? 0}
+            />
+            <CollectionCard
+              image="/images/nfts/x_blue.png"
+              noOfNfts={user?.nfts?.xblue ?? 0}
+            />
+            <CollectionCard
+              image="/images/nfts/x_cyan.png"
+              noOfNfts={user?.nfts?.xorange ?? 0}
+            />
+            <CollectionCard
+              image="/images/nfts/x_coral.png"
+              noOfNfts={user?.nfts?.xcoral ?? 0}
+            />
+            <CollectionCard
+              image="/images/nfts/x_purple.png"
+              noOfNfts={user?.nfts?.xpurple ?? 0}
+            />
             <CollectionCard
               image="/images/nfts/x_leaf_green.png"
-              noOfNfts={user?.nfts?.xleafgreen}
+              noOfNfts={user?.nfts?.xleafgreen ?? 0}
             />
-            <CollectionCard image="/images/nfts/x_green.png" noOfNfts={user?.nfts?.xgreen} />
+            <CollectionCard
+              image="/images/nfts/x_green.png"
+              noOfNfts={user?.nfts?.xgreen ?? 0}
+            />
           </div>
         </Card>
       </section>
