@@ -69,8 +69,7 @@ export async function checkResult(data: { guess: number; gameId: number; address
   console.log('Checking result');
   const gameInfo = (await getGameInfo(data.gameId)) as unknown as GameInfo;
   // await fetchPropertyData(gameInfo.property.id);
-  // const propertyData = await fetchPropertyData(139361966);
-  const propertyData = await fetchPropertyData(Number(gameInfo.property.id));
+  const propertyData = await fetchPropertyData(139361966);
   const realPrice = propertyData!.price;
   const secret = {
     scheme: 'aes-256-cbc',
@@ -111,38 +110,49 @@ export async function checkResult(data: { guess: number; gameId: number; address
   // Sign and send the transaction
   const unsub = await api.tx.sudo
     .sudo(extrinsic)
-    .signAndSend(account, ({ status, events = [], dispatchError }) => {
-      if (status.isInBlock && !eventProcessed) {
-        eventProcessed = true;
-        console.log('IN BLOCK AND EVENT PROCESSED');
-        const ResultChecked = events.find(({ event }) => {
-          return api.events.gameModule.ResultChecked.is(event);
-        });
-        if (ResultChecked) {
-          console.log('RESULT CHECKED EVENT - InBlock');
-          const points = ResultChecked.event.data[2].toString();
-          const won = ResultChecked.event.data[3].toString();
-          console.log('Points:', points);
-          console.log('Won:', won);
-        } else {
-          console.log('NO RESULT CHECKED EVENT :(');
+    .signAndSend(
+      account,
+      ({
+        status,
+        events = [],
+        dispatchError
+      }: {
+        status: any;
+        events: any[];
+        dispatchError?: any;
+      }) => {
+        if (status.isInBlock && !eventProcessed) {
+          eventProcessed = true;
+          console.log('IN BLOCK AND EVENT PROCESSED');
+          const ResultChecked = events.find(({ event }) => {
+            return api.events.gameModule.ResultChecked.is(event);
+          });
+          if (ResultChecked) {
+            console.log('RESULT CHECKED EVENT - InBlock');
+            const points = ResultChecked.event.data[2].toString();
+            const won = ResultChecked.event.data[3].toString();
+            console.log('Points:', points);
+            console.log('Won:', won);
+          } else {
+            console.log('NO RESULT CHECKED EVENT :(');
+          }
+        } else if (status.isFinalized) {
+          console.log('FINALIZED');
+          const ResultChecked = events.find(({ event }) => {
+            return api.events.gameModule.ResultChecked.is(event);
+          });
+          if (ResultChecked) {
+            console.log('RESULT CHECKED EVENT - IsFinalized');
+            const points = ResultChecked.event.data[2].toString();
+            const won = ResultChecked.event.data[3].toString();
+            console.log('Points:', points);
+            console.log('Won:', won);
+          }
+          console.log('unsubbing!');
+          unsub();
         }
-      } else if (status.isFinalized) {
-        console.log('FINALIZED');
-        const ResultChecked = events.find(({ event }) => {
-          return api.events.gameModule.ResultChecked.is(event);
-        });
-        if (ResultChecked) {
-          console.log('RESULT CHECKED EVENT - IsFinalized');
-          const points = ResultChecked.event.data[2].toString();
-          const won = ResultChecked.event.data[3].toString();
-          console.log('Points:', points);
-          console.log('Won:', won);
-        }
-        console.log('unsubbing!');
-        unsub();
       }
-    });
+    );
 }
 
 export async function fetchPropertyData(id: number) {
