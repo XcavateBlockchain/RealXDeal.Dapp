@@ -73,19 +73,19 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background: white;
+  background: hsla(200, 49%, 56%);
   border-radius: 5px;
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: silver;
+  background: #27354e;
   border-radius: 5px;
 }
 
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
-  background: #555;
+  background: #3b4f74;
 }
 
 @layer base {
