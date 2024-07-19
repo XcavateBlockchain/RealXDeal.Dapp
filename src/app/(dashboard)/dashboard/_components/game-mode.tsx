@@ -144,7 +144,7 @@ export default function GameMode({ points, data, setDisplay, close, gameId }: Ga
           </Carousel>
         </div>
         {/* data */}
-        <div className="flex w-full max-w-[439px] flex-col gap-6 px-4">
+        <div className="flex h-full w-full max-w-[500px] flex-col gap-6 px-4">
           <div className="space-y-[18px]">
             <h1 className="text-[0.875rem] font-medium">Property 1</h1>
             <DescriptionList title="Type" description={data.type} />
@@ -157,7 +157,7 @@ export default function GameMode({ points, data, setDisplay, close, gameId }: Ga
             {/* <DescriptionList title="Town/city" description="Hertford" />
             <DescriptionList title="Post code" description="SG235TH" /> */}
           </div>
-          <div className="h-[121px] space-y-[18px]">
+          <div className="space-y-[18px]">
             <h1 className="text-[0.875rem] font-medium">Summary</h1>
             <p>{data.summary}</p>
           </div>
