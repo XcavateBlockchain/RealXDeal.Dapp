@@ -164,6 +164,7 @@ export default function GameMode({ points, data, setDisplay, close, gameId }: Ga
           <div className="space-y-5">
             <form onSubmit={onSubmit} className="flex w-full flex-col items-start gap-6">
               <Input
+                name="guess"
                 type="number"
                 placeholder="Enter your guess"
                 className="py-5 outline-none placeholder:text-center placeholder:text-[1rem] placeholder:font-medium placeholder:opacity-50"
