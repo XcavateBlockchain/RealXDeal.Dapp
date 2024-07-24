@@ -1,7 +1,15 @@
 import { Shell } from '@/components/shell';
 import UserStats from './_components/user-stats';
 import { Card, CardWithoutHeading, TaskCard } from '@/components/cards/card';
-import { getLeadBoards, getUser, getUserData } from '@/lib/queries';
+import {
+  getAllListings,
+  getAllListingsByAddress,
+  getUnlistedNFTsForUser,
+  getLeadBoards,
+  getAllUnlistedNFTs,
+  getUser,
+  getUserData
+} from '@/lib/queries';
 import { LeadBoardCard } from '@/components/cards/leadboard-card';
 import Image from 'next/image';
 import ProfileHeader from './_components/profile-header';
@@ -13,6 +21,12 @@ export default async function Page() {
   const { address } = await getUser();
   const boardList = (await getLeadBoards()) ?? staleBoard;
   const user = await getUserData(address ? address : '');
+
+  // if (address) {
+  //   // await getNFTForUser(address);
+  //   console.log(await getAllListings());
+  //   console.log(await getAllNFTFs());
+  // }
 
   return (
     <Shell>

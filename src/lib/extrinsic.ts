@@ -123,7 +123,7 @@ export async function listNFT(senderAddress: string, collectionId: number, nftId
   try {
     const api = await getApi();
     const injected = await web3FromAddress(senderAddress);
-    const extrinsic = api.tx.gameModule.listNFT(collectionId, nftId);
+    const extrinsic = api.tx.gameModule.listNft(collectionId, nftId);
     const signer = injected.signer;
 
     const unsub = await extrinsic.signAndSend(senderAddress, { signer }, result => {
@@ -136,6 +136,6 @@ export async function listNFT(senderAddress: string, collectionId: number, nftId
 
     console.log('Transaction sent:', unsub);
   } catch (error) {
-    console.error('Failed to submit guess:', error);
+    console.error('Failed to list NFT:', error);
   }
 }

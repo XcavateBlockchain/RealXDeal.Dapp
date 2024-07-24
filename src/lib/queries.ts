@@ -127,3 +127,86 @@ export async function getCollectionColor(id: number) {
   const output = result.toHuman();
   return output;
 }
+
+const colourTocollectionId: Record<string, number> = {
+  xcyan: 3,
+  xpink: 1,
+  xgreen: 7,
+  xpurple: 5,
+  xblue: 2,
+  xleafgreen: 6,
+  xorange: 0,
+  xcoral: 4
+};
+
+export async function getUnlistedNFTsForUser(address: string) {
+  const api = await getApi();
+  const data = await api.query.nfts.account.entries(address);
+
+  const nftData = data.map(([key, exposure]) => {
+    return key.args.map(k => k.toHuman());
+  });
+
+  return nftData;
+  // [{collectionID: number, itemId: number},...]
+  // [[address, collection_id, item_id], ...]
+}
+
+export async function getAllUnlistedNFTs() {
+  const api = await getApi();
+  const data = await api.query.nfts.account.entries();
+
+  const nftData = data.map(([key, exposure]) => {
+    return key.args.map(k => k.toHuman());
+  });
+
+  return nftData;
+  // [{collectionID: number, itemId: number},...]
+  // [[address, collection_id, item_id], ...]
+}
+
+export async function getAllListings() {
+  const api = await getApi();
+  const data = await api.query.gameModule.listings.entries();
+
+  const listingData = data.map(([key, exposure]) => {
+    let listingId = key.args[0].toHuman() as number;
+    return { [listingId]: exposure.toHuman() };
+  });
+
+  return listingData;
+  // [{listingId: {owner, collectionId, itemId}}, ...]
+}
+
+export async function getAllListingsByAddress(address: string) {
+  const api = await getApi();
+  const data = await api.query.gameModule.listings.entries();
+
+  const listingDataForAccount = data
+    .filter(([key, exposure]) => {
+      const listingData = exposure.toHuman() as { owner: string };
+      return listingData.owner == address;
+    })
+    .map(([key, exposure]) => {
+      let listingId = key.args[0].toHuman() as number;
+      return { [listingId]: exposure.toHuman() };
+    });
+
+  return listingDataForAccount;
+  // [{listingId: {owner, collectionId, itemId}}, ...]
+}
+
+/*
+
+NFTCollection => collection id
+
+GetNftsForUser
+List Nft
+Delist Nft
+Make Offer
+Accept Offer
+Withdraw Offer
+GetAllListings
+GetAllListingsFor
+
+*/
