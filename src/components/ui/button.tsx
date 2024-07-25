@@ -5,7 +5,7 @@ import { BaseButton, BaseButtonProps } from './base-button';
 import { cn } from '@/lib/utils';
 
 const buttonVariants = cva(
-  'flex items-center justify-center gap-2 rounded-lg font-heading font-medium',
+  'flex items-center justify-center gap-2 rounded-lg font-heading transition-colors duration-300 font-medium',
   {
     variants: {
       variant: {
@@ -17,13 +17,15 @@ const buttonVariants = cva(
           'bg-primary-400 text-foreground transition-colors  hover:bg-primary-400/85 disabled:pointer-events-none disabled:opacity-50',
         outline:
           'border border-[#CCCCCC80] font-sans font-light text-[#CCCCCC80] hover:border-primary-300 hover:text-primary-300',
-        text: 'rounded-none border-transparent bg-none text-[1.5rem]/[1.5rem] font-light text-primary-300 hover:text-primary-300/65'
+        text: 'rounded-none border-transparent bg-none text-[1.5rem]/[1.5rem] font-light text-primary-300 hover:text-primary-300/65',
+        card: 'rounded-lg border border-primary-300 font-sans  text-primary-300 hover:bg-primary-300/15'
       },
       size: {
         default: 'px-6 py-[18px] text-[1rem]/[1.2rem]',
         lg: 'px-[45px] py-4 text-[1rem]',
         md: 'px-6 py-2 text-[0.75rem]/[1.1875rem]',
         sm: 'p-2 text-[0.875rem]/[1.5rem] font-light',
+        nft: 'px-3 py-1 text-sm font-light',
         icon: 'size-10'
       },
       fullWidth: {

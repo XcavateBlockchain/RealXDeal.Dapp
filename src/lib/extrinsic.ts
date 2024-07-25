@@ -3,6 +3,7 @@ import { getApi } from './polkadot';
 import { toast } from 'sonner';
 import { getGameInfo } from './queries';
 import { checkResult, fetchPropertyForDisplay } from '@/app/actions';
+import { getErrorMessage } from './handle-error';
 
 export interface GameInfo {
   property: {
@@ -135,7 +136,12 @@ export async function listNFT(senderAddress: string, collectionId: number, nftId
     });
 
     console.log('Transaction sent:', unsub);
+    return {
+      data: unsub,
+      error: null
+    };
   } catch (error) {
     console.error('Failed to list NFT:', error);
+    return { data: null, error: getErrorMessage(error) };
   }
 }
