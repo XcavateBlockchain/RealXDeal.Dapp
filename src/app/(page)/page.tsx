@@ -41,12 +41,20 @@ export default function Home() {
         <div className="sm:w-[25%] w-full  text-center font-heading text-[1.3rem]/[1.9rem] font-medium">
           <h2>Fun way to learn about real estate.</h2>
         </div>
-        <div className="grid sm:grid-cols-4 gap-5 grid-cols-2">
-          <FeatureCard title="Win valuable NFTs" />
-          <FeatureCard title="Real-time Leaderboards" />
-          <FeatureCard title="Earn tokens" />
-          <FeatureCard title="Trade your NFTs " />
-        </div>
+        <div className="sm:grid sm:grid-cols-4 sm:gap-5 flex flex-row overflow-x-auto  snap-x snap-mandatory">
+  <div className="snap-center flex-shrink-0 w-full sm:w-auto">
+    <FeatureCard title="Win valuable NFTs" />
+  </div>
+  <div className="snap-center flex-shrink-0 w-full sm:w-auto">
+    <FeatureCard title="Real-time Leaderboards" />
+  </div>
+  <div className="snap-center flex-shrink-0 w-full sm:w-auto">
+    <FeatureCard title="Earn tokens" />
+  </div>
+  <div className="snap-center flex-shrink-0 w-full sm:w-auto">
+    <FeatureCard title="Trade your NFTs " />
+  </div>
+</div>
       </section>
       
       <HowToPlay />
