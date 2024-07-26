@@ -26,30 +26,29 @@ type Collection = {
 
 export function OwnedNFTCard({ isShadow, ...nft }: NFTCardProps) {
   const [showDialog, setShowDialog] = React.useState<boolean>(false);
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
   const [isListingPending, startListingTransaction] = useTransition();
   const metadata = collection[nft.collectionId] as Collection;
 
   async function onListNFT() {
-    startListingTransaction(() => {
-      async () => {
-        const { data, error } = await listNFT(
-          selectedAddress,
-          Number(nft.collectionId),
-          Number(nft.nftId)
-        );
-        if (error) {
-          toast.error(error);
-          return;
-        }
+    setIsLoading(true);
+    const { data, error } = await listNFT(
+      selectedAddress,
+      Number(nft.collectionId),
+      Number(nft.nftId)
+    );
+    if (error) {
+      setIsLoading(false);
+      toast.error(error);
+      return;
+    }
 
-        if (data) {
-          setShowDialog(true);
-        }
-      };
-    });
+    if (data) {
+      setIsLoading(false);
+      setShowDialog(true);
+    }
   }
 
   return (
@@ -76,15 +75,8 @@ export function OwnedNFTCard({ isShadow, ...nft }: NFTCardProps) {
             <span className="group-hover:text-primary-300">#{nft.nftId}</span> |{' '}
             <span className="ml-[2px]">{metadata.collectionName}</span>
           </div>
-          <Button
-            variant={'card'}
-            size={'nft'}
-            onClick={onListNFT}
-            disabled={isListingPending}
-          >
-            {isListingPending && (
-              <Icons.spinner className="size-4 animate-spin" aria-hidden="true" />
-            )}
+          <Button variant={'card'} size={'nft'} onClick={onListNFT} disabled={isLoading}>
+            {isLoading && <Icons.spinner className="size-4 animate-spin" aria-hidden="true" />}
             List
           </Button>
         </div>
