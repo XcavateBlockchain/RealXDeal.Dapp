@@ -28,9 +28,11 @@ export default function LiveGamePlay({ type, points }: { type: GameType; points:
   const [openGameSheet, setOpenGameSheet] = useState<boolean>(false);
   const [gameId, setGameId] = useState(null);
   const [propertyDisplay, setPropertyDisplay] = useState<any>();
+  const [result, setResult] = useState<any>();
   const [display, setDisplay] = useState<'start' | 'play' | 'success' | 'fail'>('start');
 
   function closeGameSheet() {
+    setDisplay('start');
     setOpenGameSheet(false);
   }
 
@@ -48,14 +50,15 @@ export default function LiveGamePlay({ type, points }: { type: GameType; points:
     play: (
       <GameMode
         points={points}
+        setResult={setResult}
         data={propertyDisplay}
         setDisplay={setDisplay}
         close={closeGameSheet}
         gameId={gameId}
       />
     ),
-    success: <GuessPass close={closeGameSheet} />,
-    fail: <GuessFail close={closeGameSheet} />
+    success: <GuessPass data={result} close={closeGameSheet} />,
+    fail: <GuessFail data={result} close={closeGameSheet} />
   };
 
   return (
