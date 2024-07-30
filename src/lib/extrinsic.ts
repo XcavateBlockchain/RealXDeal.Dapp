@@ -1,6 +1,6 @@
 import { web3Enable, web3FromAddress } from '@polkadot/extension-dapp';
 import { getApi } from './polkadot';
-// import { toast } from 'sonner';
+import { toast } from 'sonner';
 import { getGameInfo } from './queries';
 import { checkResult, fetchPropertyForDisplay } from '@/app/actions';
 
@@ -47,12 +47,12 @@ export async function playGame(
             const propertyDisplay = await fetchPropertyForDisplay(139361966);
             handlePropertyDisplay(propertyDisplay, gameId);
             // console.log(propertyDisplay);
-            // toast.success(status.asInBlock.toString());
+            toast.success(status.asInBlock.toString());
             console.log(`Completed at block hash #${status.asInBlock.toString()}`);
             unsub();
           } else if (dispatchError) {
             // display a warning and prompt to retry
-            // toast.warning('There was an error');
+            toast.warning('There was an error');
             console.log(dispatchError.toHuman());
           }
         }

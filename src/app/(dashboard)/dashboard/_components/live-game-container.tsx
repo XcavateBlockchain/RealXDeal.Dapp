@@ -17,6 +17,7 @@ import { playGame } from '@/lib/extrinsic';
 import { useWalletContext, WalletContext } from '@/context/wallet-context';
 import { toast } from 'sonner';
 import { formatNumber } from '@/lib/utils';
+import { useRouter } from 'next/navigation';
 
 interface IGamePlaySection {
   [key: string]: ReactNode;
@@ -102,23 +103,29 @@ function StartGame({
   setPropertyDisplay,
   setGameId
 }: GameProps) {
+  const router = useRouter();
   const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
   const [isLoading, setIsLoading] = useState(false);
+  const [loadingState, setLoadingState] = useState<'loading' | 'fetching-data'>('loading');
 
   async function onPlay() {
-    try {
-      setIsLoading(true);
-      await playGame(type, selectedAddress, async (data, gameId) => {
+    setIsLoading(true);
+    setLoadingState('loading');
+    await playGame(type, selectedAddress, async (data, gameId) => {
+      setLoadingState('fetching-data');
+      if (!data) {
+        setDisplay('start');
+        setIsLoading(false);
+        router.refresh();
+      }
+      if (data) {
         setPropertyDisplay(await data);
         setGameId(gameId);
         setDisplay('play');
-      });
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
+        setIsLoading(false);
+      }
+    });
   }
 
   return (
@@ -133,7 +140,7 @@ function StartGame({
           <span className="text-primary-400">{formatNumber(points)}</span>
         </div>
       </div>
-      <div className="flex items-center justify-center p-[200px]">
+      <div className="flex flex-col items-center justify-center p-[200px]">
         <Button
           className="size-[250px] rounded-full p-10 font-heading text-[2.84569rem] font-bold shadow-game"
           onClick={onPlay}
@@ -141,6 +148,7 @@ function StartGame({
         >
           Start <br /> Game
         </Button>
+        <p>{isLoading ? loadingState : ''}</p>
       </div>
     </div>
   );
