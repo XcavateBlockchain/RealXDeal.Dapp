@@ -55,7 +55,7 @@ export default async function Page() {
                 key={index}
                 index={index + 1}
                 user={list[0]}
-                points={Number(list[1])}
+                points={list[1]}
                 winner={index + 1 > 3 ? false : true}
               />
             ))}
