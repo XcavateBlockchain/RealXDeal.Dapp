@@ -297,10 +297,14 @@ export async function checkResult(
               const points = ResultChecked.event.data[2].toString();
               const won = ResultChecked.event.data[3].toString();
               resolve({ points, won }); // Resolve with points and won
+            } else {
+              const points = ResultChecked.event.data[2].toString();
+              const won = ResultChecked.event.data[3].toString();
+              resolve({ points, won });
             }
             console.log('unsubbing!');
             unsub();
-            reject(new Error('No Result checked Event'));
+
             // new Error('No Result Checked Event')
           }
         }
