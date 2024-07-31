@@ -87,10 +87,12 @@ export default function GameMode({
   }
 
   useEffect(() => {
-    if (seconds <= 0 && isLoading === false) {
-      setDisplay('fail');
+    if (typeof window !== 'undefined') {
+      if (seconds <= 0 && isLoading === false) {
+        setDisplay('fail');
+      }
     }
-  });
+  }, [seconds, isLoading, setDisplay]); //
 
   return (
     <div className="space-y-[44px]">
