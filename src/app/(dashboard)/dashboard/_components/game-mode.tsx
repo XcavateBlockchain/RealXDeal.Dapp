@@ -32,6 +32,7 @@ import { submitGameAnswer } from '@/lib/extrinsic';
 import { GameData } from '@/types';
 import { useWalletContext, WalletContext } from '@/context/wallet-context';
 import { useRouter } from 'next/navigation';
+import { checkResult } from '@/app/actions';
 
 interface GameProps {
   points: number;
@@ -51,7 +52,7 @@ export default function GameMode({
   setResult
 }: GameProps) {
   // const [isPending, startTransition] = useTransition();
-  const router = useRouter()
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   // const [gameId, setGameID] = useState<any>();
   const walletContext = useContext(WalletContext);
@@ -70,15 +71,16 @@ export default function GameMode({
         setResult({});
         setDisplay('fail');
         setIsLoading(false);
-        router.refresh()
+        router.refresh();
         console.log('error', error);
       }
 
       if (data) {
-        setResult(data);
+        const checkResultData = await checkResult({ guess, gameId, address: selectedAddress });
+        setResult(checkResultData);
         setDisplay('success');
         setIsLoading(false);
-        router.refresh()
+        router.refresh();
         console.log('data', data);
       }
     });

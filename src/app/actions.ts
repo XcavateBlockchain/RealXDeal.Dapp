@@ -275,7 +275,7 @@ export async function checkResult(
 
   let eventProcessed = false;
 
-  return new Promise<{ points: string; won: string }>(async (resolve, reject) => {
+  return new Promise<{ points: string; won: string } | null>(async (resolve, reject) => {
     const unsub = await api.tx.sudo
       .sudo(extrinsic)
       .signAndSend(
@@ -298,9 +298,7 @@ export async function checkResult(
               const won = ResultChecked.event.data[3].toString();
               resolve({ points, won }); // Resolve with points and won
             } else {
-              const points = ResultChecked.event.data[2].toString();
-              const won = ResultChecked.event.data[3].toString();
-              resolve({ points, won });
+              resolve(null);
             }
             console.log('unsubbing!');
             unsub();
