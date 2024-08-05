@@ -26,54 +26,71 @@ import {
   useState,
   useTransition
 } from 'react';
-import { useSubstrateContext } from '@/context/polkadot-contex';
+
 import { getNextGameID } from '@/lib/queries';
 import { submitGameAnswer } from '@/lib/extrinsic';
-import Form, { useZodForm } from '@/components/ui/form';
 import { GameData } from '@/types';
 import { useWalletContext, WalletContext } from '@/context/wallet-context';
+import { useRouter } from 'next/navigation';
+import { checkResult } from '@/app/actions';
 
 interface GameProps {
   points: number;
   data: GameData;
+  setResult: Dispatch<SetStateAction<any>>;
   setDisplay: Dispatch<SetStateAction<'start' | 'play' | 'success' | 'fail'>>;
   close: () => void;
   gameId: any;
 }
 
-export default function GameMode({ points, data, setDisplay, close, gameId }: GameProps) {
+export default function GameMode({
+  points,
+  data,
+  setDisplay,
+  close,
+  gameId,
+  setResult
+}: GameProps) {
   // const [isPending, startTransition] = useTransition();
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   // const [gameId, setGameID] = useState<any>();
   const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
   const { seconds } = useLiveCountdown(60);
 
-  const form = useZodForm({
-    schema: gameSchema
-  });
-
   async function onSubmit(event: any) {
     setIsLoading(true);
     event.preventDefault();
-    try {
-      const formData = new FormData(event.currentTarget);
-      const guess = Number(formData.get('guess') as string);
-      console.log(guess);
-      await submitGameAnswer(selectedAddress, guess, gameId);
-      setDisplay('success');
-      setIsLoading(false);
-    } catch (error) {
-      console.log(error);
-      setIsLoading(false);
-    }
+
+    const formData = new FormData(event.currentTarget);
+    const guess = Number(formData.get('guess') as string);
+    console.log(guess);
+    await submitGameAnswer(selectedAddress, guess, gameId, async (data, error) => {
+      if (error) {
+        setResult({});
+        setDisplay('fail');
+        setIsLoading(false);
+        router.refresh();
+        console.log('error', error);
+      }
+
+      if (data) {
+        const checkResultData = await checkResult({ guess, gameId, address: selectedAddress });
+        setResult(checkResultData);
+        setDisplay('success');
+        setIsLoading(false);
+        router.refresh();
+        console.log('data', data);
+      }
+    });
   }
 
   useEffect(() => {
-    if (seconds <= 0) {
+    if (seconds <= 0 && isLoading === false) {
       setDisplay('fail');
     }
-  });
+  }, []);
 
   return (
     <div className="space-y-[44px]">

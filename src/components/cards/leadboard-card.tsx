@@ -3,7 +3,7 @@ import { cn, formatAddress } from '@/lib/utils';
 type LeadProps = {
   index: any;
   user: string;
-  points: number;
+  points: any;
   winner?: boolean;
 };
 export function LeadBoardCard({ user, index, points, winner }: LeadProps) {
