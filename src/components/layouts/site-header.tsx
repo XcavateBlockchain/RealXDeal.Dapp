@@ -16,7 +16,22 @@ export function SiteHeader() {
     <header className="w-full backdrop-blur">
       <div className="container mx-auto flex w-full max-w-screen-2xl items-center justify-between px-4 py-4 md:px-[100px]">
         <Link href={'/'}>
-          <Image src={'/images/logo.svg'} alt="logo" width={183} height={72} priority />
+          <Image
+            src={'/images/logo.svg'}
+            alt="logo"
+            width={183}
+            height={72}
+            className="hidden lg:block"
+            priority
+          />
+          <Image
+            src={'/images/logo.svg'}
+            alt="logo"
+            width={114}
+            height={45}
+            className="block lg:hidden"
+            priority
+          />
         </Link>
 
         <nav className="hidden items-center gap-10 md:flex">

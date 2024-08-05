@@ -11,7 +11,7 @@ export function TeamSection() {
   return (
     <section
       id="team"
-      className="container mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-center gap-[100px] px-[0px] sm:px-[100px] pb-[150px] pt-[10px] sm:pt-[100px]"
+      className="container mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-center gap-10 lg:gap-[100px] px-4 pb-[150px] pt-[10px] sm:px-[100px] sm:pt-[100px]"
     >
       <div className="flex flex-col items-center gap-4 text-center">
         <h3 className="font-heading text-[1.3rem]/[1.8rem] font-medium">The team</h3>

@@ -13,7 +13,7 @@ export const FeatureCard = ({ title, img }: CardProps) => {
           <Image src={'/images/feature-img-1.png'} alt="" width={246} height={255} priority />
         </div>
       </div>
-      <p className="sm:text-[1rem] text-center">{title}</p>
+      <p className="text-[1rem]">{title}</p>
     </div>
   );
 };
