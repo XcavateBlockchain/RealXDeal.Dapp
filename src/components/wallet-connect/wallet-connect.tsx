@@ -130,6 +130,9 @@ export default function WalletConnect({ open = false }: { open?: boolean }) {
         <>{actions[index]}</>
       ) : (
         <ConnectedAccountModal
+          onConnected={() => {
+            showWalletModal(false);
+          }}
           onClose={() => {
             showWalletModal(false);
           }}

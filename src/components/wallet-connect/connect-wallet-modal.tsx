@@ -3,6 +3,7 @@
 import { AlertDialogContent, AlertDialogTitle } from '../ui/alert-dialog';
 import { Icons } from '../icons';
 import Link from 'next/link';
+import { AnimatePresence, motion } from 'framer-motion';
 import React, {
   useCallback,
   useContext,
@@ -22,6 +23,8 @@ import { NodeContext } from '@/context';
 import { toast } from 'sonner';
 import Skeleton from '../skelton';
 import Image from 'next/image';
+import { cn } from '@/lib/utils';
+import { ScrollArea } from '../ui/scroll-area';
 
 // interface ISection {
 //   [key: number]: ReactNode;
@@ -79,6 +82,8 @@ export default function ConnectWalletModal({
   const onSelectAccount = async (account: WalletAccount) => {
     walletContext.selectAccount(account.address);
     onConnected();
+    onClose();
+    router.refresh();
   };
 
   const onSelectWallet = useCallback(
@@ -100,9 +105,9 @@ export default function ConnectWalletModal({
         if (accounts && accounts?.length > 1) {
           setWalletAccounts(accounts);
           openSelectWalletContext.close();
-        } else if (accounts && accounts?.length == 1) {
-          onSelectAccount(accounts[0]);
-          openSelectWalletContext.close();
+          // } else if (accounts && accounts?.length == 1) {
+          //   onSelectAccount(accounts[0]);
+          //   openSelectWalletContext.close();
         } else {
           openSelectWalletContext.close();
         }
@@ -125,8 +130,8 @@ export default function ConnectWalletModal({
       return async () => {
         if (wallet.installed) {
           onSelectWallet(wallet.extensionName);
-          router.refresh();
-          onClose();
+          // router.refresh();
+          // onClose();
         }
       };
     },
@@ -152,25 +157,61 @@ export default function ConnectWalletModal({
       ) : (
         <div className="flex w-full flex-col gap-6">
           {dotsamaWallets.map((wallet, i) => (
-            <button
-              className="flex w-full items-center justify-between rounded-lg border border-white px-4 py-2 transition-colors duration-300 hover:border-primary-foreground"
-              key={i}
-              onClick={onClickDotsamaWallet(wallet)}
-            >
-              <div className="flex items-center gap-2">
-                <Image src={wallet.logo?.src} alt="" width={42} height={42} priority />
-                <span className="text-[1rem]/[1.5rem]">{wallet.title}</span>
-              </div>
-              {wallet.installed ? null : (
-                <Link
-                  href={wallet.installUrl}
-                  className="rounded-lg bg-primary px-2 text-center text-[0.75rem]/[1.5rem] font-light text-primary-300"
-                  onClick={() => onClose()}
-                >
-                  Install
-                </Link>
-              )}
-            </button>
+            <>
+              <button
+                className="flex w-full items-center justify-between rounded-lg border border-white px-4 py-2 transition-colors duration-300 hover:border-primary-foreground"
+                key={i}
+                onClick={onClickDotsamaWallet(wallet)}
+              >
+                <div className="flex items-center gap-2">
+                  <Image src={wallet.logo?.src} alt="" width={42} height={42} priority />
+                  <span className="text-[1rem]/[1.5rem]">{wallet.title}</span>
+                </div>
+                {wallet.installed ? null : (
+                  <Link
+                    href={wallet.installUrl}
+                    className="rounded-lg bg-primary px-2 text-center text-[0.75rem]/[1.5rem] font-light text-primary-300"
+                    onClick={() => onClose()}
+                  >
+                    Install
+                  </Link>
+                )}
+              </button>
+              <AnimatePresence>
+                {walletAccounts.length > 1 &&
+                  wallet.extensionName === walletAccounts[0].source && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      transition={{ duration: 0.1 }}
+                      className="mb-3 flex flex-col gap-2.5 transition"
+                    >
+                      <span className="text-txt-gray">{`Choose ${walletContext.wallet?.title} account`}</span>
+                      <ScrollArea className="h-[160px] w-full">
+                        <div className="flex flex-col gap-2">
+                          {walletAccounts.map(account => (
+                            <p
+                              key={account.address}
+                              className={cn(
+                                'flex cursor-pointer justify-between gap-3 rounded-lg border bg-primary px-4 py-2 text-[16px]/[24px] font-light transition-all duration-300 ease-in hover:bg-slate-700 hover:text-primary-200',
+                                currentAddress === account.address
+                                  ? 'text-primary-foreground'
+                                  : 'text-white'
+                              )}
+                              onClick={() => {
+                                onSelectAccount(account);
+                              }}
+                            >
+                              <span>{account.name}</span>
+                              <span>{formatAddress(account.address)}</span>
+                            </p>
+                          ))}
+                        </div>
+                      </ScrollArea>
+                    </motion.div>
+                  )}
+              </AnimatePresence>
+            </>
           ))}
         </div>
       )}
