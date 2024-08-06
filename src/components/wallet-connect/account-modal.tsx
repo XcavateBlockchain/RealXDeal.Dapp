@@ -100,17 +100,19 @@ export default function ConnectedAccountModal({ onConnected, onClose }: TConnect
                     <p
                       key={account.address}
                       className={cn(
-                        'flex cursor-pointer justify-between gap-3 rounded-lg border bg-primary px-4 py-2 text-[16px]/[24px] font-light transition-all duration-300 ease-in hover:bg-slate-700 hover:text-primary-200',
-                        selectedAddress === account.address
-                          ? 'text-primary-foreground'
-                          : 'text-white'
+                        'flex cursor-pointer justify-between gap-3 rounded border-l-2 border-primary-200 px-4 py-2 text-[16px]/[24px] font-light transition-all duration-300 ease-in hover:border-primary-300 hover:bg-primary',
+                        selectedAddress === account.address ? 'text-primary-400' : 'text-white'
                       )}
                       onClick={() => {
                         onSelectAccount(account);
                       }}
                     >
-                      <span>{account.name}</span>
-                      <span>{formatAddress(account.address)}</span>
+                      <span className="capitalize group-hover:text-primary-300">
+                        {account.name}
+                      </span>
+                      <span className="group-hover:text-primary-300">
+                        {formatAddress(account.address)}
+                      </span>
                     </p>
                   ))}
                 </div>

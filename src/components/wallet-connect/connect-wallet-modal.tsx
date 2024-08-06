@@ -157,69 +157,74 @@ export default function ConnectWalletModal({
       ) : (
         <div className="flex w-full flex-col gap-6">
           {dotsamaWallets.map((wallet, i) => (
-            <>
-              <button
-                className="flex w-full items-center justify-between rounded-lg border border-white px-4 py-2 transition-colors duration-300 hover:border-primary-foreground"
-                key={i}
-                onClick={onClickDotsamaWallet(wallet)}
-              >
-                <div className="flex items-center gap-2">
-                  <Image src={wallet.logo?.src} alt="" width={42} height={42} priority />
-                  <span className="text-[1rem]/[1.5rem]">{wallet.title}</span>
-                </div>
-                {wallet.installed ? null : (
-                  <Link
-                    href={wallet.installUrl}
-                    className="rounded-lg bg-primary px-2 text-center text-[0.75rem]/[1.5rem] font-light text-primary-300"
-                    onClick={() => onClose()}
-                  >
-                    Install
-                  </Link>
-                )}
-              </button>
-              <AnimatePresence>
-                {walletAccounts.length >= 1 &&
-                  wallet.extensionName === walletAccounts[0].source && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: 'auto' }}
-                      transition={{ duration: 0.1 }}
-                      className="mb-3 flex flex-col gap-2.5 transition"
-                    >
-                      <span className="text-txt-gray">{`Choose ${walletContext.wallet?.title} account`}</span>
-                      <ScrollArea className="h-[160px] w-full">
-                        <div className="flex flex-col gap-2">
-                          {walletAccounts.map(account => (
-                            <p
-                              key={account.address}
-                              className={cn(
-                                'flex cursor-pointer justify-between gap-3 rounded-lg border bg-primary px-4 py-2 text-[16px]/[24px] font-light transition-all duration-300 ease-in hover:bg-slate-700 hover:text-primary-200',
-                                currentAddress === account.address
-                                  ? 'text-primary-foreground'
-                                  : 'text-white'
-                              )}
-                              onClick={() => {
-                                onSelectAccount(account);
-                              }}
-                            >
-                              <span>{account.name}</span>
-                              <span>{formatAddress(account.address)}</span>
-                            </p>
-                          ))}
-                        </div>
-                      </ScrollArea>
-                    </motion.div>
-                  )}
-              </AnimatePresence>
-            </>
+            <button
+              className="group flex w-full items-center justify-between rounded-lg border border-primary-foreground px-4 py-2 transition-colors duration-200 ease-linear hover:border-[#3B4F74] hover:bg-primary"
+              key={i}
+              onClick={onClickDotsamaWallet(wallet)}
+            >
+              <div className="flex items-center gap-2">
+                <Image src={wallet.logo?.src} alt="" width={42} height={42} priority />
+                <span className="text-[1rem]/[1.5rem] group-hover:text-primary-300">
+                  {wallet.title}
+                </span>
+              </div>
+              {wallet.installed ? null : (
+                <Link
+                  href={wallet.installUrl}
+                  target="__blank"
+                  className="rounded-lg bg-primary px-2 text-center text-[0.75rem]/[1.5rem] font-light text-primary-300"
+                  onClick={() => onClose()}
+                >
+                  Install
+                </Link>
+              )}
+            </button>
           ))}
         </div>
       )}
 
-      <div className="flex items-center justify-center py-6">
+      <AnimatePresence>
+        {walletAccounts.length >= 1 && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            transition={{ duration: 0.1 }}
+            className="flex flex-col gap-2.5 transition"
+          >
+            <span className="font-light">{`Choose account`}</span>
+            <ScrollArea className={cn('w-full', walletAccounts.length > 3 ? 'h-[160px]' : '')}>
+              <div className="flex flex-col gap-2">
+                {walletAccounts.map(account => (
+                  <p
+                    key={account.address}
+                    className={cn(
+                      'group flex cursor-pointer justify-between gap-3 rounded border-l-2 border-primary-200 px-4 py-2 text-[16px]/[24px] font-light transition-all duration-300 ease-in hover:border-primary-300 hover:bg-primary',
+                      currentAddress === account.address
+                        ? 'text-primary-foreground'
+                        : 'text-white'
+                    )}
+                    onClick={() => {
+                      onSelectAccount(account);
+                    }}
+                  >
+                    <span className="capitalize group-hover:text-primary-300">
+                      {account.name}
+                    </span>
+                    <span className="group-hover:text-primary-300">
+                      {formatAddress(account.address)}
+                    </span>
+                  </p>
+                ))}
+              </div>
+            </ScrollArea>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="flex items-center justify-center pb-6">
         <Link
           href={''}
-          className="text-[0.75rem]/[1.5rem] font-light text-primary-foreground hover:underline"
+          className="text-[0.75rem]/[1.5rem] font-light text-primary-200 hover:underline"
         >
           What is wallet?
         </Link>
