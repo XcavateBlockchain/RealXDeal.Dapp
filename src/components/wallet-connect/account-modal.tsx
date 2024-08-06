@@ -86,7 +86,7 @@ export default function ConnectedAccountModal({ onConnected, onClose }: TConnect
 
       {wallet ? (
         <AnimatePresence>
-          {walletAccounts.length > 1 && wallet.extensionName === walletAccounts[0].source && (
+          {walletAccounts.length >= 1 && wallet.extensionName === walletAccounts[0].source && (
             <motion.div
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}

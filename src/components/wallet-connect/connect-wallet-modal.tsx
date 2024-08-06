@@ -102,7 +102,7 @@ export default function ConnectWalletModal({
           api.registry.chainSS58
         );
 
-        if (accounts && accounts?.length > 1) {
+        if (accounts && accounts?.length >= 1) {
           setWalletAccounts(accounts);
           openSelectWalletContext.close();
           // } else if (accounts && accounts?.length == 1) {
@@ -178,7 +178,7 @@ export default function ConnectWalletModal({
                 )}
               </button>
               <AnimatePresence>
-                {walletAccounts.length > 1 &&
+                {walletAccounts.length >= 1 &&
                   wallet.extensionName === walletAccounts[0].source && (
                     <motion.div
                       initial={{ opacity: 0, height: 0 }}
