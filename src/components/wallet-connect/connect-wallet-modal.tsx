@@ -226,7 +226,7 @@ export default function ConnectWalletModal({
           href={''}
           className="text-[0.75rem]/[1.5rem] font-light text-primary-200 hover:underline"
         >
-          What is wallet?
+          What is a wallet?
         </Link>
       </div>
     </AlertDialogContent>

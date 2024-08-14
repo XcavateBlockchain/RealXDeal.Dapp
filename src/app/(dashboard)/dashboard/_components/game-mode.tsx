@@ -57,7 +57,7 @@ export default function GameMode({
   // const [gameId, setGameID] = useState<any>();
   const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
-  const { seconds } = useLiveCountdown(60);
+  const { seconds } = useLiveCountdown();
 
   async function onSubmit(event: any) {
     setIsLoading(true);

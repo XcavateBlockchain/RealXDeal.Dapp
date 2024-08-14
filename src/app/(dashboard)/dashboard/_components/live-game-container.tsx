@@ -112,20 +112,24 @@ function StartGame({
   async function onPlay() {
     setIsLoading(true);
     setLoadingState('loading');
-    await playGame(type, selectedAddress, async (data, gameId) => {
-      setLoadingState('fetching-data');
-      if (!data) {
-        setDisplay('start');
-        setIsLoading(false);
-        router.refresh();
+    await playGame(
+      type,
+      selectedAddress,
+      async (data, gameId, submittedAtBlock, endingBlock) => {
+        setLoadingState('fetching-data');
+        if (!data) {
+          setDisplay('start');
+          setIsLoading(false);
+          router.refresh();
+        }
+        if (data) {
+          setPropertyDisplay(await data);
+          setGameId(gameId);
+          setDisplay('play');
+          setIsLoading(false);
+        }
       }
-      if (data) {
-        setPropertyDisplay(await data);
-        setGameId(gameId);
-        setDisplay('play');
-        setIsLoading(false);
-      }
-    });
+    );
   }
 
   return (
