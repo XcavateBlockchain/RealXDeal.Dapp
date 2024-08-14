@@ -52,7 +52,7 @@ const config = {
           foreground: 'hsl(var(--popover-foreground))'
         },
         card: {
-          DEFAULT: 'hsl(var(--card))',
+          DEFAULT: '#1D2A41',
           foreground: 'hsl(var(--card-foreground))'
         }
       },
