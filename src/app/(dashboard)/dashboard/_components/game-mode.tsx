@@ -62,7 +62,7 @@ export default function GameMode({
   // const [gameId, setGameID] = useState<any>();
   const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
-  const { seconds } = useLiveCountdown(currentBlock, endingBlock);
+  const { blocksRemaining } = useLiveCountdown(currentBlock, endingBlock);
 
   async function onSubmit(event: any) {
     setIsLoading(true);
@@ -93,7 +93,7 @@ export default function GameMode({
   }
 
   useEffect(() => {
-    if (seconds <= 0 && isLoading === false) {
+    if (blocksRemaining <= 0 && isLoading === false) {
       setDisplay('fail');
     }
   }, []);
@@ -202,7 +202,7 @@ export default function GameMode({
         <div>
           <div className="flex size-[147px] items-center justify-center rounded-full border-[2.94px] border-primary-200 bg-primary px-[31px] py-10 shadow-time">
             <span className="font-heading text-[2.84569rem] font-bold">
-              {seconds > 0 && `${seconds}`}
+              {blocksRemaining > 0 && `${blocksRemaining}`}
             </span>
           </div>
         </div>

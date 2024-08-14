@@ -111,5 +111,5 @@ export default function useLiveCountdown(
     startCountdown();
   }, [currentBlockNumber, expiryBlockNumber]);
 
-  return { seconds: blocksRemaining };
+  return { blocksRemaining };
 }
