@@ -16,9 +16,10 @@
 
 import { useEffect, useState } from 'react';
 import { ApiPromise } from '@polkadot/api';
+import { getApi } from '@/lib/polkadot';
 
 export default function useLiveCountdown(
-  api: ApiPromise | null,
+  // api: ApiPromise | null,
   currentBlockNumber: number,
   expiryBlockNumber: number
 ) {
@@ -27,11 +28,12 @@ export default function useLiveCountdown(
   const [blockCountdown, setBlockCountdown] = useState(6);
 
   useEffect(() => {
-    if (!api) return;
+    // if (!api) return;
 
     let intervalId: NodeJS.Timeout;
 
     const startCountdown = async () => {
+      const api = await getApi();
       const unsubscribe = await api.rpc.chain.subscribeNewHeads(lastHeader => {
         const newBlockNumber = lastHeader.number.toNumber();
         const remainingBlocks = expiryBlockNumber - newBlockNumber;
@@ -69,7 +71,7 @@ export default function useLiveCountdown(
     };
 
     startCountdown();
-  }, [api, currentBlockNumber, expiryBlockNumber]);
+  }, [currentBlockNumber, expiryBlockNumber]);
 
   return { seconds };
 }

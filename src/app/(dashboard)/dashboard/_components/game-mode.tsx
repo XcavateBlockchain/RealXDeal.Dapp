@@ -33,14 +33,17 @@ import { GameData } from '@/types';
 import { useWalletContext, WalletContext } from '@/context/wallet-context';
 import { useRouter } from 'next/navigation';
 import { checkResult } from '@/app/actions';
+import { getApi } from '@/lib/polkadot';
 
 interface GameProps {
   points: number;
   data: GameData;
+  gameId: any;
+  currentBlock: any;
+  endingBlock: any;
   setResult: Dispatch<SetStateAction<any>>;
   setDisplay: Dispatch<SetStateAction<'start' | 'play' | 'success' | 'fail'>>;
   close: () => void;
-  gameId: any;
 }
 
 export default function GameMode({
@@ -49,7 +52,9 @@ export default function GameMode({
   setDisplay,
   close,
   gameId,
-  setResult
+  setResult,
+  currentBlock,
+  endingBlock
 }: GameProps) {
   // const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -57,7 +62,7 @@ export default function GameMode({
   // const [gameId, setGameID] = useState<any>();
   const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
-  const { seconds } = useLiveCountdown();
+  const { seconds } = useLiveCountdown(currentBlock, endingBlock);
 
   async function onSubmit(event: any) {
     setIsLoading(true);
@@ -77,11 +82,12 @@ export default function GameMode({
 
       if (data) {
         const checkResultData = await checkResult({ guess, gameId, address: selectedAddress });
+        console.log('result', checkResultData);
         setResult(checkResultData);
-        setDisplay('success');
+        // setDisplay('success');
         setIsLoading(false);
         router.refresh();
-        console.log('data', data);
+        // console.log('data', data);
       }
     });
   }
