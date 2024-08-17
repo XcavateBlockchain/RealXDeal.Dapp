@@ -19,7 +19,7 @@ export function Card({
   return (
     <section
       className={cn(
-        'flex w-full flex-col items-start gap-8 rounded-lg border border-border bg-black/[0.20] px-4 py-6 shadow-header backdrop-blur',
+        'flex w-full flex-col items-start gap-8 rounded-lg border border-border bg-card px-4 py-6 shadow-header backdrop-blur',
         className
       )}
       {...props}
@@ -30,7 +30,7 @@ export function Card({
           orientation === 'vertical' ? 'flex-col' : 'flex-row justify-between'
         )}
       >
-        <h2 className="text-[1rem] font-medium">{title}</h2>
+        <h2 className="text-[17px]/[21px] font-medium">{title}</h2>
         {description ? (
           <p className="text-[0.875rem]/[1.5rem] font-light">{description}</p>
         ) : null}
