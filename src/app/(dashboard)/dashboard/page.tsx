@@ -1,26 +1,28 @@
 import { Shell } from '@/components/shell';
-import UserStats from './_components/user-stats';
+// import UserStats from './_components/user-stats';
 import { Card, CardWithoutHeading, TaskCard } from '@/components/cards/card';
-import {
-  getAllListings,
-  getAllListingsByAddress,
-  getUnlistedNFTsForUser,
-  getLeadBoards,
-  getAllUnlistedNFTs,
-  getUser,
-  getUserData
-} from '@/lib/queries';
+// import {
+//   getAllListings,
+//   getAllListingsByAddress,
+//   getUnlistedNFTsForUser,
+//   getLeadBoards,
+//   getAllUnlistedNFTs,
+//   getUser,
+//   getUserData
+// } from '@/lib/queries';
 import { LeadBoardCard } from '@/components/cards/leadboard-card';
 import Image from 'next/image';
 import ProfileHeader from './_components/profile-header';
 import { PlayerStats } from '@/components/cards/player-stats-card';
 import LiveGamePlay from './_components/live-game-container';
-import { staleBoard } from '@/config/site';
+import { staleBoard, staleUser } from '@/config/site';
 
 export default async function Page() {
-  const { address } = await getUser();
-  const boardList = (await getLeadBoards()) ?? staleBoard;
-  const user = await getUserData(address ? address : '');
+  // const { address } = await getUser();
+  // const boardList = (await getLeadBoards()) ?? staleBoard;
+  const boardList = staleBoard;
+  // const user = await getUserData(address ? address : '');
+  const user = staleUser;
 
   // if (address) {
   //   // await getNFTForUser(address);
@@ -31,7 +33,7 @@ export default async function Page() {
   return (
     <Shell>
       {/* <UserStats /> */}
-      <ProfileHeader points={user?.points ?? 0} />
+      {/* <ProfileHeader points={user?.points ?? 0} /> */}
       <section className="flex w-full items-end gap-[54px]">
         <CardWithoutHeading className="w-2/5">
           <PlayerStats title="Guesses" value={Number(user?.wins) + Number(user?.losses)} />
@@ -55,7 +57,7 @@ export default async function Page() {
                 key={index}
                 index={index + 1}
                 user={list[0]}
-                points={Number(list[1])}
+                points={list[1]}
                 winner={index + 1 > 3 ? false : true}
               />
             ))}

@@ -3,7 +3,7 @@ import { cn, formatAddress } from '@/lib/utils';
 type LeadProps = {
   index: any;
   user: string;
-  points: number;
+  points: any;
   winner?: boolean;
 };
 export function LeadBoardCard({ user, index, points, winner }: LeadProps) {
@@ -11,7 +11,7 @@ export function LeadBoardCard({ user, index, points, winner }: LeadProps) {
     <div
       className={cn(
         'flex w-full items-center justify-between rounded-lg p-2',
-        winner && 'bg-primary-300/[0.32] backdrop-blur-[2px]'
+        winner && 'bg-[#495770]/[0.32] backdrop-blur-[2px]'
       )}
     >
       <div className="flex items-center gap-6">

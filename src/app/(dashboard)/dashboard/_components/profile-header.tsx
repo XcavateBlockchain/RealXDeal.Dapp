@@ -33,7 +33,7 @@ export default function ProfileHeader({ points }: { points: number }) {
       {selectedAddress ? (
         <div className="space-x-2 text-[1.0625rem]/[1.5rem] font-light">
           <span>Points:</span>
-          <span className="text-primary-400">{formatNumber(points)}X</span>
+          <span className="text-primary-400">{points}X</span>
         </div>
       ) : (
         <WalletConnect open={selectedAddress ? false : true} />

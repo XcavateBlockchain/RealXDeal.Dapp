@@ -98,7 +98,7 @@ export class BaseDotSamaWallet implements Wallet {
       };
 
       this._extension = extension;
-      this._signer = extension?.signer;
+      this._signer = extension?.signer as any;
       this._metadata = extension?.metadata;
       this._provider = extension?.provider;
     } catch (err) {

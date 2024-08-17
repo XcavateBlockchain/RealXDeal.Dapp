@@ -65,29 +65,34 @@ export async function playGame(
   }
 }
 
-export async function submitGameAnswer(address: string, guess: number, gameId: number) {
-  try {
-    console.log('Submitting answer.....');
-    const api = await getApi();
-    const injected = await web3FromAddress(address);
-    const extrinsic = api.tx.gameModule.submitAnswer(guess, gameId);
-    const signer = injected.signer;
+// export async function submitGameAnswer(
+//   address: string,
+//   guess: number,
+//   gameId: number,
+//   handleWinResult: (data: any, error: boolean) => void
+// ) {
+//   try {
+//     console.log('Submitting answer.....');
+//     const api = await getApi();
+//     const injected = await web3FromAddress(address);
+//     const extrinsic = api.tx.gameModule.submitAnswer(guess, gameId);
+//     const signer = injected.signer;
 
-    const unsub = await extrinsic.signAndSend(address, { signer }, async result => {
-      if (result.status.isInBlock) {
-        console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
-        await checkResult({ guess, gameId, address });
-        unsub();
-      } else if (result.status.isBroadcast) {
-        console.log('Broadcasting the guess...');
-      }
-    });
+//     const unsub = await extrinsic.signAndSend(address, { signer }, async result => {
+//       if (result.status.isInBlock) {
+//         console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
+//         await checkResult({ guess, gameId, address });
+//         unsub();
+//       } else if (result.status.isBroadcast) {
+//         console.log('Broadcasting the guess...');
+//       }
+//     });
 
-    console.log('Transaction sent:', unsub);
-  } catch (error) {
-    console.error('Failed to submit guess:', error);
-  }
-}
+//     console.log('Transaction sent:', unsub);
+//   } catch (error) {
+//     console.error('Failed to submit guess:', error);
+//   }
+// }
 
 export type GameResultType = {
   guess: any;
@@ -143,5 +148,37 @@ export async function listNFT(senderAddress: string, collectionId: number, nftId
   } catch (error) {
     console.error('Failed to list NFT:', error);
     return { data: null, error: getErrorMessage(error) };
+  }
+}
+
+export async function submitGameAnswer(
+  address: string,
+  guess: number,
+  gameId: number,
+  handleWinResult: (data: any, error: boolean) => void
+): Promise<void> {
+  // Specify the return type as Promise<void>
+  try {
+    console.log('Submitting answer.....');
+    const api = await getApi();
+    const injected = await web3FromAddress(address);
+    const extrinsic = api.tx.gameModule.submitAnswer(guess, gameId);
+    const signer = injected.signer;
+
+    const unsub = await extrinsic.signAndSend(address, { signer }, async result => {
+      if (result.status.isInBlock) {
+        console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
+        // const checkResultData = await checkResult({ guess, gameId, address });
+        handleWinResult({ success: true }, false); // Call handleWinResult with the result
+        unsub();
+      } else if (result.status.isBroadcast) {
+        console.log('Broadcasting the guess...');
+      }
+    });
+
+    console.log('Transaction sent:', unsub);
+  } catch (error) {
+    console.error('Failed to submit guess:', error);
+    handleWinResult(null, true); // Call handleWinResult with error
   }
 }

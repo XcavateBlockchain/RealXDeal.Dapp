@@ -45,6 +45,14 @@ const config = {
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',
+          x_cyan: '#57a0c5',
+          x_pink: '#dc7da6',
+          x_coral: '#df8985',
+          x_purple: '#9678ae',
+          x_leaf: '#457561',
+          x_green: '#78b36e',
+          x_orange: '#ecb278',
+          x_blue: '#3b4f74',
           foreground: 'hsl(var(--accent-foreground))'
         },
         popover: {
@@ -52,7 +60,7 @@ const config = {
           foreground: 'hsl(var(--popover-foreground))'
         },
         card: {
-          DEFAULT: 'hsl(var(--card))',
+          DEFAULT: '#1D2A41',
           foreground: 'hsl(var(--card-foreground))'
         }
       },

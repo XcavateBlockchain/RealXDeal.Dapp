@@ -21,8 +21,8 @@ export default function SiteFooter() {
       </div>
       <hr />
 
-      <div className="container mx-auto flex w-full max-w-screen-2xl items-center justify-between px-[100px] pb-4">
-        <p className="text-[0.6875rem]/[1.7rem] text-primary-foreground">
+      <div className="container mx-auto flex w-full max-w-screen-2xl flex-col items-center px-[20px] pb-4 sm:flex-row sm:justify-between sm:px-[100px]">
+        <p className="text-center text-[0.6875rem]/[1.7rem] text-primary-foreground sm:text-left">
           Contains HM Land Registry data © Crown copyright and database right 2021. This data
           is licensed under the Open Government License v3.0.
         </p>
