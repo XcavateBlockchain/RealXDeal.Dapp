@@ -4,11 +4,14 @@ import { siteConfig } from '@/config/site';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Icons } from '../icons';
-import ConnectWallet from './connect-wallet';
+import { ConnectWallet } from './connect-wallet';
+import ConnectedWalletDropDown from './connected-wallet';
+import { useSubstrateContext } from '@/context/polkadot-contex';
+import { ConnectCredentialWallet } from './connect-credential-wallet';
 
 export function SiteHeader() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
+  const { isConnected } = useSubstrateContext();
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
@@ -32,8 +35,9 @@ export function SiteHeader() {
           ))}
         </nav>
 
-        <div className="hidden md:flex">
-          <ConnectWallet />
+        <div className="hidden shrink-0 items-center gap-2 md:flex">
+          {isConnected ? <ConnectedWalletDropDown /> : <ConnectWallet />}
+          {isConnected ? <ConnectCredentialWallet /> : null}
         </div>
 
         <div className="flex items-center md:hidden">
