@@ -10,8 +10,8 @@ import { siteConfig } from '@/config/site';
 
 export default function BottomNav() {
   return (
-    <div className="fixed bottom-[10px] z-[50] flex w-full min-w-full items-center justify-center px-[100px]">
-      <nav className="relative flex w-full items-center justify-between rounded-lg border border-border bg-card px-[42px] py-5 shadow-header">
+    <div className="fixed bottom-[10px] z-[100] flex w-full min-w-full items-center justify-center lg:px-[50px] xl:px-[100px]">
+      <nav className="container relative mx-auto flex w-full max-w-screen-2xl items-center justify-between rounded-lg border border-border bg-card px-[42px] py-5 shadow-header">
         <NavList items={siteConfig.sideNav} />
       </nav>
     </div>
