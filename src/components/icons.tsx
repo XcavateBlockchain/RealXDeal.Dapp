@@ -11,7 +11,8 @@ import {
   GearSix,
   Power,
   CheckCircle,
-  CaretLeft
+  CaretLeft,
+  Spinner
 } from '@phosphor-icons/react/dist/ssr';
 
 export type IconType = keyof typeof Icons;
@@ -32,6 +33,7 @@ export const Icons = {
   Power: Power,
   CheckCircle: CheckCircle,
   CaretLeft: CaretLeft,
+  spinner: Spinner,
   close: (props: IconProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" {...props}>
       <path
