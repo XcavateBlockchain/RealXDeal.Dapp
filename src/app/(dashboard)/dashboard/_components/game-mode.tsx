@@ -81,6 +81,7 @@ export default function GameMode({
       }
 
       if (data) {
+        console.log('Answer Submitted event received, CHECK RESULT NOW BEING CALLED');
         const checkResultData = await checkResult({ guess, gameId, address: selectedAddress });
         console.log('result', checkResultData);
         setResult(checkResultData);
