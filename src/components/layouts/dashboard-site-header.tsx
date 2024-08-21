@@ -23,9 +23,10 @@ export default function DashboardSiteHeader({
     showModal(open);
   }, [open]);
 
-  useEffect(() => {
-    router.push(closeModalNavigationPath);
-  });
+  // useEffect(() => {
+  //   if (open === true)
+  //   router.push(closeModalNavigationPath);
+  // });
 
   return (
     <div className="container mx-auto flex w-full max-w-screen-2xl items-center justify-between border-b border-border px-4 py-2 lg:px-[50px] xl:px-[100px]">
