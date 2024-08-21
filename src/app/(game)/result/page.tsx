@@ -6,15 +6,24 @@ import { useGameContext } from '@/context/game-context';
 import { cn, getRandomCollection } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 
 export default function Result() {
+  const router = useRouter();
   const { result: data } = useGameContext();
   const nft = getRandomCollection();
+
+  if (!Result) {
+    useEffect(() => {
+      router.push('/dashboard');
+    });
+  }
 
   return (
     <Shell>
       <div className="flex flex-col items-center justify-center space-y-3">
-        <p>Your Guess: ${data.guess}</p>
+        <p>Your Guess: ${data?.guess ?? 0}</p>
 
         <div
           className={cn(
