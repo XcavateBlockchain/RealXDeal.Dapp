@@ -107,7 +107,7 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
 
     try {
       await submitGameAnswer(address, guess, gameId, async (data, error) => {
-        if (error) {
+        if (!data) {
           setResult({});
           setStatus(LOADING_STATUS.ERROR);
           console.log('error', error);
@@ -116,7 +116,6 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
 
         if (data) {
           setIsResultChecking(true);
-
           console.log(guess);
           console.log(data);
           setResult({ guess, ...data });

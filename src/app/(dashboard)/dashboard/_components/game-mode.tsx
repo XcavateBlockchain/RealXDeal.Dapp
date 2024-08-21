@@ -76,10 +76,7 @@ export default function GameMode({
       }
 
       if (data) {
-        const checkResultData = await checkResult(
-          { guess, gameId, address: selectedAddress },
-          () => {}
-        );
+        const checkResultData = await checkResult({ guess, gameId, address: selectedAddress });
         setResult(checkResultData);
         setDisplay('success');
         setIsLoading(false);

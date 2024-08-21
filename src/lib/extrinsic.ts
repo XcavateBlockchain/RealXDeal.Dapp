@@ -151,16 +151,16 @@ export async function listNFT(senderAddress: string, collectionId: number, nftId
   }
 }
 
-async function resultChecked(address: string, guess: number, gameId: number) {
-  console.log('checking');
+// async function resultChecked(address: string, guess: number, gameId: number) {
+//   console.log('checking');
 
-  const result = await checkResult({ guess, gameId, address }, async (data, error) => {
-    if (data && error === false) {
-      return data;
-    } else return null;
-  });
-  return result;
-}
+//   const result = await checkResult({ guess, gameId, address }, async (data, error) => {
+//     if (data && error === false) {
+//       return data;
+//     } else return null;
+//   });
+//   return result;
+// }
 
 export async function submitGameAnswer(
   address: string,
@@ -179,9 +179,9 @@ export async function submitGameAnswer(
     const unsub = await extrinsic.signAndSend(address, { signer }, async result => {
       if (result.status.isInBlock) {
         console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
-        // const checkResultData = await checkResult({ guess, gameId, address }, handleWinResult);
-        const checking = await resultChecked(address, guess, gameId);
-        handleWinResult(checking, false); // Call handleWinResult with the result
+        const checkResultData = await checkResult({ guess, gameId, address });
+        // const checking = await resultChecked(address, guess, gameId);
+        handleWinResult(checkResultData, false); // Call handleWinResult with the result
         unsub();
       } else if (result.status.isBroadcast) {
         console.log('Broadcasting the guess...');

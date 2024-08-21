@@ -66,9 +66,10 @@ async function applyCheckerboardOverlay(imageBuffer: ArrayBuffer) {
 }
 
 export async function checkResult(
-  data: { guess: number; gameId: number; address: string },
-  handleWinResult: (data: any, error: boolean) => void
+  data: { guess: number; gameId: number; address: string }
+  // handleWinResult: (data: any, error: boolean) => void
 ) {
+  let resultChecked;
   console.log('Checking result');
   const gameInfo = (await getGameInfo(data.gameId)) as unknown as GameInfo;
   // await fetchPropertyData(gameInfo.property.id);
@@ -137,7 +138,6 @@ export async function checkResult(
             console.log('Points:', points);
             console.log('Won:', won);
           } else {
-            handleWinResult(null, true);
             console.log('NO RESULT CHECKED EVENT :(');
           }
         } else if (status.isFinalized) {
@@ -149,7 +149,8 @@ export async function checkResult(
             console.log('RESULT CHECKED EVENT - IsFinalized');
             const points = ResultChecked.event.data[2].toString();
             const won = ResultChecked.event.data[3].toString();
-            handleWinResult({ realPrice, points, won }, false);
+            resultChecked = { realPrice, points, won };
+            // handleWinResult({ realPrice, points, won }, false);
             console.log('Points:', points);
             console.log('Won:', won);
           }
@@ -158,6 +159,7 @@ export async function checkResult(
         }
       }
     );
+  return resultChecked;
 }
 
 export async function fetchPropertyData(id: number) {
