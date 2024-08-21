@@ -16,6 +16,8 @@ import {
 } from '@/components/ui/alert-dialog';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
+import { checkResult } from '@/app/actions';
+import { error } from 'console';
 
 type GameProps = {
   gameId: number;
@@ -24,70 +26,20 @@ type GameProps = {
 
 export default function SubmitGuess({ address, gameId }: GameProps) {
   const router = useRouter();
+  const [infoData, setInfoData] = useState({
+    data: null,
+    error: false
+  });
   const [showLoadingDialog, setShowLoadingDialog] = useState(false);
   const [status, setStatus] = useState<LOADING_STATUS>(LOADING_STATUS.IDLE);
   const [isResultChecking, setIsResultChecking] = useState(false);
   const { setResult } = useGameContext();
 
-  // async function onSubmit(event: any) {
-  //   // if (typeof window === 'undefined') {
-  //   //   // If this is being executed on the server, simply return or throw an error
-  //   //   return;
-  //   // }
-
-  //   if (!address) {
-  //     setShowLoadingDialog(false);
-  //     toast.error('Address not found', {
-  //       description: 'Please connect your wallet to start game'
-  //     });
-  //     setStatus(LOADING_STATUS.ERROR);
-  //     return;
-  //   }
-
-  //   setStatus(LOADING_STATUS.LOADING);
-  //   setShowLoadingDialog(true);
-  //   event.preventDefault();
-
-  //   const formData = new FormData(event.currentTarget);
-  //   const guess = Number(formData.get('guess') as string);
-
-  //   try {
-  //     await submitGameAnswer(address, guess, gameId, async (data, error) => {
-  //       if (error) {
-  //         setResult({});
-  //         setStatus(LOADING_STATUS.ERROR);
-  //         console.log('error', error);
-  //         router.push('/dashboard');
-  //       }
-
-  //       if (data) {
-  //         setIsResultChecking(true);
-  //         const result = await checkResult({
-  //           guess,
-  //           gameId,
-  //           address: address
-  //         });
-  //         console.log(guess);
-  //         console.log(result);
-  //         setResult({ guess, ...result });
-  //         setStatus(LOADING_STATUS.SUCCESS);
-  //         setShowLoadingDialog(false);
-  //         setIsResultChecking(false);
-  //         router.push('/result');
-  //       }
-  //     });
-  //   } catch (error) {
-  //     console.error('Error during submission:', error);
-  //     setStatus(LOADING_STATUS.ERROR);
-  //     setShowLoadingDialog(false);
-  //     router.push('/dashboard');
-  //   }
-  // }
   async function onSubmit(event: any) {
-    if (typeof window === 'undefined') {
-      // If this is being executed on the server, simply return or throw an error
-      return;
-    }
+    // if (typeof window === 'undefined') {
+    //   // If this is being executed on the server, simply return or throw an error
+    //   return;
+    // }
 
     if (!address) {
       setShowLoadingDialog(false);
@@ -104,27 +56,35 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
 
     const formData = new FormData(event.currentTarget);
     const guess = Number(formData.get('guess') as string);
+    const { data, error } = infoData;
 
     try {
       await submitGameAnswer(address, guess, gameId, async (data, error) => {
-        if (error) {
-          setResult({});
-          setStatus(LOADING_STATUS.ERROR);
-          console.log('error', error);
-          router.push('/dashboard');
-        }
-
-        if (data) {
-          setIsResultChecking(true);
-          console.log(guess);
-          console.log(data);
-          setResult({ guess, ...data });
-          setStatus(LOADING_STATUS.SUCCESS);
-          setShowLoadingDialog(false);
-          setIsResultChecking(false);
-          router.push('/result');
-        }
+        setInfoData({ data, error });
       });
+
+      if (error) {
+        setResult({});
+        setStatus(LOADING_STATUS.ERROR);
+        console.log('error', error);
+        router.push('/dashboard');
+      }
+
+      if (data) {
+        setIsResultChecking(true);
+        const result = await checkResult({
+          guess,
+          gameId,
+          address: address
+        });
+        console.log(guess);
+        console.log(result);
+        setResult({ guess, ...result });
+        setStatus(LOADING_STATUS.SUCCESS);
+        setShowLoadingDialog(false);
+        setIsResultChecking(false);
+        router.push('/result');
+      }
     } catch (error) {
       console.error('Error during submission:', error);
       setStatus(LOADING_STATUS.ERROR);
