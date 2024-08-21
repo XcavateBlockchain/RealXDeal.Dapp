@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -35,50 +35,48 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
   const [isResultChecking, setIsResultChecking] = useState(false);
   const { setResult } = useGameContext();
 
-  async function onSubmit(event: any) {
-    if (typeof window === 'undefined') {
-      // If this is being executed on the server, simply return or throw an error
-      return;
-    }
+  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
 
-    if (!address) {
-      setShowLoadingDialog(false);
+    if (typeof window === 'undefined' || !address) {
       toast.error('Address not found', {
-        description: 'Please connect your wallet to start game'
+        description: 'Please connect your wallet to start the game'
       });
       setStatus(LOADING_STATUS.ERROR);
       return;
     }
 
+    if (status === LOADING_STATUS.LOADING || isResultChecking) {
+      return; // Prevent multiple submissions
+    }
+
     setStatus(LOADING_STATUS.LOADING);
     setShowLoadingDialog(true);
-    event.preventDefault();
 
     const formData = new FormData(event.currentTarget);
     const guess = Number(formData.get('guess') as string);
-    const { data, error } = infoData;
 
     try {
-      await submitGameAnswer(address, guess, gameId, async (data, error) => {
+      await submitGameAnswer(address, guess, gameId, (data, error) => {
         setInfoData({ data, error });
       });
 
-      if (error) {
+      if (infoData.error) {
         setResult({});
         setStatus(LOADING_STATUS.ERROR);
-        console.log('error', error);
+        console.error('Error:', infoData.error);
         router.push('/dashboard');
+        return;
       }
 
-      if (data) {
+      if (infoData.data) {
         setIsResultChecking(true);
         const result = await checkResult({
           guess,
           gameId,
-          address: address
+          address
         });
-        console.log(guess);
-        console.log(result);
+
         setResult({ guess, ...result });
         setStatus(LOADING_STATUS.SUCCESS);
         setShowLoadingDialog(false);
