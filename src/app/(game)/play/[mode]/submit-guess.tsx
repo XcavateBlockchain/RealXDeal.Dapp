@@ -57,7 +57,7 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
           setResult({});
           setStatus(LOADING_STATUS.ERROR);
           console.log('error', error);
-          router.push('/overview');
+          router.push('/dashboard');
         }
 
         if (data) {
@@ -80,7 +80,7 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
       console.error('Error during submission:', error);
       setStatus(LOADING_STATUS.ERROR);
       setShowLoadingDialog(false);
-      router.push('/overview');
+      router.push('/dashboard');
     }
   }
 
