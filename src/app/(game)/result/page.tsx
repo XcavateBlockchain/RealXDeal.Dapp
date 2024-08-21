@@ -14,11 +14,11 @@ export default function Result() {
   const { result: data } = useGameContext();
   const nft = getRandomCollection();
 
-  if (!Result) {
-    useEffect(() => {
-      router.push('/dashboard');
-    });
-  }
+  // if (!Result) {
+  //   useEffect(() => {
+  //     router.push('/dashboard');
+  //   });
+  // }
 
   return (
     <Shell>
