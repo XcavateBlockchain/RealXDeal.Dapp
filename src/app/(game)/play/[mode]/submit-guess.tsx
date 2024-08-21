@@ -62,12 +62,14 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
 
         if (data) {
           setIsResultChecking(true);
-          const checkResultData = await checkResult({
+          const result = await checkResult({
             guess,
             gameId,
             address: address
           });
-          setResult({ guess, ...checkResultData });
+          console.log(guess);
+          console.log(result);
+          setResult({ guess, ...result });
           setStatus(LOADING_STATUS.SUCCESS);
           setShowLoadingDialog(false);
           setIsResultChecking(false);
