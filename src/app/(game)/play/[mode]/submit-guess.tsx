@@ -30,10 +30,10 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
   const { setResult } = useGameContext();
 
   async function onSubmit(event: any) {
-    if (typeof window === 'undefined') {
-      // If this is being executed on the server, simply return or throw an error
-      return;
-    }
+    // if (typeof window === 'undefined') {
+    //   // If this is being executed on the server, simply return or throw an error
+    //   return;
+    // }
 
     if (!address) {
       setShowLoadingDialog(false);
