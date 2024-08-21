@@ -172,6 +172,7 @@ export async function submitGameAnswer(
   try {
     console.log('Submitting answer.....');
     const api = await getApi();
+    const extensions = await web3Enable('RealXDEal');
     const injected = await web3FromAddress(address);
     const extrinsic = api.tx.gameModule.submitAnswer(guess, gameId);
     const signer = injected.signer;
