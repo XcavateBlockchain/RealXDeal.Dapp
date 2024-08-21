@@ -1,6 +1,6 @@
 'use client';
 
-import ConnectWallet from '@/components/layouts/connect-wallet';
+// import ConnectWallet from '@/components/layouts/connect-wallet';
 import WalletConnect from '@/components/wallet-connect/wallet-connect';
 import { useSubstrateContext } from '@/context/polkadot-contex';
 import { WalletContext } from '@/context/wallet-context';

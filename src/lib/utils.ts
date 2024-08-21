@@ -1,3 +1,4 @@
+import { collection } from '@/config/site';
 import { type ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 
@@ -21,3 +22,9 @@ export function formatNumber(number: number | string, options: Intl.NumberFormat
     ...options
   }).format(Number(number));
 }
+
+export const getRandomCollection = () => {
+  const keys = Object.keys(collection) as Array<keyof typeof collection>; // Cast keys to the correct type
+  const randomKey = keys[Math.floor(Math.random() * keys.length)]; // Select a random key
+  return collection[randomKey]; // Return the corresponding collection
+};

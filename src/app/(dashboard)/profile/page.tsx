@@ -6,8 +6,9 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { CircleCard, ProfileHeader } from './_components/profile-header';
-import { getUnlistedNFTsForUser, getUser } from '@/lib/queries';
+import { getUnlistedNFTsForUser } from '@/lib/queries';
 import { OwnedNFTCard } from '@/components/cards/owned-nft-card';
+import { getCookieStorage } from '@/lib/storage';
 
 interface ProfileNFTCardProps {
   image: string;
@@ -58,7 +59,8 @@ export default async function Page({
 }: {
   searchParams: { collection: string };
 }) {
-  const { address } = await getUser();
+  // const { address } = await getUser();
+  const address = await getCookieStorage('accountKey');
   const BASE_URL = '/profile';
   const selected = collection === undefined ? 'All' : collection;
 

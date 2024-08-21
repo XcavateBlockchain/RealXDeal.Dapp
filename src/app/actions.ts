@@ -275,37 +275,39 @@ export async function checkResult(
 
   let eventProcessed = false;
 
-  return new Promise<{ points: string; won: string } | null>(async (resolve, reject) => {
-    const unsub = await api.tx.sudo
-      .sudo(extrinsic)
-      .signAndSend(
-        account,
-        ({
-          status,
-          events = [],
-          dispatchError
-        }: {
-          status: any;
-          events: any[];
-          dispatchError?: any;
-        }) => {
-          if (status.isFinalized) {
-            const ResultChecked = events.find(({ event }) => {
-              return api.events.gameModule.ResultChecked.is(event);
-            });
-            if (ResultChecked) {
-              const points = ResultChecked.event.data[2].toString();
-              const won = ResultChecked.event.data[3].toString();
-              resolve({ points, won }); // Resolve with points and won
-            } else {
-              resolve(null);
-            }
-            console.log('unsubbing!');
-            unsub();
+  return new Promise<{ realPrice: any; points: string; won: string } | null>(
+    async (resolve, reject) => {
+      const unsub = await api.tx.sudo
+        .sudo(extrinsic)
+        .signAndSend(
+          account,
+          ({
+            status,
+            events = [],
+            dispatchError
+          }: {
+            status: any;
+            events: any[];
+            dispatchError?: any;
+          }) => {
+            if (status.isFinalized) {
+              const ResultChecked = events.find(({ event }) => {
+                return api.events.gameModule.ResultChecked.is(event);
+              });
+              if (ResultChecked) {
+                const points = ResultChecked.event.data[2].toString();
+                const won = ResultChecked.event.data[3].toString();
+                resolve({ realPrice, points, won }); // Resolve with points and won
+              } else {
+                resolve(null);
+              }
+              console.log('unsubbing!');
+              unsub();
 
-            // new Error('No Result Checked Event')
+              // new Error('No Result Checked Event')
+            }
           }
-        }
-      );
-  });
+        );
+    }
+  );
 }

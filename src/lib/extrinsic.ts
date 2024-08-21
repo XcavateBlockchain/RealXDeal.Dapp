@@ -182,3 +182,69 @@ export async function submitGameAnswer(
     handleWinResult(null, true); // Call handleWinResult with error
   }
 }
+
+export async function startGame(
+  gameType: 0 | 1 | 2,
+  address: string,
+  handlePropertyDisplay: (data: any, gameId: any) => void
+) {
+  try {
+    const api = await getApi();
+    const extensions = await web3Enable('RealXDEal');
+    const injected = await web3FromAddress(address);
+    const extrinsic = api.tx.gameModule.playGame(gameType);
+    const signer = injected.signer;
+
+    let eventProcessed = false;
+    const unsub = await extrinsic.signAndSend(
+      address,
+      { signer },
+      async ({ status, events = [], dispatchError }) => {
+        if (status.isInBlock && !eventProcessed) {
+          eventProcessed = true;
+          const gameStartedEvent = events.find(({ event }) =>
+            api.events.gameModule.GameStarted.is(event)
+          );
+
+          if (gameStartedEvent) {
+            const gameId = gameStartedEvent.event.data[1].toString();
+            console.log(`GameStarted event found with game_id: ${gameId}`);
+            // const gameInfo = (await getGameInfo(parseInt(gameId))) as unknown as GameInfo;
+            // console.log('The game info is: ', gameInfo);
+            // const propertyDisplay = await fetchPropertyForDisplay(
+            //   Number(gameInfo.property.id)
+            // );
+            // const propertyDisplay = await fetchPropertyForDisplay(139361966);
+            handlePropertyDisplay(
+              {
+                status: true,
+                message: `Completed at block hash #${status.asInBlock.toString()}`
+              },
+              gameId
+            );
+            // console.log(propertyDisplay);
+            // toast.success(status.asInBlock.toString());
+            // console.log(`Completed at block hash #${status.asInBlock.toString()}`);
+            unsub();
+          } else if (dispatchError) {
+            handlePropertyDisplay(
+              {
+                status: false,
+                message: `An error occurred please try again. ${dispatchError.toHuman()}`
+              },
+              null
+            );
+
+            // toast.warning('There was an error');
+            // console.log(dispatchError.toHuman());
+          }
+        }
+      }
+    );
+    // console.log('Transaction sent:', unsub);
+  } catch (error) {
+    // console.error('Failed to submit guess:', error);
+    return error;
+    // return handlePropertyDisplay({ status: false, message: `Failed to start game.` }, null);
+  }
+}

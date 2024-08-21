@@ -131,7 +131,12 @@ export const siteConfig = {
       latitude: 52.625284,
       longitude: 1.30124
     },
-    images: [],
+    images: [
+      // 'https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/32k/31217/144806384/31217_15631_PYMM_IMG_00_0000_max_476x317.jpeg',
+      '/images/Xcyan_property_NFT18_apartment.webp',
+      '/images/Xorange_property_NFT21_apartment.webp',
+      '/images/Xcyan_property_NFT18_apartment.webp'
+    ],
     summary:
       'Second floor apartment located a short stroll from the City centre, Good sized lounge, Kitchen/Diner, Two bedrooms, E-Suite & Bathroom, Double glazing & electric heating, Designated Parking Space.'
   } as GameData
@@ -210,7 +215,7 @@ export const collection = {
   '1': {
     collectionName: 'xpink',
     collectionId: 1,
-    nftnftImage: '/images/Xpink_property_NFT25_apartment.webp'
+    nftImage: '/images/Xpink_property_NFT25_apartment.webp'
   },
   '2': {
     collectionName: 'Xblue',
@@ -220,7 +225,7 @@ export const collection = {
   '3': {
     collectionName: 'xcyan',
     collectionId: 3,
-    nftnftImage: '/images/Xcyan_property_NFT18_apartment.webp'
+    nftImage: '/images/Xcyan_property_NFT18_apartment.webp'
   },
   '4': {
     collectionName: 'xcoral',

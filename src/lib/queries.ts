@@ -1,10 +1,4 @@
 import { getApi } from './polkadot';
-import { getCookieStorage } from './storage';
-
-export async function getUser() {
-  const address = await getCookieStorage('accountKey');
-  return { address };
-}
 
 export async function getAvailableNFTs(collectionId?: number) {
   const api = await getApi();
