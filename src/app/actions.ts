@@ -66,10 +66,9 @@ async function applyCheckerboardOverlay(imageBuffer: ArrayBuffer) {
 }
 
 // export async function checkResult(
-//   data: { guess: number; gameId: number; address: string }
+//   data: { guess: number; gameId: number; address: string },
 //   // handleWinResult: (data: any, error: boolean) => void
 // ) {
-//   let resultChecked;
 //   console.log('Checking result');
 //   const gameInfo = (await getGameInfo(data.gameId)) as unknown as GameInfo;
 //   // await fetchPropertyData(gameInfo.property.id);
@@ -138,6 +137,7 @@ async function applyCheckerboardOverlay(imageBuffer: ArrayBuffer) {
 //             console.log('Points:', points);
 //             console.log('Won:', won);
 //           } else {
+//             // handleWinResult(null, true);
 //             console.log('NO RESULT CHECKED EVENT :(');
 //           }
 //         } else if (status.isFinalized) {
@@ -149,8 +149,7 @@ async function applyCheckerboardOverlay(imageBuffer: ArrayBuffer) {
 //             console.log('RESULT CHECKED EVENT - IsFinalized');
 //             const points = ResultChecked.event.data[2].toString();
 //             const won = ResultChecked.event.data[3].toString();
-//             resultChecked = { realPrice, points, won };
-//             // handleWinResult({ realPrice, points, won }, false);
+//             // handleWinResult({ points, won }, false);
 //             console.log('Points:', points);
 //             console.log('Won:', won);
 //           }
@@ -159,7 +158,6 @@ async function applyCheckerboardOverlay(imageBuffer: ArrayBuffer) {
 //         }
 //       }
 //     );
-//   return resultChecked;
 // }
 
 export async function fetchPropertyData(id: number) {
@@ -277,142 +275,37 @@ export async function checkResult(
 
   let eventProcessed = false;
 
-  return new Promise<{ realPrice: any; points: string; won: string } | null>(
-    async (resolve, reject) => {
-      const unsub = await api.tx.sudo
-        .sudo(extrinsic)
-        .signAndSend(
-          account,
-          ({
-            status,
-            events = [],
-            dispatchError
-          }: {
-            status: any;
-            events: any[];
-            dispatchError?: any;
-          }) => {
-            if (status.isFinalized) {
-              const ResultChecked = events.find(({ event }) => {
-                return api.events.gameModule.ResultChecked.is(event);
-              });
-              if (ResultChecked) {
-                const points = ResultChecked.event.data[2].toString();
-                const won = ResultChecked.event.data[3].toString();
-                resolve({ realPrice, points, won }); // Resolve with points and won
-              }
-              // else {
-              //   resolve(null);
-              // }
-              console.log('unsubbing!');
-              unsub();
-
-              // new Error('No Result Checked Event')
+  return new Promise<{ points: string; won: string } | null>(async (resolve, reject) => {
+    const unsub = await api.tx.sudo
+      .sudo(extrinsic)
+      .signAndSend(
+        account,
+        ({
+          status,
+          events = [],
+          dispatchError
+        }: {
+          status: any;
+          events: any[];
+          dispatchError?: any;
+        }) => {
+          if (status.isFinalized) {
+            const ResultChecked = events.find(({ event }) => {
+              return api.events.gameModule.ResultChecked.is(event);
+            });
+            if (ResultChecked) {
+              const points = ResultChecked.event.data[2].toString();
+              const won = ResultChecked.event.data[3].toString();
+              resolve({ points, won }); // Resolve with points and won
+            } else {
+              resolve(null);
             }
+            console.log('unsubbing!');
+            unsub();
+
+            // new Error('No Result Checked Event')
           }
-        );
-    }
-  );
+        }
+      );
+  });
 }
-
-// export async function checkResult(data: {
-//   guess: number;
-//   gameId: number;
-//   address: string;
-// }): Promise<{ realPrice: any; points: string; won: string } | null> {
-//   console.log('Checking result');
-
-//   try {
-//     const gameInfo = (await getGameInfo(data.gameId)) as unknown as GameInfo;
-//     const propertyData = await fetchPropertyData(139361966);
-//     if (!propertyData) {
-//       throw new Error('Property data is undefined');
-//     }
-
-//     const realPrice = propertyData.price;
-//     const secret = {
-//       scheme: 'aes-256-cbc',
-//       keyBase64: propertyData.key,
-//       ivBase64: propertyData.iv
-//     };
-
-//     const api = await getApi();
-//     const keyring = new Keyring({ type: 'sr25519' });
-//     const account = keyring.createFromJson({
-//       encoded: process.env.ENCODED_SEED!,
-//       encoding: {
-//         content: ['pkcs8', 'sr25519'],
-//         type: ['scrypt', 'xsalsa20-poly1305'],
-//         version: '3'
-//       },
-//       address: process.env.SUDO_ADDRESS!,
-//       meta: {
-//         genesisHash: '0x',
-//         name: 'XCAV-SUDO',
-//         whenCreated: 1702476542911
-//       }
-//     });
-
-//     account.unlock(process.env.PASSPHRASE!);
-
-//     const extrinsic = api.tx.gameModule.checkResult(
-//       data.guess,
-//       data.gameId,
-//       realPrice,
-//       JSON.stringify(secret)
-//     );
-
-//     console.log(`Real Price: ${realPrice}`);
-//     console.log(`Guess Price: ${data.guess}`);
-//     console.log(`Game ID: ${data.gameId}`);
-
-//     return new Promise<{ realPrice: any; points: string; won: string } | null>(
-//       async (resolve, reject) => {
-//         const unsub = await api.tx.sudo
-//           .sudo(extrinsic)
-//           .signAndSend(
-//             account,
-//             ({
-//               status,
-//               events = [],
-//               dispatchError
-//             }: {
-//               status: any;
-//               events: any[];
-//               dispatchError?: any;
-//             }) => {
-//               if (dispatchError) {
-//                 console.error('Dispatch Error:', dispatchError);
-//                 reject(dispatchError);
-//                 unsub();
-//                 return;
-//               }
-
-//               if (status.isFinalized) {
-//                 console.log('Transaction finalized. Events:', events);
-
-//                 const ResultChecked = events.find(({ event }) => {
-//                   return api.events.gameModule.ResultChecked.is(event);
-//                 });
-
-//                 if (ResultChecked) {
-//                   const points = ResultChecked.event.data[2].toString();
-//                   const won = ResultChecked.event.data[3].toString();
-//                   resolve({ realPrice, points, won });
-//                 } else {
-//                   console.warn('No ResultChecked event found');
-//                   resolve(null);
-//                 }
-
-//                 console.log('Unsubscribing from events');
-//                 unsub();
-//               }
-//             }
-//           );
-//       }
-//     );
-//   } catch (error) {
-//     console.error('Error in checkResult:', error);
-//     throw error;
-//   }
-// }

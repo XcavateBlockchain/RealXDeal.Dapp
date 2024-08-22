@@ -3,7 +3,6 @@ import { getApi } from './polkadot';
 import { toast } from 'sonner';
 import { getGameInfo } from './queries';
 import { checkResult, fetchPropertyForDisplay } from '@/app/actions';
-import { getErrorMessage } from './handle-error';
 
 export interface GameInfo {
   property: {
@@ -141,26 +140,10 @@ export async function listNFT(senderAddress: string, collectionId: number, nftId
     });
 
     console.log('Transaction sent:', unsub);
-    return {
-      data: unsub,
-      error: null
-    };
   } catch (error) {
     console.error('Failed to list NFT:', error);
-    return { data: null, error: getErrorMessage(error) };
   }
 }
-
-// async function resultChecked(address: string, guess: number, gameId: number) {
-//   console.log('checking');
-
-//   const result = await checkResult({ guess, gameId, address }, async (data, error) => {
-//     if (data && error === false) {
-//       return data;
-//     } else return null;
-//   });
-//   return result;
-// }
 
 export async function submitGameAnswer(
   address: string,
@@ -172,31 +155,20 @@ export async function submitGameAnswer(
   try {
     console.log('Submitting answer.....');
     const api = await getApi();
-    const extensions = await web3Enable('RealXDEal');
     const injected = await web3FromAddress(address);
     const extrinsic = api.tx.gameModule.submitAnswer(guess, gameId);
     const signer = injected.signer;
-    let eventProcessed = false;
-    const unsub = await extrinsic.signAndSend(
-      address,
-      { signer },
-      async ({ status, events = [], dispatchError }) => {
-        if (status.isFinalized && !eventProcessed) {
-          eventProcessed = true;
-          const answerSubmittedEvent = events.find(({ event }) =>
-            api.events.gameModule.AnswerSubmitted.is(event)
-          );
-          if (answerSubmittedEvent) {
-            console.log('ANSWER SUBMITTED EVENT RECEIVED');
-            // const checkResultData = await checkResult({ guess, gameId, address });
-            handleWinResult({ success: true }, false); // Call handleWinResult with the result
-            unsub();
-          }
-        } else if (status.isBroadcast) {
-          console.log('Broadcasting the guess...');
-        }
+
+    const unsub = await extrinsic.signAndSend(address, { signer }, async result => {
+      if (result.status.isInBlock) {
+        console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
+        // const checkResultData = await checkResult({ guess, gameId, address });
+        handleWinResult({ success: true }, false); // Call handleWinResult with the result
+        unsub();
+      } else if (result.status.isBroadcast) {
+        console.log('Broadcasting the guess...');
       }
-    );
+    });
 
     console.log('Transaction sent:', unsub);
   } catch (error) {

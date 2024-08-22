@@ -57,32 +57,30 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
     const guess = Number(formData.get('guess') as string);
 
     try {
-      await submitGameAnswer(address, guess, gameId, (data, error) => {
-        setInfoData({ data, error });
+      await submitGameAnswer(address, guess, gameId, async (data, error) => {
+        if (error) {
+          setResult({});
+          setStatus(LOADING_STATUS.ERROR);
+          console.error('Error:', infoData.error);
+          router.push('/dashboard');
+          return;
+        }
+
+        if (data) {
+          setIsResultChecking(true);
+          const result = await checkResult({
+            guess,
+            gameId,
+            address
+          });
+
+          setResult({ guess, ...result });
+          setStatus(LOADING_STATUS.SUCCESS);
+          setShowLoadingDialog(false);
+          setIsResultChecking(false);
+          router.push('/result');
+        }
       });
-
-      if (infoData.error) {
-        setResult({});
-        setStatus(LOADING_STATUS.ERROR);
-        console.error('Error:', infoData.error);
-        router.push('/dashboard');
-        return;
-      }
-
-      if (infoData.data) {
-        setIsResultChecking(true);
-        const result = await checkResult({
-          guess,
-          gameId,
-          address
-        });
-
-        setResult({ guess, ...result });
-        setStatus(LOADING_STATUS.SUCCESS);
-        setShowLoadingDialog(false);
-        setIsResultChecking(false);
-        router.push('/result');
-      }
     } catch (error) {
       console.error('Error during submission:', error);
       setStatus(LOADING_STATUS.ERROR);
