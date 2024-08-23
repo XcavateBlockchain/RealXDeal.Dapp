@@ -1819,7 +1819,7 @@ packages:
     dependencies:
       '@polkadot/api': 12.2.1
       '@polkadot/rpc-provider': 12.4.1
-      '@polkadot/types': 12.2.1
+      '@polkadot/types': 12.4.1
       '@polkadot/util': 12.6.2
       '@polkadot/util-crypto': 12.6.2(@polkadot/util@12.6.2)
       '@polkadot/x-global': 12.6.2

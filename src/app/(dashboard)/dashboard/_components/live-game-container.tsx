@@ -31,6 +31,8 @@ export default function LiveGamePlay({ type, points }: { type: GameType; points:
   const [propertyDisplay, setPropertyDisplay] = useState<any>();
   const [result, setResult] = useState<any>();
   const [display, setDisplay] = useState<'start' | 'play' | 'success' | 'fail'>('start');
+  const [currentBlock, setCurrentBlock] = useState();
+  const [endingBlock, setEndingBlock] = useState();
 
   function closeGameSheet() {
     setDisplay('start');
@@ -46,6 +48,8 @@ export default function LiveGamePlay({ type, points }: { type: GameType; points:
         close={closeGameSheet}
         setPropertyDisplay={setPropertyDisplay}
         setGameId={setGameId}
+        setCurrentBlock={setCurrentBlock}
+        setEndingBlock={setEndingBlock}
       />
     ),
     play: (
@@ -56,6 +60,8 @@ export default function LiveGamePlay({ type, points }: { type: GameType; points:
         setDisplay={setDisplay}
         close={closeGameSheet}
         gameId={gameId}
+        currentBlock={currentBlock}
+        endingBlock={endingBlock}
       />
     ),
     success: <GuessPass data={result} close={closeGameSheet} />,
@@ -92,6 +98,8 @@ interface GameProps {
   setDisplay: Dispatch<SetStateAction<'start' | 'play' | 'success' | 'fail'>>;
   setPropertyDisplay: Dispatch<SetStateAction<any>>;
   setGameId: Dispatch<SetStateAction<any>>;
+  setEndingBlock: Dispatch<SetStateAction<any>>;
+  setCurrentBlock: Dispatch<SetStateAction<any>>;
   close: () => void;
 }
 
@@ -101,7 +109,9 @@ function StartGame({
   close,
   setDisplay,
   setPropertyDisplay,
-  setGameId
+  setGameId,
+  setCurrentBlock,
+  setEndingBlock
 }: GameProps) {
   const router = useRouter();
   const walletContext = useContext(WalletContext);
@@ -112,20 +122,26 @@ function StartGame({
   async function onPlay() {
     setIsLoading(true);
     setLoadingState('loading');
-    await playGame(type, selectedAddress, async (data, gameId) => {
-      setLoadingState('fetching-data');
-      if (!data) {
-        setDisplay('start');
-        setIsLoading(false);
-        router.refresh();
+    await playGame(
+      type,
+      selectedAddress,
+      async (data, gameId, submittedAtBlock, endingBlock) => {
+        setLoadingState('fetching-data');
+        if (!data) {
+          setDisplay('start');
+          setIsLoading(false);
+          router.refresh();
+        }
+        if (data) {
+          setPropertyDisplay(await data);
+          setGameId(gameId);
+          setDisplay('play');
+          setIsLoading(false);
+          setCurrentBlock(submittedAtBlock);
+          setEndingBlock(endingBlock);
+        }
       }
-      if (data) {
-        setPropertyDisplay(await data);
-        setGameId(gameId);
-        setDisplay('play');
-        setIsLoading(false);
-      }
-    });
+    );
   }
 
   return (

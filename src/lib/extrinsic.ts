@@ -16,7 +16,12 @@ function getPropertyId(gameId: number) {}
 export async function playGame(
   gameType: 0 | 1 | 2,
   address: string,
-  handlePropertyDisplay: (data: any, gameId: any) => void
+  handlePropertyDisplay: (
+    data: any,
+    gameId: any,
+    submittedAtBlockNumber: any,
+    endingBlock: any
+  ) => void
 ) {
   try {
     const api = await getApi();
@@ -38,14 +43,20 @@ export async function playGame(
 
           if (gameStartedEvent) {
             const gameId = gameStartedEvent.event.data[1].toString();
+            const endingBlock = gameStartedEvent.event.data[2].toString();
             console.log(`GameStarted event found with game_id: ${gameId}`);
             const gameInfo = (await getGameInfo(parseInt(gameId))) as unknown as GameInfo;
             // console.log('The game info is: ', gameInfo);
             // const propertyDisplay = await fetchPropertyForDisplay(
             //   Number(gameInfo.property.id)
             // );
+            const header = await api.rpc.chain.getHeader(status.asInBlock);
+            const submittedBlockNumber = header.number.toNumber();
+
             const propertyDisplay = await fetchPropertyForDisplay(139361966);
-            handlePropertyDisplay(propertyDisplay, gameId);
+            console.log('submitted blocknumber', submittedBlockNumber);
+            console.log('ending blocknumber', endingBlock);
+            handlePropertyDisplay(propertyDisplay, gameId, submittedBlockNumber, endingBlock);
             // console.log(propertyDisplay);
             toast.success(status.asInBlock.toString());
             console.log(`Completed at block hash #${status.asInBlock.toString()}`);
@@ -132,7 +143,7 @@ export async function listNFT(senderAddress: string, collectionId: number, nftId
     const signer = injected.signer;
 
     const unsub = await extrinsic.signAndSend(senderAddress, { signer }, result => {
-      if (result.status.isInBlock) {
+      if (result.status.isFinalized) {
         console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
       } else if (result.status.isBroadcast) {
         console.log('Broadcasting the guess...');
@@ -158,17 +169,27 @@ export async function submitGameAnswer(
     const injected = await web3FromAddress(address);
     const extrinsic = api.tx.gameModule.submitAnswer(guess, gameId);
     const signer = injected.signer;
-
-    const unsub = await extrinsic.signAndSend(address, { signer }, async result => {
-      if (result.status.isInBlock) {
-        console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
-        // const checkResultData = await checkResult({ guess, gameId, address });
-        handleWinResult({ success: true }, false); // Call handleWinResult with the result
-        unsub();
-      } else if (result.status.isBroadcast) {
-        console.log('Broadcasting the guess...');
+    let eventProcessed = false;
+    const unsub = await extrinsic.signAndSend(
+      address,
+      { signer },
+      async ({ status, events = [], dispatchError }) => {
+        if (status.isFinalized && !eventProcessed) {
+          eventProcessed = true;
+          const answerSubmittedEvent = events.find(({ event }) =>
+            api.events.gameModule.AnswerSubmitted.is(event)
+          );
+          if (answerSubmittedEvent) {
+            console.log('ANSWER SUBMITTED EVENT RECEIVED');
+            // const checkResultData = await checkResult({ guess, gameId, address });
+            handleWinResult({ success: true }, false); // Call handleWinResult with the result
+            unsub();
+          }
+        } else if (status.isBroadcast) {
+          console.log('Broadcasting the guess...');
+        }
       }
-    });
+    );
 
     console.log('Transaction sent:', unsub);
   } catch (error) {
@@ -202,25 +223,33 @@ export async function startGame(
 
           if (gameStartedEvent) {
             const gameId = gameStartedEvent.event.data[1].toString();
+            const endingBlock = gameStartedEvent.event.data[2].toString();
             console.log(`GameStarted event found with game_id: ${gameId}`);
-            // const gameInfo = (await getGameInfo(parseInt(gameId))) as unknown as GameInfo;
+            const gameInfo = (await getGameInfo(parseInt(gameId))) as unknown as GameInfo;
             // console.log('The game info is: ', gameInfo);
             // const propertyDisplay = await fetchPropertyForDisplay(
             //   Number(gameInfo.property.id)
             // );
-            // const propertyDisplay = await fetchPropertyForDisplay(139361966);
+            const header = await api.rpc.chain.getHeader(status.asInBlock);
+            const submittedBlockNumber = header.number.toNumber();
+
+            const propertyDisplay = await fetchPropertyForDisplay(139361966);
+            console.log('submitted blocknumber', submittedBlockNumber);
+            console.log('ending blocknumber', endingBlock);
+            // handlePropertyDisplay(propertyDisplay, gameId, submittedBlockNumber, endingBlock);
+            console.log(`Completed at block hash #${status.asInBlock.toString()}`);
             handlePropertyDisplay(
               {
                 status: true,
+                submittedBlockNumber,
+                endingBlock,
                 message: `Completed at block hash #${status.asInBlock.toString()}`
               },
               gameId
             );
-            // console.log(propertyDisplay);
-            // toast.success(status.asInBlock.toString());
-            // console.log(`Completed at block hash #${status.asInBlock.toString()}`);
             unsub();
           } else if (dispatchError) {
+            // display a warning and prompt to retry
             handlePropertyDisplay(
               {
                 status: false,
@@ -228,9 +257,6 @@ export async function startGame(
               },
               null
             );
-
-            // toast.warning('There was an error');
-            // console.log(dispatchError.toHuman());
           }
         }
       }
