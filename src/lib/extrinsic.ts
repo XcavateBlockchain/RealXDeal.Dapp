@@ -34,7 +34,7 @@ export async function playGame(
     let eventProcessed = false;
     const unsub = await extrinsic.signAndSend(
       address,
-      { signer },
+      { signer, nonce: -1 },
       async ({ status, events = [], dispatchError }) => {
         if (status.isInBlock && !eventProcessed) {
           eventProcessed = true;
@@ -178,7 +178,7 @@ export async function submitGameAnswer(
     let eventProcessed = false;
     const unsub = await extrinsic.signAndSend(
       address,
-      { signer },
+      { signer, nonce: -1 },
       async ({ status, events = [], dispatchError }) => {
         if (status.isFinalized && !eventProcessed) {
           eventProcessed = true;
@@ -219,7 +219,7 @@ export async function startGame(
     let eventProcessed = false;
     const unsub = await extrinsic.signAndSend(
       address,
-      { signer },
+      { signer, nonce: -1 },
       async ({ status, events = [], dispatchError }) => {
         if (status.isInBlock && !eventProcessed) {
           eventProcessed = true;
