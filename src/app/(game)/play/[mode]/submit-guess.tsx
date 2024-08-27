@@ -73,12 +73,14 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
             gameId,
             address
           });
-
-          setResult({ guess, ...result });
-          setStatus(LOADING_STATUS.SUCCESS);
-          setShowLoadingDialog(false);
-          setIsResultChecking(false);
-          router.push('/result');
+          console.log(result);
+          if (result !== null) {
+            setResult({ guess, ...result });
+            setStatus(LOADING_STATUS.SUCCESS);
+            setShowLoadingDialog(false);
+            setIsResultChecking(false);
+            router.push('/result');
+          }
         }
       });
     } catch (error) {
