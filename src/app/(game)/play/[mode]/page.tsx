@@ -68,7 +68,7 @@ export default async function PlayGame({ params, searchParams }: PlayGameProps) 
         </div>
       </div>
       <div className="flex w-full max-w-[60%] items-center gap-40">
-        <Link href={'/overview'}>
+        <Link href={'/dashboard'}>
           <Button variant={'text'}>
             <Icons.exit className="size-6" /> Exit
           </Button>
