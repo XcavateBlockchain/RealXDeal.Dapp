@@ -5,6 +5,7 @@ import {
   AlertDialogContent,
   AlertDialogTitle
 } from '@/components/ui/alert-dialog';
+import { cva, type VariantProps } from 'class-variance-authority';
 import { GameICons } from '@/components/game-icon';
 import { startGame } from '@/lib/extrinsic';
 import { LOADING_STATUS } from '@/types';
@@ -14,15 +15,46 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { ChevronLeft, CircleX, LoaderCircle, RotateCcw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
-type GameProps = {
+const buttonVariants = cva(
+  'flex flex-col items-center w-full justify-center gap-2 rounded-lg p-3  duration-20 transition-colors disabled:pointer-events-none disabled:opacity-50',
+  {
+    variants: {
+      variant: {
+        practice: 'bg-primary-300 hover:bg-primary-300/90',
+        pro: 'bg-primary-600 hover:bg-primary-600/90',
+        player: 'bg-primary-400 hover:bg-primary-400/90'
+      },
+      fullWidth: {
+        true: 'w-full'
+      }
+    },
+    defaultVariants: {
+      variant: 'practice'
+    }
+  }
+);
+
+interface GameButtonProps
+  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
+    VariantProps<typeof buttonVariants> {
   mode: 0 | 1 | 2;
   address: string | undefined;
-};
+  description?: string;
+}
 
 const GAME_MODE = ['practice', 'player', 'pro'];
 
-export default function StartGame({ mode, address }: GameProps) {
+export default function StartGame({
+  variant,
+  fullWidth,
+  mode,
+  address,
+  className,
+  ...props
+}: GameButtonProps) {
   const router = useRouter();
   const [showLoadingDialog, setShowLoadingDialog] = useState(false);
   const [status, setStatus] = useState<LOADING_STATUS>(LOADING_STATUS.IDLE);
@@ -55,26 +87,32 @@ export default function StartGame({ mode, address }: GameProps) {
       });
     } catch (error) {
       setStatus(LOADING_STATUS.ERROR);
-      setShowLoadingDialog(false);
+      setShowLoadingDialog(true);
       toast.error('Failed to start game.');
     }
   }
 
+  const Icon = GameICons[GAME_MODE[mode] as keyof typeof GameICons];
+
   return (
     <>
       <button
-        className="group flex flex-col items-center justify-center gap-[6px] rounded-[6px] border border-primary-400 p-3"
-        disabled={status === 'loading'}
+        className={cn(buttonVariants({ variant, fullWidth, className }))}
+        {...props}
+        disabled={status === LOADING_STATUS.LOADING}
         onClick={handleClick}
       >
-        <div className="flex size-[55px] items-center justify-center rounded-full shadow-header group-hover:shadow-xl">
-          <GameICons.player className="size-[38px]" />
+        <div className="flex size-[75px] items-center justify-center rounded-full bg-card">
+          <Icon className="size-[40px]" />
         </div>
-        <span className="text-[12px]/[18px] font-bold">Practice mode</span>
+        <span className="text-[12px]/[18px] font-bold">{GAME_MODE[mode]} mode</span>
+        {props.description ? (
+          <span className="text-[10px]/[24px] font-light">{props.description}</span>
+        ) : null}
       </button>
       <AlertDialog open={showLoadingDialog} onOpenChange={setShowLoadingDialog}>
-        <AlertDialogContent className="max-w-lg bg-[#1D2A41]">
-          <div className="flex flex-col items-center justify-center gap-6 py-12">
+        <AlertDialogContent className="w-sm rounded-3xl bg-[#1D2A41]">
+          {/* <div className="flex flex-col items-center justify-center gap-6 py-12">
             <Image src={'/images/logo.svg'} alt="" width={143} height={56} priority />
 
             <div className="space-y-2">
@@ -92,6 +130,49 @@ export default function StartGame({ mode, address }: GameProps) {
                 <DivBox className="bg-[#364E77]" />
                 <DivBox className="rounded-r-[34px] bg-[#60B565]" />
               </div>
+            </div>
+          </div> */}
+          {status === LOADING_STATUS.ERROR ? (
+            <button
+              className="absolute left-[26px] top-[42px] z-50 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground md:top-[26px]"
+              onClick={() => setShowLoadingDialog(false)}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              <span className="sr-only">Cancel connection</span>
+            </button>
+          ) : null}
+          <div className="flex w-full flex-col items-center justify-center gap-10 py-12">
+            <div className="relative flex size-[116px] items-center justify-center rounded-2xl border p-3">
+              {status === LOADING_STATUS.LOADING ? (
+                <LoaderCircle
+                  className="size-[90px] animate-spin overflow-hidden"
+                  aria-hidden="true"
+                />
+              ) : (
+                <CircleX className="size-[90px] overflow-hidden" aria-hidden="true" />
+              )}
+
+              {status === LOADING_STATUS.ERROR ? (
+                <Button
+                  size="icon"
+                  variant="secondary"
+                  className="group absolute -bottom-2 -right-2 rounded-full bg-muted p-1.5 shadow"
+                  onClick={handleClick}
+                >
+                  <RotateCcw className="size-4 transition-transform group-hover:-rotate-45" />
+                </Button>
+              ) : null}
+            </div>
+
+            <div className="space-y-3.5 px-3.5 text-center sm:px-0">
+              <h1 className="text-xl font-semibold">
+                {status === LOADING_STATUS.ERROR ? 'Request Error' : 'Loading'}
+              </h1>
+              <p className="text-balance text-sm text-muted-foreground">
+                {status === LOADING_STATUS.ERROR
+                  ? 'There was an error with the request. Click above to try again.'
+                  : `Please wait while we process your request`}
+              </p>
             </div>
           </div>
         </AlertDialogContent>

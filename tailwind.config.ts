@@ -29,6 +29,7 @@ const config = {
           300: '#DC7DA6',
           400: 'hsla(30, 75%, 70%)',
           500: '#172234',
+          600: '#4F6542',
           foreground: 'hsla(0, 0%, 80%)'
         },
         secondary: {

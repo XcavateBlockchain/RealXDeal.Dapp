@@ -3,6 +3,7 @@ import { Card, TaskCard } from '@/components/cards/card';
 import { LeadBoardCard } from '@/components/cards/leadboard-card';
 import { GameICons } from '@/components/game-icon';
 import { Shell } from '@/components/shell';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { staleBoard, staleUser } from '@/config/site';
 import { getLeadBoards, getUserData } from '@/lib/queries';
 import { getCookieStorage } from '@/lib/storage';
@@ -16,7 +17,7 @@ export default async function Dashboard() {
 
   return (
     <Shell>
-      <section className="flex w-full items-end gap-8">
+      <section className="flex w-full items-start gap-8">
         <div className="flex w-[55%] flex-col gap-8">
           <div className="flex w-full items-center gap-10">
             <Stats title="My points" value={user?.points ?? 0} />
@@ -79,26 +80,30 @@ export default async function Dashboard() {
         </div>
         <div className="flex w-[45%] flex-col gap-8">
           <div className="flex w-full items-center gap-[18px]">
-            <button className="group flex flex-col items-center justify-center gap-[6px] rounded-[6px] border border-primary-400 p-3">
+            {/* <button className="group flex flex-col items-center justify-center gap-[6px] rounded-[6px] border border-primary-400 p-3">
               <div className="flex size-[55px] items-center justify-center rounded-full shadow-header group-hover:shadow-xl">
                 <GameICons.player className="size-[38px]" />
               </div>
               <span className="text-[12px]/[18px] font-bold">Practice mode</span>
-            </button>
-            <StartGame mode={1} address={address} />
+            </button> */}
+            <StartGame mode={0} address={address} />
+            <StartGame variant={'player'} mode={1} address={address} />
+            <StartGame variant={'pro'} mode={2} address={address} />
           </div>
-          <Card title="Top 5 players">
-            <div className="flex w-full flex-col gap-3">
-              {boardList.map((list: any, index: number) => (
-                <LeadBoardCard
-                  key={index}
-                  index={index + 1}
-                  user={list[0]}
-                  points={list[1]}
-                  winner={index + 1 > 3 ? false : true}
-                />
-              ))}
-            </div>
+          <Card title="Top players">
+            <ScrollArea className="h-[280px] w-full pl-3">
+              <div className="flex w-full flex-col gap-3">
+                {boardList.map((list: any, index: number) => (
+                  <LeadBoardCard
+                    key={index}
+                    index={index + 1}
+                    user={list[0]}
+                    points={list[1]}
+                    winner={index + 1 > 3 ? false : true}
+                  />
+                ))}
+              </div>
+            </ScrollArea>
           </Card>
         </div>
       </section>

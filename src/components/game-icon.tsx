@@ -9,8 +9,13 @@ export const GameICons = {
     </svg>
   ),
   pro: (props: GameIconProps) => (
-    <svg viewBox="0 0 35 30" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
-      <path d="M17.5234 0.299805L34.4109 29.5498H0.635942L17.5234 0.299805Z" fill="#78B36E" />
+    <svg viewBox="0 0 36 30" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path d="M18 0L35.3205 30H0.679491L18 0Z" fill="#4F6542" />
+    </svg>
+  ),
+  practice: (props: GameIconProps) => (
+    <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <rect width="40" height="40" fill="#DC7DA6" />
     </svg>
   )
 };
