@@ -17,6 +17,7 @@ import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { ChevronLeft, CircleX, LoaderCircle, RotateCcw } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useGameContext } from '@/context/game-context';
 
 const buttonVariants = cva(
   'flex flex-col items-center w-full justify-center gap-2 rounded-lg p-3  duration-20 transition-colors disabled:pointer-events-none disabled:opacity-50',
@@ -58,6 +59,7 @@ export default function StartGame({
   const router = useRouter();
   const [showLoadingDialog, setShowLoadingDialog] = useState(false);
   const [status, setStatus] = useState<LOADING_STATUS>(LOADING_STATUS.IDLE);
+  const { setCurrentBlock, setEndingBlock } = useGameContext();
 
   async function handleClick() {
     try {
@@ -81,6 +83,8 @@ export default function StartGame({
         }
         if (data.status === true && gameId) {
           toast.success(data.message);
+          setCurrentBlock(data.submittedAtBlock);
+          setEndingBlock(data.endingBlock);
           setStatus(LOADING_STATUS.SUCCESS);
           router.push(`/play/${GAME_MODE[mode]}?id=${gameId}`);
         }

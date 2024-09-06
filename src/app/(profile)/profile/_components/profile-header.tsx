@@ -1,29 +1,46 @@
 export const ProfileHeader = () => {
   return (
-    <div className="flex justify-between">
-      <div className="flex gap-2">
-        <img
-          className="size-24 rounded-full"
-          src="/images/profile.jpeg"
-          alt="Rounded avatar"
-          style={{ boxShadow: '0px 0px 24px 0px #ECB278', border: '4px solid #DAB436' }}
-        />
-        <div className="ml-3 mt-2 flex flex-col">
-          <p className="ml-1 font-bold">Deal Real Dev</p>
-          <span className="mt-3 rounded-xl bg-[#DC7DA63D] px-2.5 py-0.5 text-xs text-white shadow-none">
-            1Ay00011DY...
-          </span>
-          <p className="mt-3 text-sm">
-            Rank : <span className="text-[#DAB436]">World No 1</span>
-          </p>
+    <div className="flex w-full items-start justify-between">
+      <div className="flex items-center gap-6">
+        <div
+          className="size-[130px] rounded-full border-4 border-[#DAB436]"
+          style={{ boxShadow: '0px 0px 24px 0px #DAB436' }}
+        >
+          <img
+            className="size-full rounded-full"
+            src="/images/profile.jpeg"
+            alt="Rounded avatar"
+          />
+        </div>
+        <div className="flex flex-col gap-6">
+          <h1 className="text-[24px]/[24px] font-medium">Victor X</h1>
         </div>
       </div>
-      <div>
-        <span className="text-[0.875rem] text-primary-foreground">
-          Points : <span className="text-[#DAB436]">4,000 X</span>
-        </span>
-      </div>
     </div>
+    // <div className="flex justify-between">
+    //   <div className="flex gap-2">
+    //     <img
+    //       className="size-24 rounded-full"
+    //       src="/images/profile.jpeg"
+    //       alt="Rounded avatar"
+    //       style={{ boxShadow: '0px 0px 24px 0px #ECB278', border: '4px solid #DAB436' }}
+    //     />
+    //     <div className="ml-3 mt-2 flex flex-col">
+    //       <p className="ml-1 font-bold">Deal Real Dev</p>
+    //       <span className="mt-3 rounded-xl bg-[#DC7DA63D] px-2.5 py-0.5 text-xs text-white shadow-none">
+    //         1Ay00011DY...
+    //       </span>
+    //       <p className="mt-3 text-sm">
+    //         Rank : <span className="text-[#DAB436]">World No 1</span>
+    //       </p>
+    //     </div>
+    //   </div>
+    //   <div>
+    //     <span className="text-[0.875rem] text-primary-foreground">
+    //       Points : <span className="text-[#DAB436]">4,000 X</span>
+    //     </span>
+    //   </div>
+    // </div>
   );
 };
 

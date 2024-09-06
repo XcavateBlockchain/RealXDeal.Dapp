@@ -4,12 +4,20 @@ import React, { createContext, useContext, useEffect, useRef, useState } from 'r
 
 interface GameContextInterface {
   result: any;
+  currentBlock: any;
+  endingBlock: any;
   setResult: (data: any) => void;
+  setCurrentBlock: (data: any) => void;
+  setEndingBlock: (data: any) => void;
 }
 
 const GameContext = React.createContext<GameContextInterface>({
   result: null,
-  setResult: () => {}
+  currentBlock: null,
+  endingBlock: null,
+  setResult: () => {},
+  setCurrentBlock: () => {},
+  setEndingBlock: () => {}
 });
 
 export function useGameContext() {
@@ -22,11 +30,18 @@ export interface GameProps {
 
 export default function GameContextProvider({ children }: GameProps) {
   const [result, setResult] = useState<any>();
+  const [currentBlock, setCurrentBlock] = useState();
+  const [endingBlock, setEndingBlock] = useState();
+
   return (
     <GameContext.Provider
       value={{
         result,
-        setResult
+        currentBlock,
+        endingBlock,
+        setResult,
+        setCurrentBlock,
+        setEndingBlock
       }}
     >
       {children}

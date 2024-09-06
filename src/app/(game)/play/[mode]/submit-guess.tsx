@@ -18,6 +18,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { checkResult } from '@/app/actions';
 import { error } from 'console';
+import useLiveCountdown from '@/hooks/use-live-countdown';
 
 type GameProps = {
   gameId: number;
@@ -149,3 +150,14 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
 const DivBox = ({ className }: { className: string }) => (
   <div className={cn('h-[17px] w-[32px] animate-pulse bg-primary-300', className)} />
 );
+
+export const Countdown = () => {
+  const { currentBlock, endingBlock } = useGameContext();
+  const { blocksRemaining } = useLiveCountdown(currentBlock, endingBlock);
+
+  return (
+    <div className="flex size-[120px] items-center justify-center rounded-full border-[2.94px] border-primary-200 bg-primary px-[31px] py-10 shadow-time">
+      <span className="font-heading text-[2.84569rem] font-bold">{blocksRemaining}</span>
+    </div>
+  );
+};

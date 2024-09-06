@@ -9,7 +9,7 @@ import { siteConfig } from '@/config/site';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import SubmitGuess from './submit-guess';
+import SubmitGuess, { Countdown } from './submit-guess';
 import { getCookieStorage } from '@/lib/storage';
 
 interface PlayGameProps {
@@ -30,9 +30,10 @@ export default async function PlayGame({ params, searchParams }: PlayGameProps) 
       <div className="grid flex-1 grid-cols-3 gap-10">
         <div className="col-span-2 flex items-center gap-10">
           <div className="flex flex-col items-center justify-center gap-10">
-            <div className="flex size-[120px] items-center justify-center rounded-full border-[2.94px] border-primary-200 bg-primary px-[31px] py-10 shadow-time">
+            {/* <div className="flex size-[120px] items-center justify-center rounded-full border-[2.94px] border-primary-200 bg-primary px-[31px] py-10 shadow-time">
               <span className="font-heading text-[2.84569rem] font-bold">60</span>
-            </div>
+            </div> */}
+            <Countdown />
 
             <div className="flex size-[60px] items-center justify-center rounded-full bg-white text-primary-500">
               <span className="text-[16px]/[24px]">Map</span>
