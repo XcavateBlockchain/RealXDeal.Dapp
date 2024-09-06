@@ -290,6 +290,9 @@ export async function checkResult(
           dispatchError?: any;
         }) => {
           if (status.isFinalized) {
+            events.forEach(({ phase, event: { data, method, section } }) => {
+              console.log(`\t' ${phase}: ${section}.${method}:: ${data}`);
+            });
             const ResultChecked = events.find(({ event }) => {
               return api.events.gameModule.ResultChecked.is(event);
             });
@@ -298,7 +301,7 @@ export async function checkResult(
               const won = ResultChecked.event.data[3].toString();
               resolve({ points, won }); // Resolve with points and won
             } else {
-              resolve(null);
+              reject("NO RESULT CHECKED EVENT");
             }
             console.log('unsubbing!');
             unsub();
