@@ -74,7 +74,7 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
             gameId,
             address
           });
-          console.log(result);
+          console.log("Check result:", result);
           if (result !== null) {
             setResult({ guess, ...result });
             setStatus(LOADING_STATUS.SUCCESS);
