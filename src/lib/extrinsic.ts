@@ -302,3 +302,40 @@ export async function delistNFT(senderAddress: string, listingId: number) {
     return { data: null, error: getErrorMessage(error) };
   }
 }
+
+type MakeOfferProps = {
+  collectionId: number;
+  itemId: number;
+  listingId: number;
+};
+
+export async function makeOffer(senderAddress: string, { ...data }: MakeOfferProps) {
+  try {
+    const api = await getApi();
+    await web3Enable('RealXDEal');
+    const injected = await web3FromAddress(senderAddress);
+    const extrinsic = api.tx.gameModule.makeOffer(
+      data.listingId,
+      data.collectionId,
+      data.itemId
+    );
+    const signer = injected.signer;
+
+    const unsub = await extrinsic.signAndSend(senderAddress, { signer }, result => {
+      if (result.status.isFinalized) {
+        console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
+      } else if (result.status.isBroadcast) {
+        console.log('Broadcasting the guess...');
+      }
+    });
+
+    // console.log('Transaction sent:', unsub);
+    return {
+      data: unsub,
+      error: null
+    };
+  } catch (error) {
+    console.error('Failed to de list NFT:', error);
+    return { data: null, error: getErrorMessage(error) };
+  }
+}

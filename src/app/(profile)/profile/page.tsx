@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { OwnedNFTCard } from '@/components/cards/owned-nft-card';
 import { DeListNFTCard } from '@/components/cards/unlist-nft-card';
+import { ReceivedOffersTable } from './_components/recived-offers-table';
 
 export default async function Page({
   searchParams: { collection }
@@ -116,6 +117,9 @@ export default async function Page({
                   Sent offers
                 </TabsTrigger>
               </TabsList>
+              <TabsContent value="received_offers">
+                <ReceivedOffersTable />
+              </TabsContent>
             </Tabs>
           </section>
         </TabsContent>

@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { Button } from '../ui/button';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '../ui/alert-dialog';
-import React, { useContext, useState, useTransition } from 'react';
+import React, { useContext, useState } from 'react';
 import { Icons } from '../icons';
 import { listNFT } from '@/lib/extrinsic';
 import { toast } from 'sonner';
@@ -29,7 +29,6 @@ export function OwnedNFTCard({ isShadow, ...nft }: NFTCardProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
-  const [isListingPending, startListingTransaction] = useTransition();
   const metadata = collection[nft.collectionId] as Collection;
 
   async function onListNFT() {

@@ -19,7 +19,7 @@ export function Card({
   return (
     <section
       className={cn(
-        'flex w-full flex-col items-start gap-8 rounded-lg border border-border bg-card px-4 py-6 shadow-header backdrop-blur',
+        'flex w-full flex-col items-start gap-8 rounded-lg border border-border bg-card px-4 py-6 shadow-header',
         className
       )}
       {...props}

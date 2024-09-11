@@ -2,19 +2,25 @@
 
 import { Icons } from '@/components/icons';
 import WalletConnect from '@/components/wallet-connect/wallet-connect';
+import { formatAddress } from '@/lib/utils';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 type HeaderProps = {
+  user: any;
+  address: any;
   open: boolean;
   closeModalNavigationPath?: string;
 };
 
 export const ProfileHeader = ({
+  user,
+  address,
   open = false,
   closeModalNavigationPath = '/'
 }: HeaderProps) => {
   const router = useRouter();
+
   const [walletModal, showModal] = useState(open);
 
   useEffect(() => {
@@ -35,10 +41,15 @@ export const ProfileHeader = ({
           />
         </div>
         <div className="flex flex-col gap-6">
-          <h1 className="text-[24px]/[24px] font-medium">Victor X</h1>
-          <span className="flex items-center gap-2 rounded-3xl bg-primary-300/[0.24] px-2 py-[2px] text-[18px]/[22px] font-extralight">
+          {/* <h1 className="text-[24px]/[24px] font-medium">Victor X</h1> */}
+          {/* <span className="flex items-center gap-2 rounded-3xl bg-primary-300/[0.24] px-2 py-[2px] text-[18px]/[22px] font-extralight">
             1Ay00011DY... <Icons.copy className="size-3.5" />
-          </span>
+          </span> */}
+          <div>
+            <span className="rounded-3xl bg-primary-300/[0.25] px-2 py-[2px] text-[0.875rem]/[0.025rem] font-extralight">
+              {formatAddress(address)}
+            </span>
+          </div>
           <span>
             Rank: <span className="text-primary-400">N0 1 world</span>
           </span>
@@ -49,7 +60,7 @@ export const ProfileHeader = ({
       ) : (
         <div className="space-x-2.5">
           <span>Pints:</span>
-          <span className="text-primary-400">3000</span>
+          <span className="text-primary-400">{user?.points ?? 0}</span>
         </div>
       )}
     </div>

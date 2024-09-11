@@ -40,7 +40,7 @@ const tabTriggerVariants = cva('disabled:pointer-events-none disabled:opacity-50
     variant: {
       default:
         'border-b border-[#3B4F74] p-2 flex items-center gap-2 text-[18px]/[24px] font-light text-foreground data-[state=active]:border-primary-300 data-[state=active]:text-primary-300',
-      pill: 'p-2 text-[0.875rem]/[1.5rem] border border-[#CCCCCC80] font-sans text-[#CCCCCC80] hover:border-primary-300 hover:text-primary-300 font-light flex items-center data-[state=active]:border-primary-300 data-[state=active]:text-primary-300/15'
+      pill: 'p-2 text-[0.875rem]/[1.5rem] border rounded-lg border-[#CCCCCC80] font-sans text-[#CCCCCC80] hover:border-primary-300 hover:text-primary-300 font-light flex items-center data-[state=active]:border-primary-300 data-[state=active]:text-primary-300'
     }
   },
   defaultVariants: {
