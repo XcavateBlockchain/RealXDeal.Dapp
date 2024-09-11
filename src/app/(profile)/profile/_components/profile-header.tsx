@@ -1,4 +1,26 @@
-export const ProfileHeader = () => {
+'use client';
+
+import { Icons } from '@/components/icons';
+import WalletConnect from '@/components/wallet-connect/wallet-connect';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+type HeaderProps = {
+  open: boolean;
+  closeModalNavigationPath?: string;
+};
+
+export const ProfileHeader = ({
+  open = false,
+  closeModalNavigationPath = '/'
+}: HeaderProps) => {
+  const router = useRouter();
+  const [walletModal, showModal] = useState(open);
+
+  useEffect(() => {
+    showModal(open);
+  }, [open]);
+
   return (
     <div className="flex w-full items-start justify-between">
       <div className="flex items-center gap-6">
@@ -14,33 +36,23 @@ export const ProfileHeader = () => {
         </div>
         <div className="flex flex-col gap-6">
           <h1 className="text-[24px]/[24px] font-medium">Victor X</h1>
+          <span className="flex items-center gap-2 rounded-3xl bg-primary-300/[0.24] px-2 py-[2px] text-[18px]/[22px] font-extralight">
+            1Ay00011DY... <Icons.copy className="size-3.5" />
+          </span>
+          <span>
+            Rank: <span className="text-primary-400">N0 1 world</span>
+          </span>
         </div>
       </div>
+      {walletModal ? (
+        <WalletConnect open={walletModal} />
+      ) : (
+        <div className="space-x-2.5">
+          <span>Pints:</span>
+          <span className="text-primary-400">3000</span>
+        </div>
+      )}
     </div>
-    // <div className="flex justify-between">
-    //   <div className="flex gap-2">
-    //     <img
-    //       className="size-24 rounded-full"
-    //       src="/images/profile.jpeg"
-    //       alt="Rounded avatar"
-    //       style={{ boxShadow: '0px 0px 24px 0px #ECB278', border: '4px solid #DAB436' }}
-    //     />
-    //     <div className="ml-3 mt-2 flex flex-col">
-    //       <p className="ml-1 font-bold">Deal Real Dev</p>
-    //       <span className="mt-3 rounded-xl bg-[#DC7DA63D] px-2.5 py-0.5 text-xs text-white shadow-none">
-    //         1Ay00011DY...
-    //       </span>
-    //       <p className="mt-3 text-sm">
-    //         Rank : <span className="text-[#DAB436]">World No 1</span>
-    //       </p>
-    //     </div>
-    //   </div>
-    //   <div>
-    //     <span className="text-[0.875rem] text-primary-foreground">
-    //       Points : <span className="text-[#DAB436]">4,000 X</span>
-    //     </span>
-    //   </div>
-    // </div>
   );
 };
 

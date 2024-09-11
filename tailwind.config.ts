@@ -74,7 +74,8 @@ const config = {
         card: '0px 0px 30px 0px rgba(0, 0, 0, 0.32)',
         profile: '0px 0px 24px 0px #ECB278',
         time: '0px 0px 24px 0px rgba(87, 160, 197, 1)',
-        game: '0px 0px 24px 0px #DC7DA6'
+        game: '0px 0px 24px 0px #DC7DA6',
+        collection: '0px 0px 8.15px 0px'
       },
       keyframes: {
         'accordion-down': {
