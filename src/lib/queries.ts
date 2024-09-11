@@ -172,7 +172,7 @@ export async function getAllListings() {
   // [{listingId: {owner, collectionId, itemId}}, ...]
 }
 
-export async function getAllListingsByAddress(address: string) {
+export async function getAllListingsByAddress(address?: string) {
   const api = await getApi();
   const data = await api.query.gameModule.listings.entries();
 

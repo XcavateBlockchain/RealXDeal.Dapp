@@ -3,10 +3,11 @@ import { collections } from '@/config/site';
 import CollectionBadge from './_components/collection-badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getCookieStorage } from '@/lib/storage';
-import { getUnlistedNFTsForUser } from '@/lib/queries';
+import { getAllListingsByAddress, getUnlistedNFTsForUser } from '@/lib/queries';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { OwnedNFTCard } from '@/components/cards/owned-nft-card';
+import { DeListNFTCard } from '@/components/cards/unlist-nft-card';
 
 export default async function Page({
   searchParams: { collection }
@@ -20,8 +21,16 @@ export default async function Page({
   const selected = collection === undefined ? 'All' : collection;
 
   const nfts = await getUnlistedNFTsForUser(address ? address : '');
-
-  // console.log(nfts);
+  const listed = await getAllListingsByAddress(address);
+  const listings = listed.flatMap(item => {
+    const [listingId, details] = Object.entries(item)[0];
+    return [
+      {
+        listingId,
+        ...(typeof details === 'object' && details !== null ? details : {})
+      }
+    ];
+  });
 
   return (
     <>
@@ -44,7 +53,7 @@ export default async function Page({
       <Tabs defaultValue="nfts">
         <TabsList>
           <TabsTrigger value="nfts">NFTs</TabsTrigger>
-          <TabsTrigger value="listed">Listed</TabsTrigger>
+          <TabsTrigger value="listed_nft">Listed</TabsTrigger>
           <TabsTrigger value="offers">Offers</TabsTrigger>
         </TabsList>
         <TabsContent value={'nfts'}>
@@ -78,6 +87,36 @@ export default async function Page({
                 />
               ))}
             </div>
+          </section>
+        </TabsContent>
+        <TabsContent value="listed_nft">
+          <section className="flex w-full flex-col space-y-10 py-10">
+            <div className="grid size-full grid-cols-4 gap-[23px]">
+              {listings.map((listing: any) => (
+                <DeListNFTCard
+                  key={listing.listingId}
+                  listingId={listing.listingId}
+                  owner={listing.owner}
+                  collectionId={listing.collectionId}
+                  nftId={listing.itemId}
+                  isShadow
+                />
+              ))}
+            </div>
+          </section>
+        </TabsContent>
+        <TabsContent value="offers">
+          <section className="flex w-full flex-col space-y-10 py-10">
+            <Tabs defaultValue="received_offers">
+              <TabsList variant={'pill'}>
+                <TabsTrigger variant={'pill'} value="received_offers">
+                  Received offers
+                </TabsTrigger>
+                <TabsTrigger variant={'pill'} value="sent_offers">
+                  Sent offers
+                </TabsTrigger>
+              </TabsList>
+            </Tabs>
           </section>
         </TabsContent>
       </Tabs>

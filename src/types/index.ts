@@ -73,3 +73,11 @@ export enum LOADING_STATUS {
   SUCCESS = 'success',
   ERROR = 'error'
 }
+
+type NFTListed = {
+  [key: string]: {
+    owner: string;
+    collectionId: string;
+    itemId: string;
+  };
+};

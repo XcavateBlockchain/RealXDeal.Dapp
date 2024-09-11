@@ -7,11 +7,13 @@ import { Button } from '../ui/button';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '../ui/alert-dialog';
 import React, { useContext, useState, useTransition } from 'react';
 import { Icons } from '../icons';
-import { listNFT } from '@/lib/extrinsic';
+import { delistNFT } from '@/lib/extrinsic';
 import { toast } from 'sonner';
 import { WalletContext } from '@/context/wallet-context';
+import { useRouter } from 'next/navigation';
 
 interface NFTCardProps {
+  listingId: string;
   collectionId: keyof typeof collection;
   nftId: string;
   owner: string;
@@ -24,30 +26,25 @@ type Collection = {
   nftImage: string;
 };
 
-export function OwnedNFTCard({ isShadow, ...nft }: NFTCardProps) {
+export function DeListNFTCard({ isShadow, ...nft }: NFTCardProps) {
+  const router = useRouter();
   const [showDialog, setShowDialog] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
-  const [isListingPending, startListingTransaction] = useTransition();
   const metadata = collection[nft.collectionId] as Collection;
 
   async function onListNFT() {
     setIsLoading(true);
-    const { data, error } = await listNFT(
-      selectedAddress,
-      Number(nft.collectionId),
-      Number(nft.nftId)
-    );
-    if (error) {
+    try {
+      await delistNFT(selectedAddress, parseInt(nft.listingId));
+      toast.success('NFT un-listed successfully!');
+      router.refresh();
+    } catch (error) {
       setIsLoading(false);
-      toast.error(error);
-      return;
-    }
-
-    if (data) {
+      toast.error('Error', { description: 'Could not process your request please try again' });
+    } finally {
       setIsLoading(false);
-      setShowDialog(true);
     }
   }
 
@@ -77,40 +74,10 @@ export function OwnedNFTCard({ isShadow, ...nft }: NFTCardProps) {
           </div>
           <Button variant={'card'} size={'nft'} onClick={onListNFT} disabled={isLoading}>
             {isLoading && <Icons.spinner className="size-4 animate-spin" aria-hidden="true" />}
-            List
+            Un-List
           </Button>
         </div>
       </div>
-      <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
-        <AlertDialogContent className="flex w-[518px] flex-col gap-2 rounded-lg px-6 py-6">
-          <AlertDialogTitle hidden>Success modal</AlertDialogTitle>
-          <div className="flex items-center justify-end">
-            <Button variant={'text'} size={'icon'} onClick={() => setShowDialog(false)}>
-              <Icons.close className="size-6 hover:stroke-primary-300" />
-            </Button>
-          </div>
-
-          <div className="flex flex-col items-center justify-center gap-4">
-            <div
-              className="flex h-[320px] w-[239px] items-center justify-center rounded-[10px] bg-cover bg-no-repeat"
-              style={{ backgroundImage: `url(${metadata.nftImage})` }}
-            >
-              <div className="size-[140px] rounded-full bg-primary-300/15"></div>
-            </div>
-            <h2 className="text-[17px]/[24px] font-medium">NFT listed </h2>
-            <p className="text-center text-[17px]/[24px] font-light">
-              The {metadata.collectionName} NFT is now available for swapping on the
-              marketplace
-            </p>
-            <Button
-              className="px-6 py-[18px] text-[16px]/[19px]"
-              onClick={() => setShowDialog(false)}
-            >
-              Continue
-            </Button>
-          </div>
-        </AlertDialogContent>
-      </AlertDialog>
     </>
   );
 }
