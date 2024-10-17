@@ -229,6 +229,7 @@ export async function startGame(
             );
             unsub();
           } else if (dispatchError) {
+            console.log(dispatchError.toHuman());
             // display a warning and prompt to retry
             handlePropertyDisplay(
               {
