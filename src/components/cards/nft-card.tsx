@@ -23,6 +23,7 @@ interface NFTCardProps {
 
 export function NFTCard({ isShadow, ...nft }: NFTCardProps) {
   const router = useRouter();
+  const [showSwapDialog, setShowSwapDialog] = React.useState<boolean>(false)
   const [showDialog, setShowDialog] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const walletContext = useWalletContext();
@@ -91,6 +92,9 @@ export function NFTCard({ isShadow, ...nft }: NFTCardProps) {
           </div>
         </div>
       </div>
+      <AlertDialog open={showSwapDialog} onOpenChange={setShowSwapDialog}>
+       <AlertDialogContent className='w-full max-w-4xl'></AlertDialogContent>
+      </AlertDialog>
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
         <AlertDialogContent className="flex w-[518px] flex-col gap-2 rounded-lg px-6 py-6">
           <AlertDialogTitle hidden>Success modal</AlertDialogTitle>

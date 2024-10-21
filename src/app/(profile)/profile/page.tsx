@@ -3,7 +3,11 @@ import { collections } from '@/config/site';
 import CollectionBadge from './_components/collection-badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getCookieStorage } from '@/lib/storage';
-import { getAllListingsByAddress, getUnlistedNFTsForUser } from '@/lib/queries';
+import {
+  getAllListingsByAddress,
+  getAllOffersByAddress,
+  getUnlistedNFTsForUser
+} from '@/lib/queries';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { OwnedNFTCard } from '@/components/cards/owned-nft-card';
@@ -32,6 +36,10 @@ export default async function Page({
       }
     ];
   });
+
+  const offers = await getAllOffersByAddress(address);
+
+  console.log(offers);
 
   return (
     <>

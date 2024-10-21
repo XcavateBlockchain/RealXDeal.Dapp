@@ -189,6 +189,22 @@ export async function getAllListingsByAddress(address?: string) {
   return listingDataForAccount;
   // [{listingId: {owner, collectionId, itemId}}, ...]
 }
+export async function getAllOffersByAddress(address?: string) {
+  const api = await getApi();
+  const data = await api.query.gameModule.offers.entries();
+
+  const offersDataForAccount = data
+    .filter(([key, exposure]) => {
+      const listingData = exposure.toHuman() as { owner: string };
+      return listingData.owner == address;
+    })
+    .map(([key, exposure]) => {
+      let listingId = key.args[0].toHuman() as number;
+      return { [listingId]: exposure.toHuman() };
+    });
+
+  return offersDataForAccount;
+}
 
 /*
 
