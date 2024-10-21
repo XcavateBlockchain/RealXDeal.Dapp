@@ -19,6 +19,8 @@ interface PlayGameProps {
   };
 }
 
+export const maxDuration = 300;
+
 export default async function PlayGame({ params, searchParams }: PlayGameProps) {
   const mode = params.mode;
   const gameId = searchParams.id;
