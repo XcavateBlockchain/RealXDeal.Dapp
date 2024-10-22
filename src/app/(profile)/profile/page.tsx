@@ -4,8 +4,10 @@ import CollectionBadge from './_components/collection-badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getCookieStorage } from '@/lib/storage';
 import {
+  getAllCollections,
   getAllListingsByAddress,
   getAllOffersByAddress,
+  getCollection,
   getUnlistedNFTsForUser
 } from '@/lib/queries';
 import { Button } from '@/components/ui/button';
@@ -39,7 +41,7 @@ export default async function Page({
 
   const offers = await getAllOffersByAddress(address);
 
-  console.log(offers);
+  // console.log(offers);
 
   return (
     <>
@@ -86,31 +88,57 @@ export default async function Page({
               })}
             </div>
             <div className="grid size-full grid-cols-4 gap-[23px]">
-              {nfts.map((nft: any[]) => (
+              {/* {nfts.map(async (nft: any[]) => { 
+                  const collection = await  getCollection();
+
+                  // console.log(dynamicCollection);
+                return(
                 <OwnedNFTCard
                   key={nft[0]}
                   owner={nft[0]}
                   collectionId={nft[1]}
                   nftId={nft[2]}
+                  metadata={collection}
                   isShadow
                 />
-              ))}
+              )})} */}
+              {await Promise.all(
+                nfts.map(async (nft: any[]) => {
+                  const collection = await getCollection();
+                  return (
+                    <OwnedNFTCard
+                      key={nft[0]}
+                      owner={nft[0]}
+                      collectionId={nft[1]}
+                      nftId={nft[2]}
+                      metadata={collection[nft[1]]}
+                      isShadow
+                    />
+                  );
+                })
+              )}
             </div>
           </section>
         </TabsContent>
         <TabsContent value="listed_nft">
           <section className="flex w-full flex-col space-y-10 py-10">
             <div className="grid size-full grid-cols-4 gap-[23px]">
-              {listings.map((listing: any) => (
-                <DeListNFTCard
-                  key={listing.listingId}
-                  listingId={listing.listingId}
-                  owner={listing.owner}
-                  collectionId={listing.collectionId}
-                  nftId={listing.itemId}
-                  isShadow
-                />
-              ))}
+              {await Promise.all(
+                listings.map(async (listing: any) => {
+                  const collection = await getCollection();
+                  return (
+                    <DeListNFTCard
+                      key={listing.listingId}
+                      listingId={listing.listingId}
+                      owner={listing.owner}
+                      collectionId={listing.collectionId}
+                      nftId={listing.itemId}
+                      metadata={collection[listing.collectionId]}
+                      isShadow
+                    />
+                  );
+                })
+              )}
             </div>
           </section>
         </TabsContent>

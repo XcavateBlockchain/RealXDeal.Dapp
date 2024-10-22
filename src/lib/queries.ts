@@ -1,4 +1,6 @@
+import { collectionImage } from '@/config/site';
 import { getApi } from './polkadot';
+import { Collection, CollectionItem } from '@/types';
 
 export async function getAvailableNFTs(collectionId?: number) {
   const api = await getApi();
@@ -220,3 +222,31 @@ GetAllListings
 GetAllListingsFor
 
 */
+
+export async function getAllCollections() {
+  const api = await getApi();
+  const data = await api.query.gameModule.collectionColor.entries();
+
+  return data.map(([key, exposure]) => {
+    return { collectionId: key.args[0].toHuman(), name: exposure.toHuman() };
+  }) as Collection[];
+}
+
+type DynamicCollection = Record<string, CollectionItem>;
+
+export async function getCollection(): Promise<DynamicCollection> {
+  const collections = await getAllCollections();
+  const dynamicCollection: DynamicCollection = {};
+
+  collections.forEach((collection: any, index) => {
+    const collectionName = collection.name.toLowerCase();
+
+    dynamicCollection[index.toString()] = {
+      collectionName,
+      collectionId: parseInt(collection.collectionId),
+      nftImage: collectionImage[collectionName as keyof typeof collectionImage].nftImage
+    };
+  });
+
+  return dynamicCollection;
+}

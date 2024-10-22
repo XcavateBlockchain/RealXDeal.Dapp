@@ -3,7 +3,7 @@ import { NFTCard } from '@/components/cards/nft-card';
 import { Shell } from '@/components/shell';
 import { Button } from '@/components/ui/button';
 // import { siteConfig } from '@/config/site';
-import { getAllListings } from '@/lib/queries';
+import { getAllListings, getCollection } from '@/lib/queries';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -76,16 +76,22 @@ export default async function Page({
         <h2 className="text-[1rem] font-medium">Listings</h2>
 
         <div className="grid size-full grid-cols-4 gap-[23px]">
-          {listings.map((listing: any) => (
-            <NFTCard
-              key={listing.listingId}
-              listingId={listing.listingId}
-              owner={listing.owner}
-              collectionId={listing.collectionId}
-              nftId={listing.itemId}
-              isShadow
-            />
-          ))}
+          {await Promise.all(
+            listings.map(async (listing: any) => {
+              const collection = await getCollection();
+              return (
+                <NFTCard
+                  key={listing.listingId}
+                  listingId={listing.listingId}
+                  owner={listing.owner}
+                  collectionId={listing.collectionId}
+                  nftId={listing.itemId}
+                  metadata={collection[listing.collectionId]}
+                  isShadow
+                />
+              );
+            })
+          )}
         </div>
       </section>
     </Shell>

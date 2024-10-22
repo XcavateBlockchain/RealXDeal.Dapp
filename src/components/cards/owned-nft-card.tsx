@@ -10,11 +10,13 @@ import { Icons } from '../icons';
 import { listNFT } from '@/lib/extrinsic';
 import { toast } from 'sonner';
 import { WalletContext } from '@/context/wallet-context';
+import { CollectionItem } from '@/types';
 
 interface NFTCardProps {
   collectionId: keyof typeof collection;
   nftId: string;
   owner: string;
+  metadata: CollectionItem;
   isShadow?: boolean;
 }
 
@@ -24,12 +26,12 @@ type Collection = {
   nftImage: string;
 };
 
-export function OwnedNFTCard({ isShadow, ...nft }: NFTCardProps) {
+export function OwnedNFTCard({ metadata, isShadow, ...nft }: NFTCardProps) {
   const [showDialog, setShowDialog] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
-  const metadata = collection[nft.collectionId] as Collection;
+  // const metadata = collection[nft.collectionId] as Collection;
 
   async function onListNFT() {
     setIsLoading(true);

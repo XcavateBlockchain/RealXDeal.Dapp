@@ -81,3 +81,14 @@ type NFTListed = {
     itemId: string;
   };
 };
+
+export type Collection = {
+  collectionId: string;
+  name: string;
+};
+
+export type CollectionItem = {
+  collectionName: string;
+  collectionId: number;
+  nftImage: string;
+};

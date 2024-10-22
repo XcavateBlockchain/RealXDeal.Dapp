@@ -8,7 +8,7 @@ const badgeVariants = cva(
   {
     variants: {
       variant: {
-        xGreen: 'border-[#78B36E] bg-[#78B36E]/[0.20]  text-[#78B36E]',
+        xgreen: 'border-[#78B36E] bg-[#78B36E]/[0.20]  text-[#78B36E]',
         xpurple: 'border-[#9678AE] bg-[#9678AE]/[0.20]  text-[#9678AE] ',
         xorange: 'border-[#ECB278] bg-[#ECB278]/[0.20]  text-[#ECB278] ',
         xleafgreen: 'border-[#457461] bg-[#457461]/[0.20]  text-[#457461] ',
@@ -18,7 +18,7 @@ const badgeVariants = cva(
         xcoral: 'border-[#DF8985] bg-[#DF8985]/[0.20]  text-[#DF8985]'
       },
       shadow: {
-        xGreen: '#78B36E',
+        xgreen: '#78B36E',
         xpurple: '#9678AE',
         xorange: '#ECB278 ',
         xleafgreen: '#457461',
@@ -29,8 +29,8 @@ const badgeVariants = cva(
       }
     },
     defaultVariants: {
-      variant: 'xGreen',
-      shadow: 'xGreen'
+      variant: 'xgreen',
+      shadow: 'xgreen'
     }
   }
 );

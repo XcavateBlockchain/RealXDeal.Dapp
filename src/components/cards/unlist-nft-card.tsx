@@ -11,28 +11,24 @@ import { delistNFT } from '@/lib/extrinsic';
 import { toast } from 'sonner';
 import { WalletContext } from '@/context/wallet-context';
 import { useRouter } from 'next/navigation';
+import { CollectionItem } from '@/types';
 
 interface NFTCardProps {
   listingId: string;
   collectionId: keyof typeof collection;
   nftId: string;
   owner: string;
+  metadata: CollectionItem;
   isShadow?: boolean;
 }
 
-type Collection = {
-  collectionName: string;
-  collectionId: number;
-  nftImage: string;
-};
-
-export function DeListNFTCard({ isShadow, ...nft }: NFTCardProps) {
+export function DeListNFTCard({ metadata, isShadow, ...nft }: NFTCardProps) {
   const router = useRouter();
   const [showDialog, setShowDialog] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const walletContext = useContext(WalletContext);
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
-  const metadata = collection[nft.collectionId] as Collection;
+  // const metadata = collection[nft.collectionId] as Collection;
 
   async function onListNFT() {
     setIsLoading(true);

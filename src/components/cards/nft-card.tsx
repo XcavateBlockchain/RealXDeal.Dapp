@@ -12,23 +12,25 @@ import { Icons } from '../icons';
 import { makeOffer } from '@/lib/extrinsic';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { CollectionItem } from '@/types';
 
 interface NFTCardProps {
   listingId: string;
   collectionId: keyof typeof collection;
   nftId: string;
   owner: string;
+  metadata: CollectionItem;
   isShadow?: boolean;
 }
 
-export function NFTCard({ isShadow, ...nft }: NFTCardProps) {
+export function NFTCard({ metadata, isShadow, ...nft }: NFTCardProps) {
   const router = useRouter();
-  const [showSwapDialog, setShowSwapDialog] = React.useState<boolean>(false)
+  const [showSwapDialog, setShowSwapDialog] = React.useState<boolean>(false);
   const [showDialog, setShowDialog] = React.useState<boolean>(false);
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const walletContext = useWalletContext();
   const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
-  const metadata = collection[nft.collectionId];
+  // const metadata = collection[nft.collectionId];
 
   async function handleMakeOffer() {
     setIsLoading(true);
@@ -93,7 +95,7 @@ export function NFTCard({ isShadow, ...nft }: NFTCardProps) {
         </div>
       </div>
       <AlertDialog open={showSwapDialog} onOpenChange={setShowSwapDialog}>
-       <AlertDialogContent className='w-full max-w-4xl'></AlertDialogContent>
+        <AlertDialogContent className="w-full max-w-4xl"></AlertDialogContent>
       </AlertDialog>
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
         <AlertDialogContent className="flex w-[518px] flex-col gap-2 rounded-lg px-6 py-6">
