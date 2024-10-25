@@ -66,3 +66,29 @@ export interface Wallet extends WalletInfo, WalletMethods {
 
   provider: InjectedProvider | undefined;
 }
+
+export enum LOADING_STATUS {
+  IDLE = 'idle',
+  LOADING = 'loading',
+  SUCCESS = 'success',
+  ERROR = 'error'
+}
+
+type NFTListed = {
+  [key: string]: {
+    owner: string;
+    collectionId: string;
+    itemId: string;
+  };
+};
+
+export type Collection = {
+  collectionId: string;
+  name: string;
+};
+
+export type CollectionItem = {
+  collectionName: string;
+  collectionId: number;
+  nftImage: string;
+};

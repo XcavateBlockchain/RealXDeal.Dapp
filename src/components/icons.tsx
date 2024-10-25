@@ -11,7 +11,8 @@ import {
   GearSix,
   Power,
   CheckCircle,
-  CaretLeft
+  CaretLeft,
+  Spinner
 } from '@phosphor-icons/react/dist/ssr';
 
 export type IconType = keyof typeof Icons;
@@ -32,6 +33,7 @@ export const Icons = {
   Power: Power,
   CheckCircle: CheckCircle,
   CaretLeft: CaretLeft,
+  spinner: Spinner,
   close: (props: IconProps) => (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="none" {...props}>
       <path
@@ -285,5 +287,22 @@ export const Icons = {
         </linearGradient>
       </defs>
     </svg>
+  ),
+  exit: (props: IconProps) => (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <path
+        d="M9 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V5C3 4.46957 3.21071 3.96086 3.58579 3.58579C3.96086 3.21071 4.46957 3 5 3H9M16 17L21 12M21 12L16 7M21 12H9"
+        stroke="currentColor"
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   )
+  //   copy: (props: IconProps) => (
+  //     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+  // <path d="M13.1875 0.25H4.1875C4.03832 0.25 3.89524 0.309263 3.78975 0.414753C3.68426 0.520242 3.625 0.663316 3.625 0.8125V3.625H0.8125C0.663316 3.625 0.520242 3.68426 0.414753 3.78975C0.309263 3.89524 0.25 4.03832 0.25 4.1875V13.1875C0.25 13.3367 0.309263 13.4798 0.414753 13.5852C0.520242 13.6907 0.663316 13.75 0.8125 13.75H9.8125C9.96168 13.75 10.1048 13.6907 10.2102 13.5852C10.3157 13.4798 10.375 13.3367 10.375 13.1875V10.375H13.1875C13.3367 10.375 13.4798 10.3157 13.5852 10.2102C13.6907 10.1048 13.75 9.96168 13.75 9.8125V0.8125C13.75 0.663316 13.6907 0.520242 13.5852 0.414753C13.4798 0.309263 13.3367 0.25 13.1875 0.25ZM9.25 12.625H1.375V4.75H9.25V12.625ZM12.625 9.25H10.375V4.1875C10.375 4.03832 10.3157 3.89524 10.2102 3.78975C10.1048 3.68426 9.96168 3.625 9.8125 3.625H4.75V1.375H12.625V9.25Z" fill="#DC7DA6"/>
+  // </svg>
+
+  //   )
 };

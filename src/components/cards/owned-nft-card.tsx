@@ -1,21 +1,18 @@
 'use client';
 
-import { cn, formatAddress } from '@/lib/utils';
+import { collection } from '@/config/site';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Button } from '../ui/button';
 import { AlertDialog, AlertDialogContent, AlertDialogTitle } from '../ui/alert-dialog';
-import { collection } from '@/config/site';
-import { useWalletContext } from '@/context/wallet-context';
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Icons } from '../icons';
-import { makeOffer } from '@/lib/extrinsic';
+import { listNFT } from '@/lib/extrinsic';
 import { toast } from 'sonner';
-import { useRouter } from 'next/navigation';
+import { WalletContext } from '@/context/wallet-context';
 import { CollectionItem } from '@/types';
 
 interface NFTCardProps {
-  listingId: string;
   collectionId: keyof typeof collection;
   nftId: string;
   owner: string;
@@ -23,37 +20,41 @@ interface NFTCardProps {
   isShadow?: boolean;
 }
 
-export function NFTCard({ metadata, isShadow, ...nft }: NFTCardProps) {
-  const router = useRouter();
-  const [showSwapDialog, setShowSwapDialog] = React.useState<boolean>(false);
-  const [showDialog, setShowDialog] = React.useState<boolean>(false);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const walletContext = useWalletContext();
-  const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
-  // const metadata = collection[nft.collectionId];
+type Collection = {
+  collectionName: string;
+  collectionId: number;
+  nftImage: string;
+};
 
-  async function handleMakeOffer() {
+export function OwnedNFTCard({ metadata, isShadow, ...nft }: NFTCardProps) {
+  const [showDialog, setShowDialog] = React.useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const walletContext = useContext(WalletContext);
+  const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
+  // const metadata = collection[nft.collectionId] as Collection;
+
+  async function onListNFT() {
     setIsLoading(true);
-    try {
-      await makeOffer(selectedAddress, {
-        listingId: parseInt(nft.listingId),
-        collectionId: parseInt(nft.collectionId),
-        itemId: parseInt(nft.nftId)
-      });
+    const { data, error } = await listNFT(
+      selectedAddress,
+      Number(nft.collectionId),
+      Number(nft.nftId)
+    );
+    if (error) {
+      setIsLoading(false);
+      toast.error(error);
+      return;
+    }
+
+    if (data) {
+      setIsLoading(false);
       setShowDialog(true);
-      router.refresh();
-    } catch (error) {
-      setIsLoading(false);
-      toast.error('Error', { description: 'Could not process your request please try again' });
-    } finally {
-      setIsLoading(false);
     }
   }
 
   return (
     <>
       <div
-        // href={`/nft/${nft.nftId}`}
         className={cn(
           'group flex w-full flex-col gap-4 rounded-lg border border-primary-300/[0.32] transition-all duration-300',
           isShadow ? 'shadow-header' : ''
@@ -70,33 +71,17 @@ export function NFTCard({ metadata, isShadow, ...nft }: NFTCardProps) {
           />
         </div>
 
-        <div className="flex flex-col gap-2.5 px-[17px] pb-[17px]">
-          <div className="flex items-center justify-between">
-            <div className="space-x-1 text-[0.9rem] font-light">
-              <span className="group-hover:text-primary-300">#{nft.nftId}</span> |{' '}
-              <span className="ml-[2px]">{metadata.collectionName}</span>
-            </div>
-            <Button
-              variant={'card'}
-              size={'nft'}
-              onClick={handleMakeOffer}
-              disabled={isLoading}
-            >
-              {isLoading && (
-                <Icons.spinner className="size-4 animate-spin" aria-hidden="true" />
-              )}
-              Swap
-            </Button>
+        <div className="flex justify-between gap-2.5 px-[17px] pb-[17px]">
+          <div className="space-x-1 text-[0.9rem] font-light">
+            <span className="group-hover:text-primary-300">#{nft.nftId}</span> |{' '}
+            <span className="ml-[2px]">{metadata.collectionName}</span>
           </div>
-
-          <div className="flex items-center justify-between text-[0.9rem] font-light">
-            <span>{formatAddress(nft.owner)}</span>
-          </div>
+          <Button variant={'card'} size={'nft'} onClick={onListNFT} disabled={isLoading}>
+            {isLoading && <Icons.spinner className="size-4 animate-spin" aria-hidden="true" />}
+            List
+          </Button>
         </div>
       </div>
-      <AlertDialog open={showSwapDialog} onOpenChange={setShowSwapDialog}>
-        <AlertDialogContent className="w-full max-w-4xl"></AlertDialogContent>
-      </AlertDialog>
       <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
         <AlertDialogContent className="flex w-[518px] flex-col gap-2 rounded-lg px-6 py-6">
           <AlertDialogTitle hidden>Success modal</AlertDialogTitle>
@@ -113,9 +98,10 @@ export function NFTCard({ metadata, isShadow, ...nft }: NFTCardProps) {
             >
               <div className="size-[140px] rounded-full bg-primary-300/15"></div>
             </div>
-            <h2 className="text-[17px]/[24px] font-medium">Swap offer sent</h2>
+            <h2 className="text-[17px]/[24px] font-medium">NFT listed </h2>
             <p className="text-center text-[17px]/[24px] font-light">
-              Your offer has been sent to the owner of this NFT wait for it’s approval
+              The {metadata.collectionName} NFT is now available for swapping on the
+              marketplace
             </p>
             <Button
               className="px-6 py-[18px] text-[16px]/[19px]"

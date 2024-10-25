@@ -1,10 +1,6 @@
+import { collectionImage } from '@/config/site';
 import { getApi } from './polkadot';
-import { getCookieStorage } from './storage';
-
-export async function getUser() {
-  const address = await getCookieStorage('accountKey');
-  return { address };
-}
+import { Collection, CollectionItem } from '@/types';
 
 export async function getAvailableNFTs(collectionId?: number) {
   const api = await getApi();
@@ -178,7 +174,7 @@ export async function getAllListings() {
   // [{listingId: {owner, collectionId, itemId}}, ...]
 }
 
-export async function getAllListingsByAddress(address: string) {
+export async function getAllListingsByAddress(address?: string) {
   const api = await getApi();
   const data = await api.query.gameModule.listings.entries();
 
@@ -195,6 +191,22 @@ export async function getAllListingsByAddress(address: string) {
   return listingDataForAccount;
   // [{listingId: {owner, collectionId, itemId}}, ...]
 }
+export async function getAllOffersByAddress(address?: string) {
+  const api = await getApi();
+  const data = await api.query.gameModule.offers.entries();
+
+  const offersDataForAccount = data
+    .filter(([key, exposure]) => {
+      const listingData = exposure.toHuman() as { owner: string };
+      return listingData.owner == address;
+    })
+    .map(([key, exposure]) => {
+      let listingId = key.args[0].toHuman() as number;
+      return { [listingId]: exposure.toHuman() };
+    });
+
+  return offersDataForAccount;
+}
 
 /*
 
@@ -210,3 +222,31 @@ GetAllListings
 GetAllListingsFor
 
 */
+
+export async function getAllCollections() {
+  const api = await getApi();
+  const data = await api.query.gameModule.collectionColor.entries();
+
+  return data.map(([key, exposure]) => {
+    return { collectionId: key.args[0].toHuman(), name: exposure.toHuman() };
+  }) as Collection[];
+}
+
+type DynamicCollection = Record<string, CollectionItem>;
+
+export async function getCollection(): Promise<DynamicCollection> {
+  const collections = await getAllCollections();
+  const dynamicCollection: DynamicCollection = {};
+
+  collections.forEach((collection: any, index) => {
+    const collectionName = collection.name.toLowerCase();
+
+    dynamicCollection[index.toString()] = {
+      collectionName,
+      collectionId: parseInt(collection.collectionId),
+      nftImage: collectionImage[collectionName as keyof typeof collectionImage].nftImage
+    };
+  });
+
+  return dynamicCollection;
+}

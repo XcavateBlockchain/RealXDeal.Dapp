@@ -13,6 +13,7 @@ import Image from 'next/image';
 import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import Link from 'next/link';
+import IdentIcon from './identicon';
 
 interface ISection {
   [key: number]: ReactNode;
@@ -106,25 +107,20 @@ export default function WalletConnect({ open = false }: { open?: boolean }) {
   return (
     <AlertDialog open={walletModal} onOpenChange={showWalletModal}>
       <AlertDialogTrigger asChild>
-        <button className="flex max-w-[250px] items-center gap-2 truncate rounded-lg border border-primary-300 px-[45px] py-4 font-heading text-[1rem] font-medium text-primary-300 hover:border-white hover:text-white">
-          {selectedAddress ? (
-            <>
-              <Image
-                src={'/images/profile.jpeg'}
-                alt="profile"
-                width={40}
-                height={40}
-                className="rounded-full shadow-profile"
-                priority
-              />
-              {formattedAddress}
-            </>
-          ) : (
-            <>
-              Connect <ConnectWalletIcon className="h-4 w-[21px]" />
-            </>
-          )}
-        </button>
+        {selectedAddress ? (
+          <button className="flex items-center gap-[17px] rounded-lg border border-transparent p-2 transition-all duration-200 ease-in hover:border-primary-300">
+            <IdentIcon address={selectedAddress} />
+            <div>
+              <span className="rounded-3xl bg-primary-300/[0.25] px-2 py-[2px] text-[0.875rem]/[0.025rem] font-extralight">
+                {formattedAddress}
+              </span>
+            </div>
+          </button>
+        ) : (
+          <button className="flex max-w-[250px] items-center gap-2 truncate rounded-lg border border-primary-300 px-[45px] py-4 font-heading text-[1rem] font-medium text-primary-300 hover:border-white hover:text-white">
+            Connect <ConnectWalletIcon className="h-4 w-[21px]" />
+          </button>
+        )}
       </AlertDialogTrigger>
       {!selectedAddress ? (
         <>{actions[index]}</>

@@ -131,7 +131,12 @@ export const siteConfig = {
       latitude: 52.625284,
       longitude: 1.30124
     },
-    images: [],
+    images: [
+      // 'https://media.rightmove.co.uk:443/dir/crop/10:9-16:9/32k/31217/144806384/31217_15631_PYMM_IMG_00_0000_max_476x317.jpeg',
+      '/images/Xcyan_property_NFT18_apartment.webp',
+      '/images/Xorange_property_NFT21_apartment.webp',
+      '/images/Xcyan_property_NFT18_apartment.webp'
+    ],
     summary:
       'Second floor apartment located a short stroll from the City centre, Good sized lounge, Kitchen/Diner, Two bedrooms, E-Suite & Bathroom, Double glazing & electric heating, Designated Parking Space.'
   } as GameData
@@ -163,5 +168,118 @@ export const staleUser = {
     xpurple: 0,
     xleafgreen: 0,
     xgreen: 0
+  }
+};
+
+export const collections = [
+  {
+    collectionName: 'xorange',
+    collectionId: 9
+  },
+  {
+    collectionName: 'xpink',
+    collectionId: 10
+  },
+  {
+    collectionName: 'Xblue',
+    collectionId: 11
+  },
+  {
+    collectionName: 'xcyan',
+    collectionId: 12
+  },
+  {
+    collectionName: 'xcoral',
+    collectionId: 13
+  },
+  {
+    collectionName: 'xpurple',
+    collectionId: 14
+  },
+  {
+    collectionName: 'xleafgreen',
+    collectionId: 15
+  },
+  {
+    collectionName: 'xgreen',
+    collectionId: 16
+  }
+];
+
+export const collection = {
+  '0': {
+    collectionName: 'xorange',
+    collectionId: 9,
+    nftImage: '/images/Xorange_property_NFT21_apartment.webp'
+  },
+  '1': {
+    collectionName: 'xpink',
+    collectionId: 10,
+    nftImage: '/images/Xpink_property_NFT25_apartment.webp'
+  },
+  '2': {
+    collectionName: 'Xblue',
+    collectionId: 11,
+    nftImage: '/images/Xblue_property_NFT29_apartment.webp'
+  },
+  '3': {
+    collectionName: 'xcyan',
+    collectionId: 12,
+    nftImage: '/images/Xcyan_property_NFT18_apartment.webp'
+  },
+  '4': {
+    collectionName: 'xcoral',
+    collectionId: 13,
+    nftImage: '/images/Xcoral_property_NFT15_apartment.webp'
+  },
+  '5': {
+    collectionName: 'xpurple',
+    collectionId: 14,
+    nftImage: '/images/Xpurple_property_NFT12_apartment.webp'
+  },
+  '6': {
+    collectionName: 'xleafgreen',
+    collectionId: 15,
+    nftImage: '/images/Xleafgreen_property_NFT6_apartment.webp'
+  },
+  '7': {
+    collectionName: 'xgreen',
+    collectionId: 16,
+    nftImage: '/images/Xgreen_property_NFT3_apartment.webp'
+  }
+};
+
+export const collectionImage = {
+  xorange: {
+    collectionName: 'xorange',
+    nftImage: '/images/Xorange_property_NFT21_apartment.webp'
+  },
+  xpink: {
+    collectionName: 'xpink',
+    nftImage: '/images/Xpink_property_NFT25_apartment.webp'
+  },
+  xblue: {
+    collectionName: 'xblue',
+    nftImage: '/images/Xblue_property_NFT29_apartment.webp'
+  },
+  xcyan: {
+    collectionName: 'xcyan',
+    nftImage: '/images/Xcyan_property_NFT18_apartment.webp'
+  },
+  xcoral: {
+    collectionName: 'xcoral',
+    nftImage: '/images/Xcoral_property_NFT15_apartment.webp'
+  },
+  xpurple: {
+    collectionName: 'xpurple',
+    nftImage: '/images/Xpurple_property_NFT12_apartment.webp'
+  },
+  xleafgreen: {
+    collectionName: 'xleafgreen',
+    nftImage: '/images/Xleafgreen_property_NFT6_apartment.webp'
+  },
+  xgreen: {
+    collectionName: 'xgreen',
+    nftImage: '/images/Xgreen_property_NFT3_apartment.webp'
   }
 };

@@ -2,25 +2,38 @@ import { Card } from '@/components/cards/card';
 import { NFTCard } from '@/components/cards/nft-card';
 import { Shell } from '@/components/shell';
 import { Button } from '@/components/ui/button';
-import { siteConfig } from '@/config/site';
+// import { siteConfig } from '@/config/site';
+import { getAllListings, getCollection } from '@/lib/queries';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const collections = ['All', 'Blue', 'Red', 'Pink', 'Orange', 'Purple', 'Teal', 'Coral'];
 
-export default function Page({
+export default async function Page({
   searchParams: { collection }
 }: {
   searchParams: { collection: string };
 }) {
-  const data = siteConfig.nfts.slice(1, 5);
+  // const data = siteConfig.nfts.slice(1, 5);
 
   const BASE_URL = '/marketplace';
   const selected = collection === undefined ? 'All' : collection;
 
+  const nfts = await getAllListings();
+
+  const listings = nfts.flatMap(item => {
+    const [listingId, details] = Object.entries(item)[0];
+    return [
+      {
+        listingId,
+        ...(typeof details === 'object' && details !== null ? details : {})
+      }
+    ];
+  });
+
   return (
     <Shell>
-      <Card title="Trending">
+      {/* <Card title="Trending">
         <div className="grid size-full grid-cols-4 gap-[13px]">
           {data.map((nft: any) => (
             <NFTCard
@@ -32,7 +45,7 @@ export default function Page({
             />
           ))}
         </div>
-      </Card>
+      </Card> */}
       <section className="flex w-full gap-[120px] py-[30px]">
         <input
           type="text"
@@ -59,20 +72,26 @@ export default function Page({
         </div>
       </section>
 
-      <section className="flex w-full flex-col gap-8">
+      <section className="flex w-full flex-col gap-8 pb-10">
         <h2 className="text-[1rem] font-medium">Listings</h2>
 
         <div className="grid size-full grid-cols-4 gap-[23px]">
-          {siteConfig.nfts.map((nft: any) => (
-            <NFTCard
-              key={nft.nftId}
-              nftId={nft.nftId}
-              image={nft.image}
-              owner={nft.owner}
-              type={nft.type}
-              isShadow
-            />
-          ))}
+          {await Promise.all(
+            listings.map(async (listing: any) => {
+              const collection = await getCollection();
+              return (
+                <NFTCard
+                  key={listing.listingId}
+                  listingId={listing.listingId}
+                  owner={listing.owner}
+                  collectionId={listing.collectionId}
+                  nftId={listing.itemId}
+                  metadata={collection[listing.collectionId]}
+                  isShadow
+                />
+              );
+            })
+          )}
         </div>
       </section>
     </Shell>

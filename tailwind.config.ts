@@ -29,6 +29,7 @@ const config = {
           300: '#DC7DA6',
           400: 'hsla(30, 75%, 70%)',
           500: '#172234',
+          600: '#4F6542',
           foreground: 'hsla(0, 0%, 80%)'
         },
         secondary: {
@@ -45,6 +46,14 @@ const config = {
         },
         accent: {
           DEFAULT: 'hsl(var(--accent))',
+          x_cyan: '#57a0c5',
+          x_pink: '#dc7da6',
+          x_coral: '#df8985',
+          x_purple: '#9678ae',
+          x_leaf: '#457561',
+          x_green: '#78b36e',
+          x_orange: '#ecb278',
+          x_blue: '#3b4f74',
           foreground: 'hsl(var(--accent-foreground))'
         },
         popover: {
@@ -52,7 +61,7 @@ const config = {
           foreground: 'hsl(var(--popover-foreground))'
         },
         card: {
-          DEFAULT: 'hsl(var(--card))',
+          DEFAULT: '#1D2A41',
           foreground: 'hsl(var(--card-foreground))'
         }
       },
@@ -65,7 +74,8 @@ const config = {
         card: '0px 0px 30px 0px rgba(0, 0, 0, 0.32)',
         profile: '0px 0px 24px 0px #ECB278',
         time: '0px 0px 24px 0px rgba(87, 160, 197, 1)',
-        game: '0px 0px 24px 0px #DC7DA6'
+        game: '0px 0px 24px 0px #DC7DA6',
+        collection: '0px 0px 8.15px 0px'
       },
       keyframes: {
         'accordion-down': {

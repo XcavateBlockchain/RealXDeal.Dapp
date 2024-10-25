@@ -1,103 +1,111 @@
-import { Shell } from '@/components/shell';
-import UserStats from './_components/user-stats';
-import { Card, CardWithoutHeading, TaskCard } from '@/components/cards/card';
-import {
-  getAllListings,
-  getAllListingsByAddress,
-  getUnlistedNFTsForUser,
-  getLeadBoards,
-  getAllUnlistedNFTs,
-  getUser,
-  getUserData
-} from '@/lib/queries';
+import StartGame from '@/app/(dashboard)/dashboard/_components/start-game';
+import { Card, TaskCard } from '@/components/cards/card';
 import { LeadBoardCard } from '@/components/cards/leadboard-card';
+import { GameICons } from '@/components/game-icon';
+import { Shell } from '@/components/shell';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { staleBoard, staleUser } from '@/config/site';
+import { getLeadBoards, getUserData } from '@/lib/queries';
+import { getCookieStorage } from '@/lib/storage';
+import { cn } from '@/lib/utils';
 import Image from 'next/image';
-import ProfileHeader from './_components/profile-header';
-import { PlayerStats } from '@/components/cards/player-stats-card';
-import LiveGamePlay from './_components/live-game-container';
-import { staleBoard } from '@/config/site';
 
-export default async function Page() {
-  const { address } = await getUser();
+export default async function Dashboard() {
+  const address = await getCookieStorage('accountKey');
   const boardList = (await getLeadBoards()) ?? staleBoard;
   const user = await getUserData(address ? address : '');
 
-  // if (address) {
-  //   // await getNFTForUser(address);
-  //   console.log(await getAllListings());
-  //   console.log(await getAllNFTFs());
-  // }
-
   return (
     <Shell>
-      {/* <UserStats /> */}
-      <ProfileHeader points={user?.points ?? 0} />
-      <section className="flex w-full items-end gap-[54px]">
-        <CardWithoutHeading className="w-2/5">
-          <PlayerStats title="Guesses" value={Number(user?.wins) + Number(user?.losses)} />
-          <PlayerStats title="Correct " value={user?.wins ?? 0} />
-          <PlayerStats title="Failed " value={user?.losses ?? 0} />
-        </CardWithoutHeading>
-        <div className="flex w-3/5 items-start gap-[29px]">
-          <div className="flex w-[172px] items-end justify-center rounded-lg border border-primary-400 bg-primary-400/[0.24] p-2.5">
-            <LiveGamePlay type={0} points={user?.points ?? 0} />
+      <section className="flex w-full items-start gap-8">
+        <div className="flex w-[55%] flex-col gap-8">
+          <div className="flex w-full items-center gap-10">
+            <Stats title="My points" value={user?.points ?? 0} />
+            <Stats title="My ranking" value={'#1'} />
+            <Stats title="My NFTs" value={0} />
+            <Stats title="Championships" value={0} />
           </div>
-          <div className="flex w-[172px] items-end justify-center rounded-lg border border-primary-200 bg-primary-200/[0.24] p-2.5">
-            <LiveGamePlay type={1} points={user?.points ?? 0} />
-          </div>
-        </div>
-      </section>
-      <section className="flex items-start gap-[54px]">
-        <Card className="h-full w-2/5" title="Top 5 players">
-          <div className="flex w-full flex-col gap-3">
-            {boardList.map((list: any, index: number) => (
-              <LeadBoardCard
-                key={index}
-                index={index + 1}
-                user={list[0]}
-                points={list[1]}
-                winner={index + 1 > 3 ? false : true}
+          <Card title="NFTs Collected" className="py6 px-6">
+            <div className="grid size-full grid-cols-4 gap-6">
+              <CollectionCard
+                image="/images/nfts/x_cyan.png"
+                noOfNfts={user?.nfts?.xorange ?? 0}
+                background="bg-accent-x_cyan"
+                border="border-accent-x_cyan"
               />
-            ))}
+              <CollectionCard
+                image="/images/nfts/x_pink.png"
+                noOfNfts={user?.nfts?.xpink ?? 0}
+                background="bg-accent-x_pink"
+                border="border-accent-x_pink"
+              />
+              <CollectionCard
+                image="/images/nfts/x_orange.png"
+                noOfNfts={user?.nfts?.xorange ?? 0}
+                background="bg-accent-x_orange"
+                border="border-accent-x_orange"
+              />
+              <CollectionCard
+                image="/images/nfts/x_purple.png"
+                noOfNfts={user?.nfts?.xpurple ?? 0}
+                background="bg-accent-x_purple"
+                border="border-accent-x_purple"
+              />
+              <CollectionCard
+                image="/images/nfts/x_blue.png"
+                noOfNfts={user?.nfts?.xblue ?? 0}
+                background="bg-accent-x_blue"
+                border="border-accent-x_blue"
+              />
+              <CollectionCard
+                image="/images/nfts/x_green.png"
+                noOfNfts={user?.nfts?.xgreen ?? 0}
+                background="bg-accent-x_green"
+                border="border-accent-x_green"
+              />
+              <CollectionCard
+                image="/images/nfts/x_coral.png"
+                noOfNfts={user?.nfts?.xcoral ?? 0}
+                background="bg-accent-x_coral"
+                border="border-accent-x_coral"
+              />
+              <CollectionCard
+                image="/images/nfts/x_leaf_green.png"
+                noOfNfts={user?.nfts?.xleafgreen ?? 0}
+                background="bg-accent-x_leaf"
+                border="border-accent-x_leaf"
+              />
+            </div>
+          </Card>
+        </div>
+        <div className="flex w-[45%] flex-col gap-8">
+          <div className="flex w-full items-center gap-[18px]">
+            {/* <button className="group flex flex-col items-center justify-center gap-[6px] rounded-[6px] border border-primary-400 p-3">
+              <div className="flex size-[55px] items-center justify-center rounded-full shadow-header group-hover:shadow-xl">
+                <GameICons.player className="size-[38px]" />
+              </div>
+              <span className="text-[12px]/[18px] font-bold">Practice mode</span>
+            </button> */}
+            <StartGame mode={0} address={address} className="size-8" />
+            <StartGame variant={'player'} mode={1} address={address} />
+            <StartGame variant={'pro'} mode={2} address={address} />
           </div>
-        </Card>
-
-        <Card className="w-3/5" title="NFTs Collected">
-          <div className="grid size-full grid-cols-4 gap-2">
-            <CollectionCard
-              image="/images/nfts/x_orange.png"
-              noOfNfts={user?.nfts?.xorange ?? 0}
-            />
-            <CollectionCard
-              image="/images/nfts/x_pink.png"
-              noOfNfts={user?.nfts?.xpink ?? 0}
-            />
-            <CollectionCard
-              image="/images/nfts/x_blue.png"
-              noOfNfts={user?.nfts?.xblue ?? 0}
-            />
-            <CollectionCard
-              image="/images/nfts/x_cyan.png"
-              noOfNfts={user?.nfts?.xorange ?? 0}
-            />
-            <CollectionCard
-              image="/images/nfts/x_coral.png"
-              noOfNfts={user?.nfts?.xcoral ?? 0}
-            />
-            <CollectionCard
-              image="/images/nfts/x_purple.png"
-              noOfNfts={user?.nfts?.xpurple ?? 0}
-            />
-            <CollectionCard
-              image="/images/nfts/x_leaf_green.png"
-              noOfNfts={user?.nfts?.xleafgreen ?? 0}
-            />
-            <CollectionCard
-              image="/images/nfts/x_green.png"
-              noOfNfts={user?.nfts?.xgreen ?? 0}
-            />
-          </div>
-        </Card>
+          <Card title="Top players">
+            <ScrollArea className="h-[280px] w-full pl-3">
+              <div className="flex w-full flex-col gap-3">
+                {boardList.map((list: any, index: number) => (
+                  <LeadBoardCard
+                    key={index}
+                    index={index + 1}
+                    user={list[0]}
+                    points={list[1]}
+                    winner={index + 1 > 3 ? false : true}
+                  />
+                ))}
+              </div>
+            </ScrollArea>
+          </Card>
+        </div>
       </section>
       <Card title="Task">
         <div className="grid w-full grid-cols-3 gap-[14px]">
@@ -122,19 +130,42 @@ export default async function Page() {
   );
 }
 
-const CollectionCard = ({ image, noOfNfts }: { image: string; noOfNfts: number }) => {
+const Stats = ({ title, value }: { title: string; value: any }) => {
   return (
-    <div className="relative w-full border border-primary-200 p-[6px]">
+    <div className="flex h-[59px] w-[143px] flex-col items-center justify-center gap-2 rounded border border-white bg-[#4F6542]/[0.15] py-4">
+      <span className="text-[11px]/[24px]">{title}</span>
+      <span className="text-[14px]/[17px] font-semibold">{value}</span>
+    </div>
+  );
+};
+
+type CollectionCardProps = {
+  image: string;
+  noOfNfts: number;
+  border: string;
+  background: string;
+};
+
+const CollectionCard = ({ image, noOfNfts, border, background }: CollectionCardProps) => {
+  return (
+    <div className={cn('relative size-full border p-1', border)}>
       <Image
         src={image}
         alt="nft"
         width={132}
-        height={152}
+        height={156}
         priority
         className="h-[152px] w-full"
-      />{' '}
-      <div className="absolute bottom-0 left-[53px] flex items-center justify-center rounded-t bg-primary-200 px-2">
-        <span className="text-[1rem]/[1.2rem] font-light">{noOfNfts}</span>
+      />
+      <div className="absolute inset-[50px] flex size-[56px] items-center justify-center rounded-full bg-primary-500">
+        <div
+          className={cn(
+            'flex size-[38px] items-center justify-center rounded-full text-[16px]/[19px] font-medium',
+            background
+          )}
+        >
+          {noOfNfts}
+        </div>
       </div>
     </div>
   );
