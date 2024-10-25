@@ -101,13 +101,13 @@ export default function StartGame({
   return (
     <>
       <button
-        className={cn(buttonVariants({ variant, fullWidth, className }))}
+        className={cn(buttonVariants({ variant, fullWidth,  }))}
         {...props}
         disabled={status === LOADING_STATUS.LOADING}
         onClick={handleClick}
       >
         <div className="flex size-[75px] items-center justify-center rounded-full bg-card">
-          <Icon className="size-[40px]" />
+          <Icon className={cn("size-10", className)} />
         </div>
         <span className="text-[12px]/[18px] font-bold">{GAME_MODE[mode]} mode</span>
         {props.description ? (

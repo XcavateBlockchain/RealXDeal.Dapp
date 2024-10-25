@@ -86,7 +86,7 @@ export default async function Dashboard() {
               </div>
               <span className="text-[12px]/[18px] font-bold">Practice mode</span>
             </button> */}
-            <StartGame mode={0} address={address} />
+            <StartGame mode={0} address={address} className="size-8" />
             <StartGame variant={'player'} mode={1} address={address} />
             <StartGame variant={'pro'} mode={2} address={address} />
           </div>
