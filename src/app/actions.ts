@@ -371,7 +371,7 @@ export async function checkResult(data: {
       api.tx.sudo
         .sudo(extrinsic)
         .signAndSend(account, ({ status, events }) => {
-          if (status.isFinalized) {
+          if (status.isInBlock) {
             clearTimeout(timeoutId);
 
             const resultCheckedEvent = events.find(({ event }) =>

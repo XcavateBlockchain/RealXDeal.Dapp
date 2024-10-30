@@ -154,7 +154,7 @@ export async function submitGameAnswer(
       address,
       { signer, nonce: -1 },
       async ({ status, events = [], dispatchError }) => {
-        if (status.isFinalized && !eventProcessed) {
+        if (status.isInBlock && !eventProcessed) {
           eventProcessed = true;
           const answerSubmittedEvent = events.find(({ event }) =>
             api.events.gameModule.AnswerSubmitted.is(event)
