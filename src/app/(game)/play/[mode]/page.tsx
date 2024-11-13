@@ -11,6 +11,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import SubmitGuess, { Countdown } from './submit-guess';
 import { getCookieStorage } from '@/lib/storage';
+import { GameInfo } from '@/lib/extrinsic';
+import { getGameInfo } from '@/lib/queries';
+import { Suspense } from 'react';
 
 interface PlayGameProps {
   params: { mode: string };
@@ -25,7 +28,9 @@ export default async function PlayGame({ params, searchParams }: PlayGameProps) 
   const mode = params.mode;
   const gameId = searchParams.id;
   const address = await getCookieStorage('accountKey');
-  const data: any = await fetchPropertyForDisplay(139361966);
+  const gameInfo = (await getGameInfo(Number(gameId))) as unknown as GameInfo;
+  // const data: any = await fetchPropertyForDisplay(139361966);
+  const data: any = await fetchPropertyForDisplay(Number(gameInfo.property.id));
 
   return (
     <Shell className="py-[50px]">
@@ -71,7 +76,10 @@ export default async function PlayGame({ params, searchParams }: PlayGameProps) 
             <Icons.exit className="size-6" /> End
           </Button>
         </Link>
-        <SubmitGuess address={address} gameId={Number(gameId)} />
+        <Suspense fallback={''}>
+          <SubmitGuess address={address} gameId={Number(gameId)} />
+        </Suspense>
+        {/* <SubmitGuess address={address} gameId={Number(gameId)} /> */}
       </div>
     </Shell>
   );

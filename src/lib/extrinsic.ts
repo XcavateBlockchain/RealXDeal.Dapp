@@ -54,7 +54,10 @@ export async function playGame(
             const header = await api.rpc.chain.getHeader(status.asInBlock);
             const submittedBlockNumber = header.number.toNumber();
 
-            const propertyDisplay = await fetchPropertyForDisplay(139361966);
+            // const propertyDisplay = await fetchPropertyForDisplay(139361966);
+            const propertyDisplay = await fetchPropertyForDisplay(
+              Number(gameInfo.property.id)
+            );
             console.log('submitted blocknumber', submittedBlockNumber);
             console.log('ending blocknumber', endingBlock);
             handlePropertyDisplay(propertyDisplay, gameId, submittedBlockNumber, endingBlock);
