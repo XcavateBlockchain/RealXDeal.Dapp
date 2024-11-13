@@ -46,7 +46,7 @@ export async function playGame(
             const gameId = gameStartedEvent.event.data[1].toString();
             const endingBlock = gameStartedEvent.event.data[2].toString();
             console.log(`GameStarted event found with game_id: ${gameId}`);
-            const gameInfo = (await getGameInfo(parseInt(gameId))) as unknown as GameInfo;
+            // const gameInfo = (await getGameInfo(parseInt(gameId))) as unknown as GameInfo;
             // console.log('The game info is: ', gameInfo);
             // const propertyDisplay = await fetchPropertyForDisplay(
             //   Number(gameInfo.property.id)
@@ -54,10 +54,7 @@ export async function playGame(
             const header = await api.rpc.chain.getHeader(status.asInBlock);
             const submittedBlockNumber = header.number.toNumber();
 
-            // const propertyDisplay = await fetchPropertyForDisplay(139361966);
-            const propertyDisplay = await fetchPropertyForDisplay(
-              Number(gameInfo.property.id)
-            );
+            const propertyDisplay = await fetchPropertyForDisplay(139361966);
             console.log('submitted blocknumber', submittedBlockNumber);
             console.log('ending blocknumber', endingBlock);
             handlePropertyDisplay(propertyDisplay, gameId, submittedBlockNumber, endingBlock);
