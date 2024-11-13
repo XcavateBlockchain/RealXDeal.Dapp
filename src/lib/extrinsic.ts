@@ -46,7 +46,7 @@ export async function playGame(
             const gameId = gameStartedEvent.event.data[1].toString();
             const endingBlock = gameStartedEvent.event.data[2].toString();
             console.log(`GameStarted event found with game_id: ${gameId}`);
-            const gameInfo = (await getGameInfo(parseInt(gameId))) as unknown as GameInfo;
+            // const gameInfo = (await getGameInfo(parseInt(gameId))) as unknown as GameInfo;
             // console.log('The game info is: ', gameInfo);
             // const propertyDisplay = await fetchPropertyForDisplay(
             //   Number(gameInfo.property.id)
@@ -154,7 +154,7 @@ export async function submitGameAnswer(
       address,
       { signer, nonce: -1 },
       async ({ status, events = [], dispatchError }) => {
-        if (status.isFinalized && !eventProcessed) {
+        if (status.isInBlock && !eventProcessed) {
           eventProcessed = true;
           const answerSubmittedEvent = events.find(({ event }) =>
             api.events.gameModule.AnswerSubmitted.is(event)

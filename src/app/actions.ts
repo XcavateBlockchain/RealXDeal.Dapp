@@ -317,12 +317,13 @@ export async function checkResult(data: {
   guess: number;
   gameId: number;
   address: string;
-}): Promise<{ points: string; won: string } | null> {
+}): Promise<{ points: string; won: string; realPrice: any } | null> {
   console.log('Checking result for game:', data.gameId);
 
   try {
-    // const gameInfo = await getGameInfo(data.gameId) as unknown as GameInfo;
+    // const gameInfo = (await getGameInfo(data.gameId)) as unknown as GameInfo;
     const propertyData = await fetchPropertyData(139361966);
+    // const propertyData = await fetchPropertyData(Number(gameInfo.property.id));
 
     if (!propertyData) {
       throw new Error(`Property data not found for game ${data.gameId}`);
@@ -381,7 +382,7 @@ export async function checkResult(data: {
             if (resultCheckedEvent) {
               const points = resultCheckedEvent.event.data[2].toString();
               const won = resultCheckedEvent.event.data[3].toString();
-              resolve({ points, won });
+              resolve({ points, won, realPrice });
             } else {
               reject(new Error('ResultChecked event not found'));
             }

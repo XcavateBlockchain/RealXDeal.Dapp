@@ -1,12 +1,13 @@
 'use client';
 
-import { useState, FormEvent } from 'react';
+import { useState, FormEvent, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { LOADING_STATUS } from '@/types';
 import { submitGameAnswer } from '@/lib/extrinsic';
 import { toast } from 'sonner';
+import { Pause, Play } from 'lucide-react';
 import { useGameContext } from '@/context/game-context';
 // import { checkResult } from '@/app/actions';
 import {
@@ -19,6 +20,7 @@ import Image from 'next/image';
 import { checkResult } from '@/app/actions';
 import { error } from 'console';
 import useLiveCountdown from '@/hooks/use-live-countdown';
+import { RealEstateFact, realEstateFacts } from '@/config/facts';
 
 type GameProps = {
   gameId: number;
@@ -34,6 +36,8 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
   const [showLoadingDialog, setShowLoadingDialog] = useState(false);
   const [status, setStatus] = useState<LOADING_STATUS>(LOADING_STATUS.IDLE);
   const [isResultChecking, setIsResultChecking] = useState(false);
+  const [fact, setFact] = useState('');
+  const [isPaused, setIsPaused] = useState(false);
   const { setResult } = useGameContext();
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
@@ -74,7 +78,7 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
             gameId,
             address
           });
-          console.log("Check result:", result);
+          console.log('Check result:', result);
           if (result !== null) {
             setResult({ guess, ...result });
             setStatus(LOADING_STATUS.SUCCESS);
@@ -91,6 +95,26 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
       router.push('/dashboard');
     }
   }
+
+  function getRandomFact() {
+    const randomIndex = Math.floor(Math.random() * realEstateFacts.length);
+    setFact(realEstateFacts[randomIndex].fact);
+  }
+
+  useEffect(() => {
+    getRandomFact();
+    const intervalId = setInterval(() => {
+      if (!isPaused) {
+        getRandomFact();
+      }
+    }, 10000); // Fetch a new fact every 10 seconds
+
+    return () => clearInterval(intervalId);
+  }, [getRandomFact, isPaused]);
+
+  const togglePause = () => {
+    setIsPaused(prev => !prev);
+  };
 
   return (
     <>
@@ -113,7 +137,35 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
           Enter
         </Button>
       </form>
-      <AlertDialog open={showLoadingDialog} onOpenChange={setShowLoadingDialog}>
+      {showLoadingDialog ? (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/[0.50] backdrop-blur-[4px]">
+          <div className="flex w-full max-w-md flex-col items-center gap-6 rounded-lg bg-[#172234] p-6">
+            <div className="flex w-full flex-col items-center justify-center gap-10 py-12">
+              <span className="relative flex size-10 md:size-20">
+                <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-75"></span>
+                <span className="relative inline-flex size-10 rounded-full bg-primary md:size-20"></span>
+              </span>
+
+              <div className="space-y-3.5 px-3.5 text-center sm:px-0">
+                <h1 className="text-xl font-semibold">This which may take some time</h1>
+                <p className="text-balance text-sm text-muted-foreground">{fact}</p>
+              </div>
+
+              <div>
+                <Button
+                  variant="text"
+                  size="icon"
+                  onClick={togglePause}
+                  aria-label={isPaused ? 'Resume facts' : 'Pause facts'}
+                >
+                  {isPaused ? <Play className="h-4 w-4" /> : <Pause className="h-4 w-4" />}
+                </Button>
+              </div>
+            </div>
+          </div>
+        </div>
+      ) : null}
+      {/* <AlertDialog open={showLoadingDialog} onOpenChange={setShowLoadingDialog}>
         <AlertDialogContent className="max-w-lg bg-[#1D2A41]">
           <div className="flex flex-col items-center justify-center gap-6 py-12">
             <Image src={'/images/logo.svg'} alt="" width={143} height={56} priority />
@@ -142,7 +194,7 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
             </div>
           </div>
         </AlertDialogContent>
-      </AlertDialog>
+      </AlertDialog> */}
     </>
   );
 }
