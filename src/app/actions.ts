@@ -321,9 +321,9 @@ export async function checkResult(data: {
   console.log('Checking result for game:', data.gameId);
 
   try {
-    const gameInfo = (await getGameInfo(data.gameId)) as unknown as GameInfo;
-    // const propertyData = await fetchPropertyData(139361966);
-    const propertyData = await fetchPropertyData(Number(gameInfo.property.id));
+    // const gameInfo = (await getGameInfo(data.gameId)) as unknown as GameInfo;
+    const propertyData = await fetchPropertyData(139361966);
+    // const propertyData = await fetchPropertyData(Number(gameInfo.property.id));
 
     if (!propertyData) {
       throw new Error(`Property data not found for game ${data.gameId}`);
