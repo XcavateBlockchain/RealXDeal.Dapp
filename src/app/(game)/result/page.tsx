@@ -16,7 +16,7 @@ interface PlayGameProps {
   };
 }
 
-export default function Result({}: PlayGameProps) {
+export default function Result({ searchParams }: PlayGameProps) {
   // const router = useRouter();
   const [propertyData, setPropertyData] = useState<any>();
   const { result: data } = useGameContext();
@@ -24,8 +24,12 @@ export default function Result({}: PlayGameProps) {
 
   useEffect(() => {
     async function property() {
-      const data: any = await fetchPropertyForDisplay(139361966);
-      setPropertyData(data);
+      try {
+        const data: any = await fetchPropertyForDisplay(139361966);
+        setPropertyData(data);
+      } catch (error) {
+        console.error('Error fetching property data:', error);
+      }
     }
     property();
   }, []);
