@@ -25,8 +25,8 @@ export default function Result({ searchParams }: PlayGameProps) {
   useEffect(() => {
     async function property() {
       try {
-        const data: any = await fetchPropertyForDisplay(139361966);
-        setPropertyData(data);
+        const info: any = await fetchPropertyForDisplay(139361966);
+        setPropertyData(info);
       } catch (error) {
         console.error('Error fetching property data:', error);
       }
@@ -50,7 +50,7 @@ export default function Result({ searchParams }: PlayGameProps) {
               src={
                 data.won === 'true' && data.nftReceived === true
                   ? `${nft.nftImage}`
-                  : `${propertyData.images[0]}`
+                  : `${propertyData && propertyData.images[0]}`
               }
               alt=""
               width={239}
