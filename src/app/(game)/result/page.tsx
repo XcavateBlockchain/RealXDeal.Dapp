@@ -1,24 +1,38 @@
 'use client';
 
+import { fetchPropertyForDisplay } from '@/app/actions';
 import { Shell } from '@/components/shell';
 import { Button } from '@/components/ui/button';
 import { useGameContext } from '@/context/game-context';
 import { cn, formatNumber, getRandomCollection } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect } from 'react';
+// import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
-export default function Result() {
-  const router = useRouter();
+interface PlayGameProps {
+  searchParams: {
+    id: string | any;
+  };
+}
+
+export default function Result({ searchParams }: PlayGameProps) {
+  // const router = useRouter();
+  const [propertyData, setPropertyData] = useState<any>();
   const { result: data } = useGameContext();
   const nft = getRandomCollection();
 
-  // if (!Result) {
-  //   useEffect(() => {
-  //     router.push('/dashboard');
-  //   });
-  // }
+  useEffect(() => {
+    async function property() {
+      try {
+        const info: any = await fetchPropertyForDisplay(139361966);
+        setPropertyData(info);
+      } catch (error) {
+        console.error('Error fetching property data:', error);
+      }
+    }
+    property();
+  }, []);
 
   return (
     <Shell>
@@ -36,7 +50,7 @@ export default function Result() {
               src={
                 data.won === 'true' && data.nftReceived === true
                   ? `${nft.nftImage}`
-                  : '/images/no_nft.png'
+                  : `${propertyData && propertyData.images[0]}`
               }
               alt=""
               width={239}
@@ -55,7 +69,7 @@ export default function Result() {
             />
           )}
         </div>
-        <p>Actual price: {formatNumber(data.realPrice)}</p>
+        <p>Actual price: ${formatNumber(data.realPrice)}</p>
       </div>
       <div className="flex flex-col items-center justify-center">
         <div className="flex w-full max-w-md flex-col items-center justify-center gap-2 text-center">
