@@ -55,7 +55,7 @@ export default function Result() {
             />
           )}
         </div>
-        <p>Actual price: {formatNumber(data.realPrice)}</p>
+        <p>Actual price: ${formatNumber(data.realPrice)}</p>
       </div>
       <div className="flex flex-col items-center justify-center">
         <div className="flex w-full max-w-md flex-col items-center justify-center gap-2 text-center">

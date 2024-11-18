@@ -46,7 +46,7 @@ export default async function PlayGame({ params, searchParams }: PlayGameProps) 
           <div className="flex w-[90%] flex-col items-center justify-center gap-10">
             <div className="flex flex-col items-center justify-center gap-[18px]">
               <h1 className="text-[18px]/[23px] font-medium">{data.type}</h1>
-              <p>{data.address}</p>
+              {/* <p>{data.address}</p> */}
             </div>
             <GameSlider
               slides={data.images}
