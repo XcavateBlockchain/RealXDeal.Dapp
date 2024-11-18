@@ -50,7 +50,7 @@ export default function Result({ searchParams }: PlayGameProps) {
               src={
                 data.won === 'true' && data.nftReceived === true
                   ? `${nft.nftImage}`
-                  : `${data.images[0]}`
+                  : `${propertyData.images[0]}`
               }
               alt=""
               width={239}
