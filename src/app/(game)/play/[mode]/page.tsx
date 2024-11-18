@@ -46,6 +46,7 @@ export default async function PlayGame({ params, searchParams }: PlayGameProps) 
           <div className="flex w-[90%] flex-col items-center justify-center gap-10">
             <div className="flex flex-col items-center justify-center gap-[18px]">
               <h1 className="text-[18px]/[23px] font-medium">{data.type}</h1>
+              <p>{data.address}</p>
             </div>
             <GameSlider
               slides={data.images}
@@ -58,8 +59,7 @@ export default async function PlayGame({ params, searchParams }: PlayGameProps) 
         <ScrollArea className="mt-[52px] h-full max-h-[338px] w-full max-w-[370x]">
           <div className="space-y-10 rounded-lg bg-card px-6 py-4">
             <div className="space-y-[18px]">
-              <DescriptionList title="Size" description={'552 sqft / 51 sqm'} />
-
+              <DescriptionList title="Size" description={data.size} />
               <DescriptionList title="Bedrooms" description={data.bedrooms} />
               <DescriptionList title="Bathrooms" description={data.bathrooms} />
             </div>

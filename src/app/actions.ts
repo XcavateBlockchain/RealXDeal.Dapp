@@ -197,7 +197,8 @@ async function processPropertyData(propertyData: Record<string, any>) {
     bedrooms,
     bathrooms,
     displaySize,
-    propertySubType
+    propertySubType,
+    displayAddress
   } = propertyData;
 
   try {
@@ -216,7 +217,8 @@ async function processPropertyData(propertyData: Record<string, any>) {
       bedrooms,
       bathrooms,
       size: displaySize,
-      images: processedImages
+      images: processedImages,
+      address: displayAddress
     };
   } catch (error) {
     console.log('Error: ', error);
@@ -317,7 +319,7 @@ export async function checkResult(data: {
   guess: number;
   gameId: number;
   address: string;
-}): Promise<{ points: string; won: string; realPrice: any } | null> {
+}): Promise<{ points: string; won: string; nftReceived: string; realPrice: any } | null> {
   console.log('Checking result for game:', data.gameId);
 
   try {
@@ -382,7 +384,8 @@ export async function checkResult(data: {
             if (resultCheckedEvent) {
               const points = resultCheckedEvent.event.data[2].toString();
               const won = resultCheckedEvent.event.data[3].toString();
-              resolve({ points, won, realPrice });
+              const nftReceived = resultCheckedEvent.event.data[4].toString();
+              resolve({ points, won, nftReceived, realPrice });
             } else {
               reject(new Error('ResultChecked event not found'));
             }
