@@ -9,18 +9,10 @@ import { submitGameAnswer } from '@/lib/extrinsic';
 import { toast } from 'sonner';
 import { Pause, Play } from 'lucide-react';
 import { useGameContext } from '@/context/game-context';
-// import { checkResult } from '@/app/actions';
-import {
-  AlertDialog,
-  AlertDialogContent,
-  AlertDialogTitle
-} from '@/components/ui/alert-dialog';
-import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { checkResult } from '@/app/actions';
-import { error } from 'console';
 import useLiveCountdown from '@/hooks/use-live-countdown';
-import { RealEstateFact, realEstateFacts } from '@/config/facts';
+import { realEstateFacts } from '@/config/facts';
 
 type GameProps = {
   gameId: number;
@@ -139,15 +131,13 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
       </form>
       {showLoadingDialog ? (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-background/[0.50] backdrop-blur-[4px]">
-          <div className="flex w-full max-w-md flex-col items-center gap-6 rounded-lg bg-[#172234] p-6">
+          <div className="flex w-full max-w-xl flex-col items-center gap-6 rounded-lg bg-[#172234] p-6">
             <div className="flex w-full flex-col items-center justify-center gap-10 py-12">
-              <span className="relative flex size-10 md:size-20">
-                <span className="absolute inline-flex size-full animate-ping rounded-full bg-primary opacity-75"></span>
-                <span className="relative inline-flex size-10 rounded-full bg-primary md:size-20"></span>
-              </span>
-
               <div className="space-y-3.5 px-3.5 text-center sm:px-0">
-                <h1 className="text-xl font-semibold">This which may take some time</h1>
+                <h1 className="text-xl font-semibold">
+                  Just processing your guess, which may take a couple of minutes. While you
+                  wait here are some interesting real estate facts...
+                </h1>
                 <p className="text-balance text-sm text-muted-foreground">{fact}</p>
               </div>
 
@@ -165,43 +155,13 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
           </div>
         </div>
       ) : null}
-      {/* <AlertDialog open={showLoadingDialog} onOpenChange={setShowLoadingDialog}>
-        <AlertDialogContent className="max-w-lg bg-[#1D2A41]">
-          <div className="flex flex-col items-center justify-center gap-6 py-12">
-            <Image src={'/images/logo.svg'} alt="" width={143} height={56} priority />
-
-            <div className="space-y-2">
-              <p className="text-[14px]/[17px]">
-                {status === 'loading'
-                  ? 'Loading....'
-                  : isResultChecking
-                    ? 'Checking Result'
-                    : ''}
-              </p>
-              <div className="flex h-8 max-w-md items-center justify-start gap-2 rounded-[34px] border-2 border-primary-300 p-1">
-                <DivBox className="rounded-l-[34px] bg-primary-300" />
-                <DivBox className="bg-[#F08482]" />
-                <DivBox className="bg-[#9E75B2]" />
-                <DivBox className="bg-[#2E765F]" />
-                <DivBox className="bg-[#364E77]" />
-                <DivBox className="bg-[#60B565]" />
-                <DivBox className="bg-[#F08482]" />
-                <DivBox className="bg-[#9E75B2]" />
-                <DivBox className="bg-[#2E765F]" />
-                <DivBox className="bg-[#364E77]" />
-                <DivBox className="rounded-r-[34px] bg-[#60B565]" />
-              </div>
-            </div>
-          </div>
-        </AlertDialogContent>
-      </AlertDialog> */}
     </>
   );
 }
 
-const DivBox = ({ className }: { className: string }) => (
-  <div className={cn('h-[17px] w-[32px] animate-pulse bg-primary-300', className)} />
-);
+// const DivBox = ({ className }: { className: string }) => (
+//   <div className={cn('h-[17px] w-[32px] animate-pulse bg-primary-300', className)} />
+// );
 
 export const Countdown = () => {
   const { currentBlock, endingBlock } = useGameContext();

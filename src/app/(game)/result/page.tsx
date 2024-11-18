@@ -3,7 +3,7 @@
 import { Shell } from '@/components/shell';
 import { Button } from '@/components/ui/button';
 import { useGameContext } from '@/context/game-context';
-import { cn, getRandomCollection } from '@/lib/utils';
+import { cn, formatNumber, getRandomCollection } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -23,7 +23,7 @@ export default function Result() {
   return (
     <Shell>
       <div className="flex flex-col items-center justify-center space-y-3">
-        <p>Your Guess: ${data?.guess ?? 0}</p>
+        <p>Your Guess: ${formatNumber(data?.guess ?? 0)}</p>
 
         <div
           className={cn(
@@ -31,16 +31,31 @@ export default function Result() {
             data.won === 'true' ? 'border-[#024C67]' : 'border-[#FF3131]'
           )}
         >
-          <Image
-            src={data.won === 'true' ? `${nft.nftImage}` : '/images/green_reaper.jpg'}
-            alt=""
-            width={239}
-            height={280}
-            className="pointer-events-none h-full rounded-[10px]"
-            priority
-          />
+          {data.won === 'true' ? (
+            <Image
+              src={
+                data.won === 'true' && data.nftReceived === true
+                  ? `${nft.nftImage}`
+                  : '/images/no_nft.png'
+              }
+              alt=""
+              width={239}
+              height={280}
+              className="pointer-events-none h-full rounded-[10px] bg-[#FF3131]/[0.70]"
+              priority
+            />
+          ) : (
+            <Image
+              src={'/images/green_reaper.jpg'}
+              alt=""
+              width={239}
+              height={280}
+              className="pointer-events-none h-full rounded-[10px]"
+              priority
+            />
+          )}
         </div>
-        <p>Actual price: {data.realPrice}</p>
+        <p>Actual price: {formatNumber(data.realPrice)}</p>
       </div>
       <div className="flex flex-col items-center justify-center">
         <div className="flex w-full max-w-md flex-col items-center justify-center gap-2 text-center">
