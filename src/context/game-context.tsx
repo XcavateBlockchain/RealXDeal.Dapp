@@ -1,23 +1,20 @@
 'use client';
 
+import { LOADING_STATUS } from '@/types';
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 
 interface GameContextInterface {
   result: any;
-  currentBlock: any;
-  endingBlock: any;
+  loading: LOADING_STATUS;
   setResult: (data: any) => void;
-  setCurrentBlock: (data: any) => void;
-  setEndingBlock: (data: any) => void;
+  setLoading: (data: any) => void;
 }
 
 const GameContext = React.createContext<GameContextInterface>({
   result: null,
-  currentBlock: null,
-  endingBlock: null,
+  loading: LOADING_STATUS.IDLE,
   setResult: () => {},
-  setCurrentBlock: () => {},
-  setEndingBlock: () => {}
+  setLoading: () => {}
 });
 
 export function useGameContext() {
@@ -30,18 +27,15 @@ export interface GameProps {
 
 export default function GameContextProvider({ children }: GameProps) {
   const [result, setResult] = useState<any>();
-  const [currentBlock, setCurrentBlock] = useState();
-  const [endingBlock, setEndingBlock] = useState();
+  const [loading, setLoading] = useState<LOADING_STATUS>(LOADING_STATUS.IDLE);
 
   return (
     <GameContext.Provider
       value={{
         result,
-        currentBlock,
-        endingBlock,
+        loading,
         setResult,
-        setCurrentBlock,
-        setEndingBlock
+        setLoading
       }}
     >
       {children}

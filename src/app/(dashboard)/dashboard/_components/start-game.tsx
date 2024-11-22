@@ -59,7 +59,6 @@ export default function StartGame({
   const router = useRouter();
   const [showLoadingDialog, setShowLoadingDialog] = useState(false);
   const [status, setStatus] = useState<LOADING_STATUS>(LOADING_STATUS.IDLE);
-  const { setCurrentBlock, setEndingBlock } = useGameContext();
 
   async function handleClick() {
     try {
@@ -83,8 +82,6 @@ export default function StartGame({
         }
         if (data.status === true && gameId) {
           toast.success(data.message);
-          setCurrentBlock(data.submittedAtBlock);
-          setEndingBlock(data.endingBlock);
           setStatus(LOADING_STATUS.SUCCESS);
           router.push(`/play/${GAME_MODE[mode]}?id=${gameId}`);
         }
