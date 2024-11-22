@@ -31,8 +31,6 @@ export default function ConnectedAccountModal({ onConnected, onClose }: TConnect
   const walletAccounts: any = walletContext.accounts;
   const [walletType, setWalletType] = useState<string>('');
   const walletKey = getLocalStorageItem('wallet-key');
-
-  console.log(walletContext.accounts);
   useEffect(() => {
     if (walletKey) {
       setWalletType(JSON.parse(walletKey));

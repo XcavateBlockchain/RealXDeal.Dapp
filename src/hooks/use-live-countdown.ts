@@ -1,18 +1,18 @@
-// import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-// export default function useLiveCountdown(length: number) {
-//   const [seconds, setSeconds] = useState(length);
+export default function useLiveCountdown(length: number) {
+  const [seconds, setSeconds] = useState(length);
 
-//   useEffect(() => {
-//     const timeout = setTimeout(() => {
-//       setSeconds(prevSeconds => (prevSeconds > 0 ? prevSeconds - 1 : prevSeconds));
-//     }, 1000);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setSeconds(prevSeconds => (prevSeconds > 0 ? prevSeconds - 1 : prevSeconds));
+    }, 1000);
 
-//     return () => clearTimeout(timeout);
-//   }, [seconds]);
+    return () => clearTimeout(timeout);
+  }, [seconds]);
 
-//   return { seconds };
-// }
+  return { seconds };
+}
 
 // import { useEffect, useState } from 'react';
 // import { ApiPromise } from '@polkadot/api';
@@ -76,40 +76,40 @@
 //   return { seconds };
 // }
 
-import { useEffect, useState } from 'react';
-import { getApi } from '@/lib/polkadot';
+// import { useEffect, useState } from 'react';
+// import { getApi } from '@/lib/polkadot';
 
-export default function useLiveCountdown(
-  currentBlockNumber: number,
-  expiryBlockNumber: number
-) {
-  const [blocksRemaining, setBlocksRemaining] = useState(
-    expiryBlockNumber - currentBlockNumber
-  );
+// export default function useLiveCountdown(
+//   currentBlockNumber: number,
+//   expiryBlockNumber: number
+// ) {
+//   const [blocksRemaining, setBlocksRemaining] = useState(
+//     expiryBlockNumber - currentBlockNumber
+//   );
 
-  useEffect(() => {
-    const startCountdown = async () => {
-      const api = await getApi();
-      const unsubscribe = await api.rpc.chain.subscribeNewHeads(lastHeader => {
-        const newBlockNumber = lastHeader.number.toNumber();
-        const remainingBlocks = expiryBlockNumber - newBlockNumber;
+//   useEffect(() => {
+//     const startCountdown = async () => {
+//       const api = await getApi();
+//       const unsubscribe = await api.rpc.chain.subscribeNewHeads(lastHeader => {
+//         const newBlockNumber = lastHeader.number.toNumber();
+//         const remainingBlocks = expiryBlockNumber - newBlockNumber;
 
-        if (remainingBlocks > 0) {
-          setBlocksRemaining(remainingBlocks);
-        } else {
-          setBlocksRemaining(0);
-          unsubscribe();
-        }
-      });
+//         if (remainingBlocks > 0) {
+//           setBlocksRemaining(remainingBlocks);
+//         } else {
+//           setBlocksRemaining(0);
+//           unsubscribe();
+//         }
+//       });
 
-      // Cleanup: Unsubscribe when the component unmounts
-      return () => {
-        unsubscribe();
-      };
-    };
+//       // Cleanup: Unsubscribe when the component unmounts
+//       return () => {
+//         unsubscribe();
+//       };
+//     };
 
-    startCountdown();
-  }, [currentBlockNumber, expiryBlockNumber]);
+//     startCountdown();
+//   }, [currentBlockNumber, expiryBlockNumber]);
 
-  return { blocksRemaining };
-}
+//   return { blocksRemaining };
+// }

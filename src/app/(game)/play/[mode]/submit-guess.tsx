@@ -7,7 +7,7 @@ import { Input } from '@/components/ui/input';
 import { LOADING_STATUS } from '@/types';
 import { submitGameAnswer } from '@/lib/extrinsic';
 import { toast } from 'sonner';
-import { Pause, Play } from 'lucide-react';
+import { Pause, Play, Router } from 'lucide-react';
 import { useGameContext } from '@/context/game-context';
 import Image from 'next/image';
 import { checkResult } from '@/app/actions';
@@ -30,7 +30,7 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
   const [isResultChecking, setIsResultChecking] = useState(false);
   const [fact, setFact] = useState('');
   const [isPaused, setIsPaused] = useState(false);
-  const { setResult } = useGameContext();
+  const { setResult, setLoading } = useGameContext();
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -48,6 +48,7 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
     }
 
     setStatus(LOADING_STATUS.LOADING);
+    setLoading(LOADING_STATUS.LOADING);
     setShowLoadingDialog(true);
 
     const formData = new FormData(event.currentTarget);
@@ -164,12 +165,19 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
 // );
 
 export const Countdown = () => {
-  const { currentBlock, endingBlock } = useGameContext();
-  const { blocksRemaining } = useLiveCountdown(currentBlock, endingBlock);
+  const router = useRouter();
+  const { loading } = useGameContext();
+  const { seconds } = useLiveCountdown(60);
+
+  useEffect(() => {
+    if (seconds === 0 && loading !== LOADING_STATUS.LOADING) {
+      router.push('/dashboard');
+    }
+  });
 
   return (
     <div className="flex size-[120px] items-center justify-center rounded-full border-[2.94px] border-primary-200 bg-primary px-[31px] py-10 shadow-time">
-      <span className="font-heading text-[2.84569rem] font-bold">{blocksRemaining}</span>
+      <span className="font-heading text-[2.84569rem] font-bold">{seconds}</span>
     </div>
   );
 };
