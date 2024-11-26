@@ -34,6 +34,55 @@ export default function Result({ searchParams }: PlayGameProps) {
     property();
   }, []);
 
+  if (!data) {
+    return (
+      <div className="flex flex-col items-center justify-center space-y-3">
+        <div
+          className={cn(
+            'h-[280px] w-[239px] rounded-[10px] border-2 border-accent-x_orange bg-white/[0.20]'
+          )}
+        >
+          <Image
+            src={`${propertyData && propertyData.images[0]}`}
+            alt=""
+            width={239}
+            height={280}
+            className="pointer-events-none h-full rounded-[10px]"
+            priority
+          />
+        </div>
+        <div className="flex flex-col items-center justify-center">
+          <div className="flex w-full max-w-md flex-col items-center justify-center gap-2 text-center">
+            <h1 className={cn('text-[1.375rem] font-semibold', 'text-[#FF3131]')}>
+              No guess!!
+            </h1>
+            <p className="text-[1.0625rem] font-light">Time out!! and have lost -15 points </p>
+          </div>
+        </div>
+        <div className="flex items-center justify-center gap-4">
+          <Button asChild size={'sm'} className="text-[17px]/[24px] font-light">
+            <Link href={'/dashboard'}>Re-try</Link>
+          </Button>
+          <Button
+            variant={'outline'}
+            size={'sm'}
+            className="border-white text-[17px]/[24px] font-light text-white"
+            asChild
+          >
+            <Link href={'/leaderboard'}>Leaderboard</Link>
+          </Button>
+          <Button
+            variant={'outline'}
+            size={'sm'}
+            className="border-white text-[17px]/[24px] font-light text-white"
+          >
+            Share
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <Shell>
       <div className="flex flex-col items-center justify-center space-y-3">
@@ -55,7 +104,7 @@ export default function Result({ searchParams }: PlayGameProps) {
               alt=""
               width={239}
               height={280}
-              className="pointer-events-none h-full rounded-[10px] bg-[#FF3131]/[0.70]"
+              className="pointer-events-none h-full rounded-[10px]"
               priority
             />
           ) : (

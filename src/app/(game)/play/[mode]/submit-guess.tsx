@@ -167,11 +167,11 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
 export const Countdown = () => {
   const router = useRouter();
   const { loading } = useGameContext();
-  const { seconds } = useLiveCountdown(60);
+  const { seconds } = useLiveCountdown(60, loading === LOADING_STATUS.LOADING);
 
   useEffect(() => {
     if (seconds === 0 && loading !== LOADING_STATUS.LOADING) {
-      router.push('/dashboard');
+      router.push('/result');
     }
   });
 
