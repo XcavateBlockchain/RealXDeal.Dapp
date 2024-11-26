@@ -1,15 +1,30 @@
 import { useEffect, useState } from 'react';
 
-export default function useLiveCountdown(length: number) {
+// export default function useLiveCountdown(length: number) {
+//   const [seconds, setSeconds] = useState(length);
+
+//   useEffect(() => {
+//     const timeout = setTimeout(() => {
+//       setSeconds(prevSeconds => (prevSeconds > 0 ? prevSeconds - 1 : prevSeconds));
+//     }, 1000);
+
+//     return () => clearTimeout(timeout);
+//   }, [seconds]);
+
+//   return { seconds };
+// }
+export default function useLiveCountdown(length: number, paused: boolean) {
   const [seconds, setSeconds] = useState(length);
 
   useEffect(() => {
+    if (paused) return; // Skip countdown if paused
+
     const timeout = setTimeout(() => {
       setSeconds(prevSeconds => (prevSeconds > 0 ? prevSeconds - 1 : prevSeconds));
     }, 1000);
 
     return () => clearTimeout(timeout);
-  }, [seconds]);
+  }, [seconds, paused]); // Add paused to dependencies
 
   return { seconds };
 }
