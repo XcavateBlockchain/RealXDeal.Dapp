@@ -174,77 +174,77 @@ export const staleUser = {
 export const collections = [
   {
     collectionName: 'xorange',
-    collectionId: 9
+    collectionId: 0
   },
   {
     collectionName: 'xpink',
-    collectionId: 10
+    collectionId: 1
   },
   {
     collectionName: 'Xblue',
-    collectionId: 11
+    collectionId: 2
   },
   {
     collectionName: 'xcyan',
-    collectionId: 12
+    collectionId: 3
   },
   {
     collectionName: 'xcoral',
-    collectionId: 13
+    collectionId: 4
   },
   {
     collectionName: 'xpurple',
-    collectionId: 14
+    collectionId: 5
   },
   {
     collectionName: 'xleafgreen',
-    collectionId: 15
+    collectionId: 6
   },
   {
     collectionName: 'xgreen',
-    collectionId: 16
+    collectionId: 7
   }
 ];
 
 export const collection = {
   '0': {
     collectionName: 'xorange',
-    collectionId: 9,
+    collectionId: 0,
     nftImage: '/images/Xorange_property_NFT21_apartment.webp'
   },
   '1': {
     collectionName: 'xpink',
-    collectionId: 10,
+    collectionId: 1,
     nftImage: '/images/Xpink_property_NFT25_apartment.webp'
   },
   '2': {
     collectionName: 'Xblue',
-    collectionId: 11,
+    collectionId: 2,
     nftImage: '/images/Xblue_property_NFT29_apartment.webp'
   },
   '3': {
     collectionName: 'xcyan',
-    collectionId: 12,
+    collectionId: 3,
     nftImage: '/images/Xcyan_property_NFT18_apartment.webp'
   },
   '4': {
     collectionName: 'xcoral',
-    collectionId: 13,
+    collectionId: 4,
     nftImage: '/images/Xcoral_property_NFT15_apartment.webp'
   },
   '5': {
     collectionName: 'xpurple',
-    collectionId: 14,
+    collectionId: 5,
     nftImage: '/images/Xpurple_property_NFT12_apartment.webp'
   },
   '6': {
     collectionName: 'xleafgreen',
-    collectionId: 15,
+    collectionId: 6,
     nftImage: '/images/Xleafgreen_property_NFT6_apartment.webp'
   },
   '7': {
     collectionName: 'xgreen',
-    collectionId: 16,
+    collectionId: 7,
     nftImage: '/images/Xgreen_property_NFT3_apartment.webp'
   }
 };
