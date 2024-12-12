@@ -3,11 +3,9 @@ import { NFTCard } from '@/components/cards/nft-card';
 import { Shell } from '@/components/shell';
 import { Button } from '@/components/ui/button';
 // import { siteConfig } from '@/config/site';
-import { getAllListings, getCollection } from '@/lib/queries';
+import { getAllCollections, getAllListings, getCollection } from '@/lib/queries';
 import Image from 'next/image';
 import Link from 'next/link';
-
-const collections = ['All', 'Blue', 'Red', 'Pink', 'Orange', 'Purple', 'Teal', 'Coral'];
 
 export default async function Page({
   searchParams: { collection }
@@ -17,11 +15,25 @@ export default async function Page({
   // const data = siteConfig.nfts.slice(1, 5);
 
   const BASE_URL = '/marketplace';
+  const collections = await getAllCollections();
+  const tabs = ['All', ...collections.map(collection =>
+    collection.name.charAt(0).toUpperCase() +
+    collection.name.charAt(1).toUpperCase() +
+    collection.name.slice(2)
+  )];
   const selected = collection === undefined ? 'All' : collection;
-
+  const selectedCollection = collections.find(
+    collection => collection.name.toLowerCase() === selected.toLowerCase());
   const nfts = await getAllListings();
 
-  const listings = nfts.flatMap(item => {
+  const filterNfts = selectedCollection ?
+    nfts.filter((nft: any) => {
+      const firstKey = Object.keys(nft)[0];
+      const metadata = nft[firstKey];
+      return metadata.collectionId == selectedCollection.collectionId
+    }) : nfts;
+
+  const listings = filterNfts.flatMap(item => {
     const [listingId, details] = Object.entries(item)[0];
     return [
       {
@@ -53,7 +65,7 @@ export default async function Page({
           className="w-full rounded-lg border border-border bg-primary px-4 py-2 placeholder:text-border focus:outline-none"
         />
         <div className="flex items-center gap-[18px]">
-          {collections.map((collection: string) => {
+          {tabs.map((collection: string) => {
             const active = selected === collection;
             return (
               <Button
