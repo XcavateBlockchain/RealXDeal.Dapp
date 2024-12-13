@@ -401,3 +401,62 @@ export async function checkResult(data: {
     throw error;
   }
 }
+
+export const registerPlayer = async (address: string) => {
+  try {
+    const api = await getApi();
+    const keyring = new Keyring({ type: 'sr25519' });
+    const account = keyring.createFromJson({
+      encoded: process.env.ENCODED_SEED!,
+      encoding: {
+        content: ['pkcs8', 'sr25519'],
+        type: ['scrypt', 'xsalsa20-poly1305'],
+        version: '3'
+      },
+      address: process.env.SUDO_ADDRESS!,
+      meta: {
+        genesisHash: '0x',
+        name: 'XCAV-SUDO',
+        whenCreated: 1702476542911
+      }
+    });
+
+    account.unlock(process.env.PASSPHRASE!);
+
+    const extrinsic = api.tx.gameModule.registerUser(address);
+
+    return new Promise((resolve, reject) => {
+      const timeoutId = setTimeout(() => {
+        reject(new Error('Transaction timeout'));
+      }, 60000); // 60 seconds timeout
+
+      extrinsic
+        .signAndSend(account, ({ status, events }) => {
+          if (status.isInBlock) {
+            clearTimeout(timeoutId);
+
+            const registeredEvent = events.find(({ event }) =>
+              api.events.gameModule.NewPlayerRegistered.is(event)
+            );
+
+            if (registeredEvent) {
+              resolve({
+                address,
+                registered: true,
+                message: 'Player successfully registered'
+              });
+            } else {
+              reject(new Error('Player not registered'));
+            }
+          }
+        })
+        .catch(error => {
+          clearTimeout(timeoutId);
+          reject(error);
+        });
+    });
+  } catch (error) {
+    console.error('Error registering player:', error);
+    throw error;
+  }
+};

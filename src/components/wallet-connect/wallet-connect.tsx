@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, ReactNode, SetStateAction, useContext, useState } from 'react';
+import { Dispatch, ReactNode, SetStateAction, useContext, useEffect, useState } from 'react';
 import { AlertDialog, AlertDialogContent, AlertDialogTrigger } from '../ui/alert-dialog';
 import { ConnectWalletIcon } from '../wallet-icon';
 import { WalletContext } from '@/context/wallet-context';
@@ -14,6 +14,7 @@ import { Icons } from '../icons';
 import { Button } from '../ui/button';
 import Link from 'next/link';
 import IdentIcon from './identicon';
+import { getUserData } from '@/lib/queries';
 
 interface ISection {
   [key: number]: ReactNode;
@@ -87,6 +88,23 @@ export default function WalletConnect({ open = false }: { open?: boolean }) {
     screenSize === SCREENS.mobile
       ? formatAddress(selectedAddress, 2, 4, 9)
       : formatAddress(selectedAddress);
+
+  useEffect(() => {
+    const checkUser = async () => {
+      if (selectedAddress) {
+        const user = await getUserData(selectedAddress);
+        if (!user) {
+          walletContext.setRegisterPlayer(true);
+        }
+      }
+    };
+
+    const timeout = setTimeout(() => {
+      checkUser();
+    }, 300);
+
+    return () => clearTimeout(timeout);
+  }, [selectedAddress]);
 
   const actions: ISection = {
     1: (

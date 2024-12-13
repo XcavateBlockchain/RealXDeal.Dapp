@@ -17,6 +17,8 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { formatAddress, getFormattedBalance } from '@/lib/formaters';
 import { NodeContext } from '@/context';
+import { AlertDialog } from '@/components/ui/alert-dialog';
+import RegisterPlayer from '@/components/wallet-connect/register-player';
 
 interface Props {
   children: React.ReactNode;
@@ -71,6 +73,7 @@ export function WalletContextProvider({ children }: Props) {
   const [accounts, setAccounts] = useState<WalletAccount[]>([]);
   const [selectedAccount, setSelectedAccount] = useState<WalletAccount[] | null>(null);
   const [balance, setBalance] = useState<string | null>(null);
+  const [registerPlayer, setRegisterPlayer] = useState<boolean>(false);
 
   useEffect(() => {
     if (api && api.registry.chainSS58) {
@@ -181,7 +184,9 @@ export function WalletContextProvider({ children }: Props) {
     setWallet,
     disconnectWallet,
     setBalance,
-    balance
+    balance,
+    registerPlayer,
+    setRegisterPlayer
   };
 
   const selectWalletContext = {
@@ -199,6 +204,9 @@ export function WalletContextProvider({ children }: Props) {
       <OpenSelectWallet.Provider value={selectWalletContext}>
         {children}
       </OpenSelectWallet.Provider>
+      <AlertDialog open={registerPlayer} onOpenChange={setRegisterPlayer}>
+        <RegisterPlayer address={accountKey} />
+      </AlertDialog>
     </WalletContext.Provider>
   );
 }
