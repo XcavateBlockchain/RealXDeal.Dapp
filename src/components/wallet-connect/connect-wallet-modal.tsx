@@ -25,7 +25,6 @@ import Skeleton from '../skelton';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { ScrollArea } from '../ui/scroll-area';
-
 // interface ISection {
 //   [key: number]: ReactNode;
 // }
@@ -137,7 +136,6 @@ export default function ConnectWalletModal({
     },
     [onSelectWallet]
   );
-
   return (
     <AlertDialogContent className="gap-6">
       <AlertDialogTitle hidden>Connect</AlertDialogTitle>

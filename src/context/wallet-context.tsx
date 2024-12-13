@@ -11,6 +11,8 @@ export interface WalletContextInterface {
   disconnectWallet: () => Promise<void>;
   balance: string | null;
   setBalance: (balance: string | null) => void;
+  registerPlayer: boolean;
+  setRegisterPlayer: (value: boolean) => void;
 }
 
 export const WalletContext = React.createContext<WalletContextInterface>({
@@ -21,7 +23,9 @@ export const WalletContext = React.createContext<WalletContextInterface>({
   selectAccount: (v: string) => {},
   disconnectWallet: () => Promise.resolve(),
   balance: null,
-  setBalance: (balance: string | null) => {}
+  setBalance: (balance: string | null) => {},
+  registerPlayer: false,
+  setRegisterPlayer: () => {}
 });
 
 interface OpenSelectWalletInterface {
