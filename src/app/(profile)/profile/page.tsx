@@ -36,7 +36,6 @@ export default async function Page({
   const filterNfts = selectedCollection ?
     nfts.filter(nft => nft[1] == selectedCollection.collectionId) :
     nfts;
-    
   const listed = await getAllListingsByAddress(address);
   const listings = listed.flatMap(item => {
     const [listingId, details] = Object.entries(item)[0];
@@ -111,7 +110,7 @@ export default async function Page({
                   isShadow
                 />
               )})} */}
-              {await Promise.all(
+              {filterNfts.length > 0 ? await Promise.all(
                 filterNfts.map(async (nft: any[]) => {
                   const collection = await getCollection();
                   return (
@@ -125,14 +124,14 @@ export default async function Page({
                     />
                   );
                 })
-              )}
+              ) : (<p>There are no NFTs.</p>)}
             </div>
           </section>
         </TabsContent>
         <TabsContent value="listed_nft">
           <section className="flex w-full flex-col space-y-10 py-10">
             <div className="grid size-full grid-cols-4 gap-[23px]">
-              {await Promise.all(
+              {listings.length > 0 ? await Promise.all(
                 listings.map(async (listing: any) => {
                   const collection = await getCollection();
                   return (
@@ -147,7 +146,7 @@ export default async function Page({
                     />
                   );
                 })
-              )}
+              ) : (<p>There are no listed NFTs.</p>)}
             </div>
           </section>
         </TabsContent>

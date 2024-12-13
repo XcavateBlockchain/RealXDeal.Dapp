@@ -231,11 +231,8 @@ export async function startGame(
         }
       }
     );
-    // console.log('Transaction sent:', unsub);
-  } catch (error) {
-    // console.error('Failed to submit guess:', error);
-    return error;
-    // return handlePropertyDisplay({ status: false, message: `Failed to start game.` }, null);
+  } catch (error: any) {
+    handlePropertyDisplay({ status: false, message: error.message }, null);
   }
 }
 
