@@ -1,5 +1,4 @@
 import { Card } from '@/components/cards/card';
-import { collections } from '@/config/site';
 import CollectionBadge from './_components/collection-badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { getCookieStorage } from '@/lib/storage';
@@ -23,11 +22,21 @@ export default async function Page({
 }) {
   // const { address } = await getUser();
   const address = await getCookieStorage('accountKey');
-  const tabs = ['All', 'Blue', 'Red', 'Pink', 'Orange', 'Purple', 'Teal', 'Coral'];
+  const collections = await getAllCollections();
+  const tabs = ['All', ...collections.map(collection =>
+    collection.name.charAt(0).toUpperCase() +
+    collection.name.charAt(1).toUpperCase() +
+    collection.name.slice(2)
+  )];
   const BASE_URL = '/profile';
   const selected = collection === undefined ? 'All' : collection;
-
+  const selectedCollection = collections.find(
+    collection => collection.name.toLowerCase() === selected.toLowerCase());
   const nfts = await getUnlistedNFTsForUser(address ? address : '');
+  const filterNfts = selectedCollection ?
+    nfts.filter(nft => nft[1] == selectedCollection.collectionId) :
+    nfts;
+    
   const listed = await getAllListingsByAddress(address);
   const listings = listed.flatMap(item => {
     const [listingId, details] = Object.entries(item)[0];
@@ -50,11 +59,11 @@ export default async function Page({
           {collections.map((collection: any) => {
             return (
               <CollectionBadge
-                key={collection.collectionName}
-                variant={collection.collectionName}
-                color={collection.collectionName}
+                key={collection.name}
+                variant={collection.name.toLowerCase()}
+                color={collection.name}
               >
-                {collection.collectionName}
+                {collection.name}
               </CollectionBadge>
             );
           })}
@@ -103,7 +112,7 @@ export default async function Page({
                 />
               )})} */}
               {await Promise.all(
-                nfts.map(async (nft: any[]) => {
+                filterNfts.map(async (nft: any[]) => {
                   const collection = await getCollection();
                   return (
                     <OwnedNFTCard
