@@ -88,7 +88,7 @@ export default async function Page({
         <h2 className="text-[1rem] font-medium">Listings</h2>
 
         <div className="grid size-full grid-cols-4 gap-[23px]">
-          {await Promise.all(
+          {listings.length > 0 ? await Promise.all(
             listings.map(async (listing: any) => {
               const collection = await getCollection();
               return (
@@ -103,7 +103,7 @@ export default async function Page({
                 />
               );
             })
-          )}
+          ) : (<p>There are no listings.</p>)}
         </div>
       </section>
     </Shell>
