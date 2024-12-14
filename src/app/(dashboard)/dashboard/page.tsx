@@ -148,23 +148,30 @@ type CollectionCardProps = {
 
 const CollectionCard = ({ image, noOfNfts, border, background }: CollectionCardProps) => {
   return (
-    <div className={cn('relative size-full border p-1', border)}>
-      <Image
-        src={image}
-        alt="nft"
-        width={132}
-        height={156}
-        priority
-        className="h-[152px] w-full"
-      />
-      <div className="absolute inset-[50px] flex size-[56px] items-center justify-center rounded-full bg-primary-500">
-        <div
-          className={cn(
-            'flex size-[38px] items-center justify-center rounded-full text-[16px]/[19px] font-medium',
-            background
-          )}
-        >
-          {noOfNfts}
+    <div
+      className={cn(
+        'relative flex h-[160px] w-full items-center justify-center border p-1',
+        border
+      )}
+    >
+      <div className="absolute flex h-[152px] w-full items-center justify-center p-1">
+        <Image
+          src={image}
+          alt="nft"
+          width={132}
+          height={156}
+          priority
+          className="h-[152px] w-full object-cover"
+        />
+        <div className="absolute flex size-[56px] items-center justify-center rounded-full bg-primary-500">
+          <div
+            className={cn(
+              'flex size-[38px] items-center justify-center rounded-full text-[16px]/[19px] font-medium',
+              background
+            )}
+          >
+            {noOfNfts}
+          </div>
         </div>
       </div>
     </div>
