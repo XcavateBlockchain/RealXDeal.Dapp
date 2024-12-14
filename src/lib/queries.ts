@@ -241,7 +241,7 @@ export async function getCollection(): Promise<DynamicCollection> {
   collections.forEach((collection: any, index) => {
     const collectionName = collection.name.toLowerCase();
 
-    dynamicCollection[index.toString()] = {
+    dynamicCollection[collection.collectionId.toString()] = {
       collectionName,
       collectionId: parseInt(collection.collectionId),
       nftImage: collectionImage[collectionName as keyof typeof collectionImage].nftImage
