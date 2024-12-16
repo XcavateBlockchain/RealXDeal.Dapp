@@ -13,6 +13,9 @@ import { makeOffer } from '@/lib/extrinsic';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { CollectionItem } from '@/types';
+import SwapCard from './swap-card';
+import { getCollection } from '@/lib/queries';
+import { ScrollArea } from '../ui/scroll-area';
 
 interface NFTCardProps {
   listingId: string;
@@ -21,39 +24,15 @@ interface NFTCardProps {
   owner: string;
   metadata: CollectionItem;
   isShadow?: boolean;
+  playerNfts: any;
 }
 
-export function NFTCard({ metadata, isShadow, ...nft }: NFTCardProps) {
-  const router = useRouter();
+export function NFTCard({ metadata, isShadow, playerNfts, ...nft }: NFTCardProps) {
   const [showSwapDialog, setShowSwapDialog] = React.useState<boolean>(false);
-  const [showDialog, setShowDialog] = React.useState<boolean>(false);
-  const [isLoading, setIsLoading] = React.useState<boolean>(false);
-  const walletContext = useWalletContext();
-  const selectedAddress = walletContext.selectedAccount?.[0]?.address as string;
   // const metadata = collection[nft.collectionId];
-
-  async function handleMakeOffer() {
-    setIsLoading(true);
-    try {
-      await makeOffer(selectedAddress, {
-        listingId: parseInt(nft.listingId),
-        collectionId: parseInt(nft.collectionId),
-        itemId: parseInt(nft.nftId)
-      });
-      setShowDialog(true);
-      router.refresh();
-    } catch (error) {
-      setIsLoading(false);
-      toast.error('Error', { description: 'Could not process your request please try again' });
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   return (
     <>
       <div
-        // href={`/nft/${nft.nftId}`}
         className={cn(
           'group flex w-full flex-col gap-4 rounded-lg border border-primary-300/[0.32] transition-all duration-300',
           isShadow ? 'shadow-header' : ''
@@ -79,12 +58,10 @@ export function NFTCard({ metadata, isShadow, ...nft }: NFTCardProps) {
             <Button
               variant={'card'}
               size={'nft'}
-              onClick={handleMakeOffer}
-              disabled={isLoading}
+              // onClick={handleMakeOffer}
+              // disabled={isLoading}
+              onClick={() => setShowSwapDialog(true)}
             >
-              {isLoading && (
-                <Icons.spinner className="size-4 animate-spin" aria-hidden="true" />
-              )}
               Swap
             </Button>
           </div>
@@ -95,35 +72,33 @@ export function NFTCard({ metadata, isShadow, ...nft }: NFTCardProps) {
         </div>
       </div>
       <AlertDialog open={showSwapDialog} onOpenChange={setShowSwapDialog}>
-        <AlertDialogContent className="w-full max-w-4xl"></AlertDialogContent>
-      </AlertDialog>
-      <AlertDialog open={showDialog} onOpenChange={setShowDialog}>
-        <AlertDialogContent className="flex w-[518px] flex-col gap-2 rounded-lg px-6 py-6">
-          <AlertDialogTitle hidden>Success modal</AlertDialogTitle>
-          <div className="flex items-center justify-end">
-            <Button variant={'text'} size={'icon'} onClick={() => setShowDialog(false)}>
+        <AlertDialogContent className="flex w-full max-w-5xl flex-col gap-2 rounded-lg px-6 py-6">
+          <div className="flex items-center justify-between">
+            <AlertDialogTitle>Select what to swap with</AlertDialogTitle>
+            <Button variant={'text'} size={'icon'} onClick={() => setShowSwapDialog(false)}>
               <Icons.close className="size-6 hover:stroke-primary-300" />
             </Button>
           </div>
-
-          <div className="flex flex-col items-center justify-center gap-4">
-            <div
-              className="flex h-[320px] w-[239px] items-center justify-center rounded-[10px] bg-cover bg-no-repeat"
-              style={{ backgroundImage: `url(${metadata.nftImage})` }}
-            >
-              <div className="size-[140px] rounded-full bg-primary-300/15"></div>
+          <ScrollArea className="h-[550px] w-full">
+            <div className="grid grid-cols-4 gap-4">
+              {playerNfts.length > 0 ? (
+                playerNfts.map(async (item: any[]) => {
+                  const collection = await getCollection();
+                  return (
+                    <SwapCard
+                      key={item[0]}
+                      collectionId={item[1]}
+                      nftId={item[2]}
+                      metadata={collection[item[1]]}
+                      swapId={nft.listingId}
+                    />
+                  );
+                })
+              ) : (
+                <p>There are no NFTs.</p>
+              )}
             </div>
-            <h2 className="text-[17px]/[24px] font-medium">Swap offer sent</h2>
-            <p className="text-center text-[17px]/[24px] font-light">
-              Your offer has been sent to the owner of this NFT wait for it’s approval
-            </p>
-            <Button
-              className="px-6 py-[18px] text-[16px]/[19px]"
-              onClick={() => setShowDialog(false)}
-            >
-              Continue
-            </Button>
-          </div>
+          </ScrollArea>
         </AlertDialogContent>
       </AlertDialog>
     </>

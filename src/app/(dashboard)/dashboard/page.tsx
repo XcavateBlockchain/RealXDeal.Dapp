@@ -1,11 +1,15 @@
 import StartGame from '@/app/(dashboard)/dashboard/_components/start-game';
 import { Card, TaskCard } from '@/components/cards/card';
 import { LeadBoardCard } from '@/components/cards/leadboard-card';
-import { GameICons } from '@/components/game-icon';
 import { Shell } from '@/components/shell';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { staleBoard, staleUser } from '@/config/site';
-import { getLeadBoards, getUserData } from '@/lib/queries';
+import {
+  getCurrentRoundID,
+  getLeadBoards,
+  getUnlistedNFTsForUser,
+  getUserData
+} from '@/lib/queries';
 import { getCookieStorage } from '@/lib/storage';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
@@ -14,6 +18,11 @@ export default async function Dashboard() {
   const address = await getCookieStorage('accountKey');
   const boardList = (await getLeadBoards()) ?? staleBoard;
   const user = await getUserData(address ? address : '');
+  const nfts = await getUnlistedNFTsForUser(address ? address : '');
+  const userIndex = boardList.findIndex((list: any) => list[0] === address);
+  // const activeRound = await getCurrentRoundID();
+
+  // console.log('Round', activeRound);
 
   return (
     <Shell>
@@ -21,8 +30,8 @@ export default async function Dashboard() {
         <div className="flex w-[55%] flex-col gap-8">
           <div className="flex w-full items-center gap-10">
             <Stats title="My points" value={user?.points ?? 0} />
-            <Stats title="My ranking" value={'#1'} />
-            <Stats title="My NFTs" value={0} />
+            <Stats title="My ranking" value={`#${userIndex + 1}`} />
+            <Stats title="My NFTs" value={nfts.length} />
             <Stats title="Championships" value={0} />
           </div>
           <Card title="NFTs Collected" className="py6 px-6">

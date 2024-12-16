@@ -310,9 +310,9 @@ export async function makeOffer(senderAddress: string, { ...data }: MakeOfferPro
 
     const unsub = await extrinsic.signAndSend(senderAddress, { signer }, result => {
       if (result.status.isFinalized) {
-        console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
+        // console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
       } else if (result.status.isBroadcast) {
-        console.log('Broadcasting the guess...');
+        // console.log('Broadcasting the guess...');
       }
     });
 
@@ -321,8 +321,8 @@ export async function makeOffer(senderAddress: string, { ...data }: MakeOfferPro
       data: unsub,
       error: null
     };
-  } catch (error) {
+  } catch (error: any) {
     console.error('Failed to de list NFT:', error);
-    return { data: null, error: getErrorMessage(error) };
+    return { data: null, error: error.message };
   }
 }
