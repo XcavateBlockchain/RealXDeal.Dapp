@@ -3,9 +3,9 @@ import { Card, TaskCard } from '@/components/cards/card';
 import { LeadBoardCard } from '@/components/cards/leadboard-card';
 import { Shell } from '@/components/shell';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { staleBoard, staleUser } from '@/config/site';
+import { staleBoard } from '@/config/site';
 import {
-  getCurrentRoundID,
+  // getCurrentRoundID,
   getLeadBoards,
   getUnlistedNFTsForUser,
   getUserData
@@ -22,8 +22,6 @@ export default async function Dashboard() {
   const userIndex = boardList.findIndex((list: any) => list[0] === address);
   // const activeRound = await getCurrentRoundID();
 
-  // console.log('Round', activeRound);
-
   return (
     <Shell>
       <section className="flex w-full items-start gap-8">
@@ -31,10 +29,10 @@ export default async function Dashboard() {
           <div className="flex w-full items-center gap-10">
             <Stats title="My points" value={user?.points ?? 0} />
             <Stats title="My ranking" value={`#${userIndex + 1}`} />
-            <Stats title="My NFTs" value={nfts.length} />
+            <Stats title="My Cards" value={nfts.length} />
             <Stats title="Championships" value={0} />
           </div>
-          <Card title="NFTs Collected" className="py6 px-6">
+          <Card title="Properties card Collected" className="py6 px-6">
             <div className="grid size-full grid-cols-4 gap-6">
               <CollectionCard
                 image="/images/nfts/x_cyan.png"
@@ -44,43 +42,43 @@ export default async function Dashboard() {
               />
               <CollectionCard
                 image="/images/nfts/x_pink.png"
-                noOfNfts={user?.nfts?.xpink ?? 0}
+                noOfNfts={user?.nfts?.Xcoral ?? 0}
                 background="bg-accent-x_pink"
                 border="border-accent-x_pink"
               />
               <CollectionCard
                 image="/images/nfts/x_orange.png"
-                noOfNfts={user?.nfts?.xorange ?? 0}
+                noOfNfts={user?.nfts?.Xleafgreen ?? 0}
                 background="bg-accent-x_orange"
                 border="border-accent-x_orange"
               />
               <CollectionCard
                 image="/images/nfts/x_purple.png"
-                noOfNfts={user?.nfts?.xpurple ?? 0}
+                noOfNfts={user?.nfts?.Xblue ?? 0}
                 background="bg-accent-x_purple"
                 border="border-accent-x_purple"
               />
               <CollectionCard
                 image="/images/nfts/x_blue.png"
-                noOfNfts={user?.nfts?.xblue ?? 0}
+                noOfNfts={user?.nfts?.Xpurple ?? 0}
                 background="bg-accent-x_blue"
                 border="border-accent-x_blue"
               />
               <CollectionCard
                 image="/images/nfts/x_green.png"
-                noOfNfts={user?.nfts?.xgreen ?? 0}
+                noOfNfts={user?.nfts?.Xgreen ?? 0}
                 background="bg-accent-x_green"
                 border="border-accent-x_green"
               />
               <CollectionCard
                 image="/images/nfts/x_coral.png"
-                noOfNfts={user?.nfts?.xcoral ?? 0}
+                noOfNfts={user?.nfts?.Xpink ?? 0}
                 background="bg-accent-x_coral"
                 border="border-accent-x_coral"
               />
               <CollectionCard
                 image="/images/nfts/x_leaf_green.png"
-                noOfNfts={user?.nfts?.xleafgreen ?? 0}
+                noOfNfts={user?.nfts?.Xcyan ?? 0}
                 background="bg-accent-x_leaf"
                 border="border-accent-x_leaf"
               />
@@ -89,12 +87,6 @@ export default async function Dashboard() {
         </div>
         <div className="flex w-[45%] flex-col gap-8">
           <div className="flex w-full items-center gap-[18px]">
-            {/* <button className="group flex flex-col items-center justify-center gap-[6px] rounded-[6px] border border-primary-400 p-3">
-              <div className="flex size-[55px] items-center justify-center rounded-full shadow-header group-hover:shadow-xl">
-                <GameICons.player className="size-[38px]" />
-              </div>
-              <span className="text-[12px]/[18px] font-bold">Practice mode</span>
-            </button> */}
             <StartGame mode={0} address={address} className="size-8" />
             <StartGame variant={'player'} mode={1} address={address} />
             <StartGame variant={'pro'} mode={2} address={address} />
@@ -116,7 +108,7 @@ export default async function Dashboard() {
           </Card>
         </div>
       </section>
-      <Card title="Task">
+      {/* <Card title="Task">
         <div className="grid w-full grid-cols-3 gap-[14px]">
           <TaskCard
             type="x"
@@ -134,7 +126,7 @@ export default async function Dashboard() {
             description="Follow, retweet, like a tweet, or create memes with a hashtag."
           />
         </div>
-      </Card>
+      </Card> */}
     </Shell>
   );
 }

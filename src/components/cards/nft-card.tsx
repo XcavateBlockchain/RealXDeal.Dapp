@@ -55,13 +55,7 @@ export function NFTCard({ metadata, isShadow, playerNfts, ...nft }: NFTCardProps
               <span className="group-hover:text-primary-300">#{nft.nftId}</span> |{' '}
               <span className="ml-[2px]">{metadata.collectionName}</span>
             </div>
-            <Button
-              variant={'card'}
-              size={'nft'}
-              // onClick={handleMakeOffer}
-              // disabled={isLoading}
-              onClick={() => setShowSwapDialog(true)}
-            >
+            <Button variant={'card'} size={'nft'} onClick={() => setShowSwapDialog(true)}>
               Swap
             </Button>
           </div>
@@ -73,10 +67,16 @@ export function NFTCard({ metadata, isShadow, playerNfts, ...nft }: NFTCardProps
       </div>
       <AlertDialog open={showSwapDialog} onOpenChange={setShowSwapDialog}>
         <AlertDialogContent className="flex w-full max-w-5xl flex-col gap-2 rounded-lg px-6 py-6">
-          <div className="flex items-center justify-between">
+          <div className="relative flex items-center justify-between">
             <AlertDialogTitle>Select what to swap with</AlertDialogTitle>
-            <Button variant={'text'} size={'icon'} onClick={() => setShowSwapDialog(false)}>
-              <Icons.close className="size-6 hover:stroke-primary-300" />
+            <Button
+              type="button"
+              variant={'text'}
+              size={'icon'}
+              className="group"
+              onClick={() => setShowSwapDialog(false)}
+            >
+              <Icons.close className="size-6 group-hover:stroke-primary-300" />
             </Button>
           </div>
           <ScrollArea className="h-[550px] w-full">
@@ -95,7 +95,7 @@ export function NFTCard({ metadata, isShadow, playerNfts, ...nft }: NFTCardProps
                   );
                 })
               ) : (
-                <p>There are no NFTs.</p>
+                <p>You do not have any card to swap</p>
               )}
             </div>
           </ScrollArea>

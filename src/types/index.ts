@@ -92,3 +92,15 @@ export type CollectionItem = {
   collectionId: number;
   nftImage: string;
 };
+
+export type OfferProps = {
+  offerId: string;
+  owner: string;
+  listingId: string;
+  collectionId: string;
+  itemId: string;
+};
+
+export type OfferTableProps = {
+  offers: any;
+};

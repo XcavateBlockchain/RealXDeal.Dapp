@@ -25,7 +25,7 @@ export const siteConfig = {
   ],
   sideNav: [
     {
-      title: 'Home',
+      title: 'Dashboard',
       href: '/dashboard',
       icon: 'GameController'
     },
@@ -34,11 +34,11 @@ export const siteConfig = {
       href: '/profile',
       icon: 'Alien'
     },
-    {
-      title: 'Task',
-      href: '/tasks',
-      icon: 'PuzzlePiece'
-    },
+    // {
+    //   title: 'Task',
+    //   href: '/tasks',
+    //   icon: 'PuzzlePiece'
+    // },
     {
       title: 'LeaderBoard',
       href: '/leaderboard',

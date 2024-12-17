@@ -17,7 +17,7 @@ export default function Home() {
             </h1>
             <p className="font-sans text-[16px]/[24px] font-light tracking-wide md:text-[1rem]/[1.5rem]">
               Are you willing to stake your reputation on it? guess correct property prices and
-              win NFTs.
+              win property card.
             </p>
           </div>
           <Button className="hidden lg:flex">
@@ -43,10 +43,10 @@ export default function Home() {
         </div>
         <ScrollArea className="w-96 whitespace-nowrap lg:w-auto">
           <div className="flex w-max items-center space-x-5 p-4 lg:p-0">
-            <FeatureCard title="Win valuable NFTs" />
+            <FeatureCard title="Win valuable property card" />
             <FeatureCard title="Real-time Leaderboards" />
             <FeatureCard title="Earn points" />
-            <FeatureCard title="Trade your NFTs " />
+            <FeatureCard title="Trade your property cards" />
           </div>
           <ScrollBar orientation="horizontal" />
         </ScrollArea>

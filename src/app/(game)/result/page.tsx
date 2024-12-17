@@ -132,7 +132,10 @@ export default function Result({ searchParams }: PlayGameProps) {
           </h1>
           {data.won === 'true' ? (
             <p className="text-[1.0625rem] font-light">
-              You have won this property NFT and have gained +{data.points} points{' '}
+              {data.nftReceived === 'true'
+                ? 'You have won this property NFT and have gained'
+                : 'You have gained'}{' '}
+              +{data.points} points{' '}
             </p>
           ) : (
             <p className="text-[1.0625rem] font-light">
