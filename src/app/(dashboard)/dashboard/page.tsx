@@ -42,43 +42,43 @@ export default async function Dashboard() {
               />
               <CollectionCard
                 image="/images/nfts/x_pink.png"
-                noOfNfts={user?.nfts?.Xcoral ?? 0}
+                noOfNfts={user?.nfts?.xcoral ?? 0}
                 background="bg-accent-x_pink"
                 border="border-accent-x_pink"
               />
               <CollectionCard
                 image="/images/nfts/x_orange.png"
-                noOfNfts={user?.nfts?.Xleafgreen ?? 0}
+                noOfNfts={user?.nfts?.xleafgreen ?? 0}
                 background="bg-accent-x_orange"
                 border="border-accent-x_orange"
               />
               <CollectionCard
                 image="/images/nfts/x_purple.png"
-                noOfNfts={user?.nfts?.Xblue ?? 0}
+                noOfNfts={user?.nfts?.xblue ?? 0}
                 background="bg-accent-x_purple"
                 border="border-accent-x_purple"
               />
               <CollectionCard
                 image="/images/nfts/x_blue.png"
-                noOfNfts={user?.nfts?.Xpurple ?? 0}
+                noOfNfts={user?.nfts?.xpurple ?? 0}
                 background="bg-accent-x_blue"
                 border="border-accent-x_blue"
               />
               <CollectionCard
                 image="/images/nfts/x_green.png"
-                noOfNfts={user?.nfts?.Xgreen ?? 0}
+                noOfNfts={user?.nfts?.xgreen ?? 0}
                 background="bg-accent-x_green"
                 border="border-accent-x_green"
               />
               <CollectionCard
                 image="/images/nfts/x_coral.png"
-                noOfNfts={user?.nfts?.Xpink ?? 0}
+                noOfNfts={user?.nfts?.xpink ?? 0}
                 background="bg-accent-x_coral"
                 border="border-accent-x_coral"
               />
               <CollectionCard
                 image="/images/nfts/x_leaf_green.png"
-                noOfNfts={user?.nfts?.Xcyan ?? 0}
+                noOfNfts={user?.nfts?.xcyan ?? 0}
                 background="bg-accent-x_leaf"
                 border="border-accent-x_leaf"
               />
