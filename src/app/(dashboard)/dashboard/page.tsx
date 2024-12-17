@@ -35,34 +35,34 @@ export default async function Dashboard() {
           <Card title="Properties card Collected" className="py6 px-6">
             <div className="grid size-full grid-cols-4 gap-6">
               <CollectionCard
-                image="/images/nfts/x_cyan.png"
-                noOfNfts={user?.nfts?.xorange ?? 0}
-                background="bg-accent-x_cyan"
-                border="border-accent-x_cyan"
-              />
-              <CollectionCard
-                image="/images/nfts/x_pink.png"
-                noOfNfts={user?.nfts?.xcoral ?? 0}
-                background="bg-accent-x_pink"
-                border="border-accent-x_pink"
-              />
-              <CollectionCard
                 image="/images/nfts/x_orange.png"
-                noOfNfts={user?.nfts?.xleafgreen ?? 0}
+                noOfNfts={user?.nfts?.xorange ?? 0}
                 background="bg-accent-x_orange"
                 border="border-accent-x_orange"
               />
               <CollectionCard
-                image="/images/nfts/x_purple.png"
-                noOfNfts={user?.nfts?.xblue ?? 0}
-                background="bg-accent-x_purple"
-                border="border-accent-x_purple"
+                image="/images/nfts/x_coral.png"
+                noOfNfts={user?.nfts?.xcoral ?? 0}
+                background="bg-accent-x_coral"
+                border="border-accent-x_coral"
+              />
+              <CollectionCard
+                image="/images/nfts/x_leaf_green.png"
+                noOfNfts={user?.nfts?.xleafgreen ?? 0}
+                background="bg-accent-x_leaf_green"
+                border="border-accent-x_leaf_green"
               />
               <CollectionCard
                 image="/images/nfts/x_blue.png"
-                noOfNfts={user?.nfts?.xpurple ?? 0}
+                noOfNfts={user?.nfts?.xblue ?? 0}
                 background="bg-accent-x_blue"
                 border="border-accent-x_blue"
+              />
+              <CollectionCard
+                image="/images/nfts/x_purple.png"
+                noOfNfts={user?.nfts?.xpurple ?? 0}
+                background="bg-accent-x_purple"
+                border="border-accent-x_purple"
               />
               <CollectionCard
                 image="/images/nfts/x_green.png"
@@ -71,16 +71,16 @@ export default async function Dashboard() {
                 border="border-accent-x_green"
               />
               <CollectionCard
-                image="/images/nfts/x_coral.png"
+                image="/images/nfts/x_pink.png"
                 noOfNfts={user?.nfts?.xpink ?? 0}
-                background="bg-accent-x_coral"
-                border="border-accent-x_coral"
+                background="bg-accent-x_pink"
+                border="border-accent-x_pink"
               />
               <CollectionCard
-                image="/images/nfts/x_leaf_green.png"
+                image="/images/nfts/x_cyan.png"
                 noOfNfts={user?.nfts?.xcyan ?? 0}
-                background="bg-accent-x_leaf"
-                border="border-accent-x_leaf"
+                background="bg-accent-x_cyan"
+                border="border-accent-x_cyan"
               />
             </div>
           </Card>

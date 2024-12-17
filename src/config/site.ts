@@ -181,7 +181,7 @@ export const collections = [
     collectionId: 1
   },
   {
-    collectionName: 'Xblue',
+    collectionName: 'xblue',
     collectionId: 2
   },
   {
@@ -218,7 +218,7 @@ export const collection = {
     nftImage: '/images/Xpink_property_NFT25_apartment.webp'
   },
   '2': {
-    collectionName: 'Xblue',
+    collectionName: 'xblue',
     collectionId: 2,
     nftImage: '/images/Xblue_property_NFT29_apartment.webp'
   },
