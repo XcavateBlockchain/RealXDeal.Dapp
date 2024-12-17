@@ -1,36 +1,18 @@
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow
 } from '@/components/ui/table';
+import { getCollection } from '@/lib/queries';
+import { formatAddress } from '@/lib/utils';
+import { OfferProps, OfferTableProps } from '@/types';
+import { HandleOffer } from './offer-action';
 
-const invoices = [
-  {
-    invoice: '1Ay00011DY...',
-    paymentStatus: 'Red',
-    totalAmount: '#4',
-    paymentMethod: 'Credit Card'
-  },
-  {
-    invoice: '1Ay00011DY...',
-    paymentStatus: 'Red',
-    totalAmount: '#1',
-    paymentMethod: 'PayPal'
-  },
-  {
-    invoice: '1Ay00011DY...',
-    paymentStatus: 'Green',
-    totalAmount: '#0',
-    paymentMethod: 'Bank Transfer'
-  }
-];
-
-export function ReceivedOffersTable() {
+export function ReceivedOffersTable({ offers }: OfferTableProps) {
   return (
     <div className="w-full py-10">
       <Table>
@@ -39,20 +21,43 @@ export function ReceivedOffersTable() {
             <TableHead>From</TableHead>
             <TableHead>Offer</TableHead>
             <TableHead>Item</TableHead>
-            {/* <TableHead className="text-right">Status</TableHead>
-            <TableHead className="text-right">Status</TableHead> */}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {invoices.map(invoice => (
-            <TableRow key={invoice.invoice}>
-              <TableCell>{invoice.invoice}</TableCell>
-              <TableCell>{invoice.paymentStatus}</TableCell>
-              <TableCell>{invoice.paymentMethod}</TableCell>
-              <TableCell className="text-right">Accepts</TableCell>
-              <TableCell className="text-right">Reject</TableCell>
+          {offers ? (
+            offers.length > 0 ? (
+              offers.map(async (offer: OfferProps) => {
+                const collection = await getCollection();
+                const metadata = collection[offer.listingId];
+                return (
+                  <TableRow key={offer.offerId}>
+                    <TableCell>{formatAddress(offer.owner)}</TableCell>
+                    <TableCell>{metadata.collectionName}</TableCell>
+
+                    <TableCell>#{offer.itemId}</TableCell>
+                    <TableCell align="right">
+                      <HandleOffer offerId={parseInt(offer.offerId)} type={0} />
+                    </TableCell>
+                    <TableCell align="right">
+                      <HandleOffer offerId={parseInt(offer.offerId)} type={1} />
+                    </TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center">
+                  No property.
+                </TableCell>
+              </TableRow>
+            )
+          ) : (
+            <TableRow>
+              <TableCell colSpan={5} className="h-24 text-center">
+                No property.
+              </TableCell>
             </TableRow>
-          ))}
+          )}
         </TableBody>
       </Table>
     </div>

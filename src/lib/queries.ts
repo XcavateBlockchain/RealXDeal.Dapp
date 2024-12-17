@@ -82,11 +82,18 @@ export async function getNextOfferId() {
   return output;
 }
 
-export async function getOffers(id: number) {
+export async function getOffers() {
   const api = await getApi();
-  const result = await api.query.gameModule.offers(id);
-  const output = result.toHuman();
-  return;
+  const data = await api.query.gameModule.offers.entries();
+  const result = data.map(([key, exposure]) => {
+    const offerId = key.args[0].toHuman() as number;
+    const data = exposure.toHuman() as Record<string, unknown>;
+    return {
+      offerId,
+      ...data
+    };
+  });
+  return result;
 }
 
 export async function getPalletVersion() {

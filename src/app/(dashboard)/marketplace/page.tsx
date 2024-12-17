@@ -3,7 +3,13 @@ import { NFTCard } from '@/components/cards/nft-card';
 import { Shell } from '@/components/shell';
 import { Button } from '@/components/ui/button';
 // import { siteConfig } from '@/config/site';
-import { getAllCollections, getAllListings, getCollection } from '@/lib/queries';
+import {
+  getAllCollections,
+  getAllListings,
+  getCollection,
+  getUnlistedNFTsForUser
+} from '@/lib/queries';
+import { getCookieStorage } from '@/lib/storage';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -12,26 +18,31 @@ export default async function Page({
 }: {
   searchParams: { collection: string };
 }) {
-  // const data = siteConfig.nfts.slice(1, 5);
-
-  const BASE_URL = '/marketplace';
+  const address = await getCookieStorage('accountKey');
   const collections = await getAllCollections();
-  const tabs = ['All', ...collections.map(collection =>
-    collection.name.charAt(0).toUpperCase() +
-    collection.name.charAt(1).toUpperCase() +
-    collection.name.slice(2)
-  )];
+  const tabs = [
+    'All',
+    ...collections.map(
+      collection =>
+        collection.name.charAt(0).toUpperCase() +
+        collection.name.charAt(1).toUpperCase() +
+        collection.name.slice(2)
+    )
+  ];
   const selected = collection === undefined ? 'All' : collection;
   const selectedCollection = collections.find(
-    collection => collection.name.toLowerCase() === selected.toLowerCase());
+    collection => collection.name.toLowerCase() === selected.toLowerCase()
+  );
   const nfts = await getAllListings();
+  const playerNfts = await getUnlistedNFTsForUser(address ? address : '');
 
-  const filterNfts = selectedCollection ?
-    nfts.filter((nft: any) => {
-      const firstKey = Object.keys(nft)[0];
-      const metadata = nft[firstKey];
-      return metadata.collectionId == selectedCollection.collectionId
-    }) : nfts;
+  const filterNfts = selectedCollection
+    ? nfts.filter((nft: any) => {
+        const firstKey = Object.keys(nft)[0];
+        const metadata = nft[firstKey];
+        return metadata.collectionId == selectedCollection.collectionId;
+      })
+    : nfts;
 
   const listings = filterNfts.flatMap(item => {
     const [listingId, details] = Object.entries(item)[0];
@@ -88,22 +99,27 @@ export default async function Page({
         <h2 className="text-[1rem] font-medium">Listings</h2>
 
         <div className="grid size-full grid-cols-4 gap-[23px]">
-          {listings.length > 0 ? await Promise.all(
-            listings.map(async (listing: any) => {
-              const collection = await getCollection();
-              return (
-                <NFTCard
-                  key={listing.listingId}
-                  listingId={listing.listingId}
-                  owner={listing.owner}
-                  collectionId={listing.collectionId}
-                  nftId={listing.itemId}
-                  metadata={collection[listing.collectionId]}
-                  isShadow
-                />
-              );
-            })
-          ) : (<p>There are no listings.</p>)}
+          {listings.length > 0 ? (
+            await Promise.all(
+              listings.map(async (listing: any) => {
+                const collection = await getCollection();
+                return (
+                  <NFTCard
+                    key={listing.listingId}
+                    listingId={listing.listingId}
+                    owner={listing.owner}
+                    collectionId={listing.collectionId}
+                    nftId={listing.itemId}
+                    metadata={collection[listing.collectionId]}
+                    playerNfts={playerNfts}
+                    isShadow
+                  />
+                );
+              })
+            )
+          ) : (
+            <p>There are no listings.</p>
+          )}
         </div>
       </section>
     </Shell>

@@ -34,7 +34,7 @@ export function DeListNFTCard({ metadata, isShadow, ...nft }: NFTCardProps) {
     setIsLoading(true);
     try {
       await delistNFT(selectedAddress, parseInt(nft.listingId));
-      toast.success('NFT un-listed successfully!');
+      toast.success('Property un-listed successfully!');
       router.refresh();
     } catch (error) {
       setIsLoading(false);

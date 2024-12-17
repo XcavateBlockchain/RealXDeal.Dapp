@@ -40,7 +40,7 @@ export default function RootLayout({
         <NodeSocketProvider>
           <WalletProvider>{children}</WalletProvider>
         </NodeSocketProvider>
-        <Toaster />
+        <Toaster richColors />
       </body>
     </html>
   );

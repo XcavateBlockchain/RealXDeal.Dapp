@@ -285,7 +285,7 @@ export async function delistNFT(senderAddress: string, listingId: number) {
       error: null
     };
   } catch (error) {
-    console.error('Failed to de list NFT:', error);
+    // console.error('Failed to de list NFT:', error);
     return { data: null, error: getErrorMessage(error) };
   }
 }
@@ -310,9 +310,9 @@ export async function makeOffer(senderAddress: string, { ...data }: MakeOfferPro
 
     const unsub = await extrinsic.signAndSend(senderAddress, { signer }, result => {
       if (result.status.isFinalized) {
-        console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
+        // console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
       } else if (result.status.isBroadcast) {
-        console.log('Broadcasting the guess...');
+        // console.log('Broadcasting the guess...');
       }
     });
 
@@ -321,8 +321,39 @@ export async function makeOffer(senderAddress: string, { ...data }: MakeOfferPro
       data: unsub,
       error: null
     };
-  } catch (error) {
-    console.error('Failed to de list NFT:', error);
-    return { data: null, error: getErrorMessage(error) };
+  } catch (error: any) {
+    return { data: null, error: error.message };
+  }
+}
+
+export async function handleOffer({
+  senderAddress,
+  offerId,
+  type
+}: {
+  senderAddress: string;
+  offerId: number;
+  type: number;
+}) {
+  try {
+    const api = await getApi();
+    await web3Enable('RealXDEal');
+    const injected = await web3FromAddress(senderAddress);
+    const extrinsic = api.tx.gameModule.handleOffer(offerId, type);
+    const signer = injected.signer;
+
+    const unsub = await extrinsic.signAndSend(senderAddress, { signer }, result => {
+      if (result.status.isInBlock) {
+        console.log(`Completed at block hash #${result.status.asInBlock.toString()}`);
+      } else if (result.status.isBroadcast) {
+        // console.log('Broadcasting the guess...');
+      }
+    });
+    return {
+      data: unsub,
+      error: null
+    };
+  } catch (error: any) {
+    return { data: null, error: error.message };
   }
 }
