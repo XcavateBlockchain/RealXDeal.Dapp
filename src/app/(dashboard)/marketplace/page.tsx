@@ -69,12 +69,12 @@ export default async function Page({
           ))}
         </div>
       </Card> */}
-      <section className="flex w-full gap-[120px] py-[30px]">
-        <input
+      <section className="flex w-full items-end justify-end py-[30px]">
+        {/* <input
           type="text"
           placeholder="Search"
           className="w-full rounded-lg border border-border bg-primary px-4 py-2 placeholder:text-border focus:outline-none"
-        />
+        /> */}
         <div className="flex items-center gap-[18px]">
           {tabs.map((collection: string) => {
             const active = selected === collection;
