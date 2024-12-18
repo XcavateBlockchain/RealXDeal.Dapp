@@ -71,18 +71,23 @@ export default function SubmitGuess({ address, gameId }: GameProps) {
             gameId,
             address
           });
-          console.log('Check result:', result);
-          if (result !== null) {
-            setResult({ guess, ...result });
-            setStatus(LOADING_STATUS.SUCCESS);
+          // console.log('Check result:', result);
+          if (!result) {
+            setStatus(LOADING_STATUS.ERROR);
             setShowLoadingDialog(false);
-            setIsResultChecking(false);
-            router.push('/result');
+            router.push('/dashboard');
           }
+          // if (result !== null) {
+          setResult({ guess, ...result });
+          setStatus(LOADING_STATUS.SUCCESS);
+          setShowLoadingDialog(false);
+          setIsResultChecking(false);
+          router.push('/result');
+          // }
         }
       });
-    } catch (error) {
-      console.error('Error during submission:', error);
+    } catch (error: any) {
+      // console.error('Error during submission:', error);
       setStatus(LOADING_STATUS.ERROR);
       setShowLoadingDialog(false);
       router.push('/dashboard');

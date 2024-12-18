@@ -1,8 +1,11 @@
+'use client';
+
 import { Icons } from '@/components/icons';
 import { cn, formatAddress } from '@/lib/utils';
+import IdentIcon from '../wallet-connect/identicon';
 type LeadProps = {
   index: any;
-  user: string;
+  user: any;
   points: any;
   winner?: boolean;
 };
@@ -21,7 +24,7 @@ export function LeadBoardCard({ user, index, points, winner }: LeadProps) {
           <span className="text-[0.875rem] text-primary-foreground">{index}</span>
         )}
         <div className="flex items-center gap-2">
-          <div className="size-6 rounded-full bg-primary-foreground" />
+          <IdentIcon address={user} size={24} theme="beachball" />
           <span className="text-[0.875rem] text-primary-foreground">
             {formatAddress(user)}
           </span>
