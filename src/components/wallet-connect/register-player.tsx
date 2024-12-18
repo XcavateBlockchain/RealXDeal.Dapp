@@ -25,6 +25,7 @@ export default function RegisterPlayer({ address }: { address: string }) {
       }
       setStatus(LOADING_STATUS.SUCCESS);
       walletContext.setRegisterPlayer(false);
+      router.refresh();
     } catch (error) {
       setStatus(LOADING_STATUS.ERROR);
     }
