@@ -28,10 +28,11 @@ export default async function PlayGame({ params, searchParams }: PlayGameProps) 
   const mode = params.mode;
   const gameId = searchParams.id;
   const address = await getCookieStorage('accountKey');
-  const gameInfo = (await getGameInfo(Number(gameId))) as unknown as GameInfo;
-  console.log(gameInfo);
-  const data: any = await fetchPropertyForDisplay(139361966);
-  // const data: any = await fetchPropertyForDisplay(Number(gameInfo.property.id));
+  const gameInfo = (await getGameInfo(Number(gameId))) as unknown as any;
+  // console.log(gameInfo);
+  const propertyId = Number(gameInfo.property.id.replace(/,/g, ''));
+  // const data: any = await fetchPropertyForDisplay(139361966);
+  const data: any = await fetchPropertyForDisplay(propertyId);
 
   return (
     <Shell className="py-[50px]">
