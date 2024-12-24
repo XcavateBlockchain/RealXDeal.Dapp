@@ -6,10 +6,9 @@ import {
   DynamoDBDocumentClient,
   PutCommand,
   GetCommand,
+  ScanCommand,
   GetCommandOutput
 } from '@aws-sdk/lib-dynamodb';
-import fs from 'fs';
-import path from 'path';
 import sharp from 'sharp';
 import { createCanvas } from 'canvas';
 import { getApi } from '@/lib/polkadot';
@@ -65,101 +64,6 @@ async function applyCheckerboardOverlay(imageBuffer: ArrayBuffer) {
   return processedImage.toString('base64');
 }
 
-// export async function checkResult(
-//   data: { guess: number; gameId: number; address: string },
-//   // handleWinResult: (data: any, error: boolean) => void
-// ) {
-//   console.log('Checking result');
-//   const gameInfo = (await getGameInfo(data.gameId)) as unknown as GameInfo;
-//   // await fetchPropertyData(gameInfo.property.id);
-//   const propertyData = await fetchPropertyData(139361966);
-//   const realPrice = propertyData!.price;
-//   const secret = {
-//     scheme: 'aes-256-cbc',
-//     keyBase64: propertyData!.key,
-//     ivBase64: propertyData!.iv
-//   };
-//   const api = await getApi();
-//   const keyring = new Keyring({ type: 'sr25519' });
-//   const account = keyring.createFromJson({
-//     encoded: process.env.ENCODED_SEED!,
-//     encoding: {
-//       content: ['pkcs8', 'sr25519'],
-//       type: ['scrypt', 'xsalsa20-poly1305'],
-//       version: '3'
-//     },
-//     address: process.env.SUDO_ADDRESS!,
-//     meta: {
-//       genesisHash: '0x',
-//       name: 'XCAV-SUDO',
-//       whenCreated: 1702476542911
-//     }
-//   });
-
-//   account.unlock(process.env.PASSPHRASE!);
-
-//   const extrinsic = api.tx.gameModule.checkResult(
-//     data.guess,
-//     data.gameId,
-//     realPrice,
-//     JSON.stringify(secret)
-//   );
-
-//   console.log(`Real Price ${realPrice}`);
-//   console.log(`Guess Price ${data.guess}`);
-//   console.log(`Game ID ${data.gameId}`);
-
-//   let eventProcessed = false;
-//   // Sign and send the transaction
-//   const unsub = await api.tx.sudo
-//     .sudo(extrinsic)
-//     .signAndSend(
-//       account,
-//       ({
-//         status,
-//         events = [],
-//         dispatchError
-//       }: {
-//         status: any;
-//         events: any[];
-//         dispatchError?: any;
-//       }) => {
-//         if (status.isInBlock && !eventProcessed) {
-//           eventProcessed = true;
-//           console.log('IN BLOCK AND EVENT PROCESSED');
-//           const ResultChecked = events.find(({ event }) => {
-//             return api.events.gameModule.ResultChecked.is(event);
-//           });
-//           if (ResultChecked) {
-//             console.log('RESULT CHECKED EVENT - InBlock');
-//             const points = ResultChecked.event.data[2].toString();
-//             const won = ResultChecked.event.data[3].toString();
-//             console.log('Points:', points);
-//             console.log('Won:', won);
-//           } else {
-//             // handleWinResult(null, true);
-//             console.log('NO RESULT CHECKED EVENT :(');
-//           }
-//         } else if (status.isFinalized) {
-//           console.log('FINALIZED');
-//           const ResultChecked = events.find(({ event }) => {
-//             return api.events.gameModule.ResultChecked.is(event);
-//           });
-//           if (ResultChecked) {
-//             console.log('RESULT CHECKED EVENT - IsFinalized');
-//             const points = ResultChecked.event.data[2].toString();
-//             const won = ResultChecked.event.data[3].toString();
-//             // handleWinResult({ points, won }, false);
-//             console.log('Points:', points);
-//             console.log('Won:', won);
-//           }
-//           console.log('unsubbing!');
-//           unsub();
-//         }
-//       }
-//     );
-// }
-
 export async function fetchPropertyData(id: number) {
   try {
     const res = await docClient.send(
@@ -173,6 +77,19 @@ export async function fetchPropertyData(id: number) {
     return res.Item;
   } catch (error) {
     console.log('Error fetching property:', error);
+  }
+}
+
+export async function fetchAllProperties() {
+  try {
+    const res: any = await docClient.send(
+      new ScanCommand({
+        TableName: 'realXDeal'
+      })
+    );
+    return res.Items[0];
+  } catch (error) {
+    console.log('Error fetching all properties:', error);
   }
 }
 
@@ -231,90 +148,6 @@ export async function processImage(imageUrl: string) {
   return `data:image/jpeg;base64,${imageString}`;
 }
 
-// export async function checkResult(
-//   data: { guess: number; gameId: number; address: string }
-//   // handleWinResult: (data: any, error: boolean) => void
-// ) {
-//   console.log('Checking result');
-//   const gameInfo = (await getGameInfo(data.gameId)) as unknown as GameInfo;
-//   // await fetchPropertyData(gameInfo.property.id);
-//   const propertyData = await fetchPropertyData(139361966);
-//   const realPrice = propertyData!.price;
-//   const secret = {
-//     scheme: 'aes-256-cbc',
-//     keyBase64: propertyData!.key,
-//     ivBase64: propertyData!.iv
-//   };
-//   const api = await getApi();
-//   const keyring = new Keyring({ type: 'sr25519' });
-//   const account = keyring.createFromJson({
-//     encoded: process.env.ENCODED_SEED!,
-//     encoding: {
-//       content: ['pkcs8', 'sr25519'],
-//       type: ['scrypt', 'xsalsa20-poly1305'],
-//       version: '3'
-//     },
-//     address: process.env.SUDO_ADDRESS!,
-//     meta: {
-//       genesisHash: '0x',
-//       name: 'XCAV-SUDO',
-//       whenCreated: 1702476542911
-//     }
-//   });
-
-//   account.unlock(process.env.PASSPHRASE!);
-
-//   const extrinsic = api.tx.gameModule.checkResult(
-//     data.guess,
-//     data.gameId,
-//     realPrice,
-//     JSON.stringify(secret)
-//   );
-
-//   console.log(`Real Price ${realPrice}`);
-//   console.log(`Guess Price ${data.guess}`);
-//   console.log(`Game ID ${data.gameId}`);
-
-//   let eventProcessed = false;
-
-//   return new Promise<{ points: string; won: string } | null>(async (resolve, reject) => {
-//     const unsub = await api.tx.sudo
-//       .sudo(extrinsic)
-//       .signAndSend(
-//         account,
-//         ({
-//           status,
-//           events = [],
-//           dispatchError
-//         }: {
-//           status: any;
-//           events: any[];
-//           dispatchError?: any;
-//         }) => {
-//           if (status.isFinalized) {
-//             events.forEach(({ phase, event: { data, method, section } }) => {
-//               console.log(`\t' ${phase}: ${section}.${method}:: ${data}`);
-//             });
-//             const ResultChecked = events.find(({ event }) => {
-//               return api.events.gameModule.ResultChecked.is(event);
-//             });
-//             if (ResultChecked) {
-//               const points = ResultChecked.event.data[2].toString();
-//               const won = ResultChecked.event.data[3].toString();
-//               resolve({ points, won }); // Resolve with points and won
-//             } else {
-//               reject("NO RESULT CHECKED EVENT");
-//             }
-//             console.log('unsubbing!');
-//             unsub();
-
-//             // new Error('No Result Checked Event')
-//           }
-//         }
-//       );
-//   });
-// }
-
 export async function checkResult(data: {
   guess: number;
   gameId: number;
@@ -323,9 +156,11 @@ export async function checkResult(data: {
   console.log('Checking result for game:', data.gameId);
 
   try {
-    // const gameInfo = (await getGameInfo(data.gameId)) as unknown as GameInfo;
-    const propertyData = await fetchPropertyData(139361966);
-    // const propertyData = await fetchPropertyData(Number(gameInfo.property.id));
+    const gameInfo = (await getGameInfo(data.gameId)) as unknown as any;
+    const propertyId = Number(gameInfo.property.id.replace(/,/g, ''));
+
+    // const propertyData = await fetchPropertyData(139361966);
+    const propertyData = await fetchPropertyData(propertyId);
 
     if (!propertyData) {
       throw new Error(`Property data not found for game ${data.gameId}`);

@@ -119,8 +119,11 @@ export async function getRoundChampion(id: number) {
 
 export async function getGameProperties() {
   const api = await getApi();
-  const result = await api.query.gameModule.gameProperties();
-  const output = result.toHuman();
+  const data = await api.query.gameModule.gameProperties();
+  // const result = data.map(([key, exposure]) => {
+  //   return key.args.map(k => k.toHuman());
+  // });
+  const output = data.toHuman();
   return output;
 }
 

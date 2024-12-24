@@ -1,4 +1,6 @@
 import StartGame from '@/app/(dashboard)/dashboard/_components/start-game';
+import { fetchAllProperties } from '@/app/actions';
+import { addProperty } from '@/app/cron/actions';
 import { Card, TaskCard } from '@/components/cards/card';
 import { LeadBoardCard } from '@/components/cards/leadboard-card';
 import { Shell } from '@/components/shell';
@@ -20,8 +22,6 @@ export default async function Dashboard() {
   const user = await getUserData(address ? address : '');
   const nfts = await getUnlistedNFTsForUser(address ? address : '');
   const userIndex = boardList.findIndex((list: any) => list[0] === address);
-  // const activeRound = await getCurrentRoundID();
-
   return (
     <Shell>
       <section className="flex w-full items-start gap-8">
