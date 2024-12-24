@@ -3,8 +3,8 @@ import { fetchAllProperties } from '@/app/actions';
 import { addProperty } from '@/app/cron/actions';
 import { getGameProperties } from '@/lib/queries';
 
-// export const dynamic = 'force-dynamic';
-// export const revalidate = 1;
+export const dynamic = 'force-dynamic';
+export const revalidate = 1;
 // export async function GET(req: Request) {
 //   const properties = await fetchAllProperties();
 //   const chainProperties: any = await getGameProperties();
