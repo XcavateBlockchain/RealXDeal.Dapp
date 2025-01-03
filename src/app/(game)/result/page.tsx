@@ -91,7 +91,7 @@ export default function Result({ searchParams }: PlayGameProps) {
         <div
           className={cn(
             'h-[280px] w-[239px] rounded-[10px] border-2 bg-white/[0.20]',
-            data.won === 'true' ? 'border-[#024C67]' : 'border-[#FF3131]'
+            data.won === 'true' ? 'border-[#024C67]' : 'border-[#FF3131] bg-[#FF3131]/[0.20]'
           )}
         >
           {data.won === 'true' ? (
@@ -99,7 +99,7 @@ export default function Result({ searchParams }: PlayGameProps) {
               src={
                 data.won === 'true' && data.nftReceived === 'true'
                   ? `${nft.nftImage}`
-                  : `${propertyData && propertyData.images[0]}`
+                  : `/images/no_nft.png`
               }
               alt=""
               width={239}
