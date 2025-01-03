@@ -4,8 +4,9 @@ import React, { useEffect } from 'react';
 import { WalletContextProvider } from '@/providers/wallet-provider';
 import { useRouter } from 'next/navigation';
 import { ApiPromise, WsProvider } from '@polkadot/api';
-import ApiSingleton from '@archisinal/contracts/dist/test/shared/api_singleton';
-import { WalletContextInterface } from '@/context/wallet-context';
+// import ApiSingleton from '@archisinal/contracts/dist/test/shared/api_singleton';
+// import { WalletContextInterface } from '@/context/wallet-context';
+import { cryptoWaitReady } from '@polkadot/util-crypto';
 
 type TProps = {
   children: React.ReactNode;
@@ -32,13 +33,15 @@ export function NodeSocketProvider({ children }: TProps) {
   const [nativeCurrency, setNativeCurrency] = React.useState<string>('');
   const [subscanUrl, setSubscanUrl] = React.useState<string>('');
   const connect = async () => {
+    await cryptoWaitReady();
+
     const wsProvider = new WsProvider(process.env.NEXT_PUBLIC_RPC!);
 
     const api = await ApiPromise.create({
       provider: wsProvider
     });
 
-    await ApiSingleton.initWithApi(api);
+    // await ApiSingleton.initWithApi(api);
 
     setApi(api);
     setNativeCurrency(api.registry.chainTokens[0]);
@@ -53,10 +56,10 @@ export function NodeSocketProvider({ children }: TProps) {
     console.log('Connected to node: ' + process.env.NEXT_PUBLIC_RPC);
   };
 
-  const disconnect = async () => {
-    await ApiSingleton.disconnect();
-    console.log('Disconnected from node: ' + process.env.NEXT_PUBLIC_RPC);
-  };
+  // const disconnect = async () => {
+  //   await ApiSingleton.disconnect();
+  //   console.log('Disconnected from node: ' + process.env.NEXT_PUBLIC_RPC);
+  // };
 
   useEffect(() => {
     if (!process.env.NEXT_PUBLIC_RPC) {
@@ -65,9 +68,7 @@ export function NodeSocketProvider({ children }: TProps) {
     }
 
     connect();
-    return () => {
-      disconnect();
-    };
+    return () => {};
   }, []);
 
   return (

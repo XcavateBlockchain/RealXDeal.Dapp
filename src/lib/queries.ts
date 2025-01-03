@@ -2,36 +2,38 @@ import { collectionImage } from '@/config/site';
 import { getApi } from './polkadot';
 import { Collection, CollectionItem } from '@/types';
 
+const apiPRomise = getApi();
+
 export async function getAvailableNFTs(collectionId?: number) {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.collectionColor(collectionId);
   const output = result.toHuman();
   return output;
 }
 
 export async function getLeadBoards() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.leaderboard();
   const output = result.toHuman();
   return output as [];
 }
 
 export async function getNextGameID() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.gameId();
   const output = result.toHuman();
   return output;
 }
 
 export async function getCurrentRoundID() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.currentRound();
   const output = result.toHuman();
   return output;
 }
 
 export async function getGameInfo(gameId: number) {
-  const api = await getApi();
+  const api = await apiPRomise;
   // const apiAt = await api.at(
   //   '0x163029d36e699bbb6df2e449a5015efab1168092c9df385913ca7e6f5f0b3685'
   // );
@@ -42,48 +44,48 @@ export async function getGameInfo(gameId: number) {
 }
 
 export async function getUserData(address: string) {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.users(address);
   const output = result.toHuman();
   return output as any;
 }
 
 export async function getListings() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.listings();
   const output = result.toHuman();
   return output;
 }
 
 export async function getGamesExpiring(gameId: number) {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.gamesExpiring(gameId);
   const output = result.toHuman();
   return output;
 }
 
 export async function getNextColorId(id: number) {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.nextColorId(id);
   const output = result.toHuman();
   return output;
 }
 
 export async function getNextListingId() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.nextListingId();
   const output = result.toHuman();
   return output;
 }
 export async function getNextOfferId() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.nextOfferId();
   const output = result.toHuman();
   return output;
 }
 
 export async function getOffers() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const data = await api.query.gameModule.offers.entries();
   const result = data.map(([key, exposure]) => {
     const offerId = key.args[0].toHuman() as number;
@@ -97,28 +99,28 @@ export async function getOffers() {
 }
 
 export async function getPalletVersion() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.palletVersion();
   const output = result.toHuman();
   return output;
 }
 
 export async function isRoundActive() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.roundActive();
   const output = result.toHuman();
   return output;
 }
 
 export async function getRoundChampion(id: number) {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.roundChampion(id);
   const output = result.toHuman();
   return output;
 }
 
 export async function getGameProperties() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const data = await api.query.gameModule.gameProperties();
   // const result = data.map(([key, exposure]) => {
   //   return key.args.map(k => k.toHuman());
@@ -128,7 +130,7 @@ export async function getGameProperties() {
 }
 
 export async function getCollectionColor(id: number) {
-  const api = await getApi();
+  const api = await apiPRomise;
   const result = await api.query.gameModule.collectionColor(id);
   const output = result.toHuman();
   return output;
@@ -146,7 +148,7 @@ const colourTocollectionId: Record<string, number> = {
 };
 
 export async function getUnlistedNFTsForUser(address: string) {
-  const api = await getApi();
+  const api = await apiPRomise;
   const data = await api.query.nfts.account.entries(address);
 
   const nftData = data.map(([key, exposure]) => {
@@ -159,7 +161,7 @@ export async function getUnlistedNFTsForUser(address: string) {
 }
 
 export async function getAllUnlistedNFTs() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const data = await api.query.nfts.account.entries();
 
   const nftData = data.map(([key, exposure]) => {
@@ -172,7 +174,7 @@ export async function getAllUnlistedNFTs() {
 }
 
 export async function getAllListings() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const data = await api.query.gameModule.listings.entries();
 
   const listingData = data.map(([key, exposure]) => {
@@ -185,7 +187,7 @@ export async function getAllListings() {
 }
 
 export async function getAllListingsByAddress(address?: string) {
-  const api = await getApi();
+  const api = await apiPRomise;
   const data = await api.query.gameModule.listings.entries();
 
   const listingDataForAccount = data
@@ -202,7 +204,7 @@ export async function getAllListingsByAddress(address?: string) {
   // [{listingId: {owner, collectionId, itemId}}, ...]
 }
 export async function getAllOffersByAddress(address?: string) {
-  const api = await getApi();
+  const api = await apiPRomise;
   const data = await api.query.gameModule.offers.entries();
 
   const offersDataForAccount = data
@@ -234,7 +236,7 @@ GetAllListingsFor
 */
 
 export async function getAllCollections() {
-  const api = await getApi();
+  const api = await apiPRomise;
   const data = await api.query.gameModule.collectionColor.entries();
 
   return data.map(([key, exposure]) => {
