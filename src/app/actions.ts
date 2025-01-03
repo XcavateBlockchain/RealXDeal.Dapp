@@ -87,7 +87,7 @@ export async function fetchAllProperties() {
         TableName: 'realXDeal'
       })
     );
-    return res.Items[0];
+    return res.Items;
   } catch (error) {
     console.log('Error fetching all properties:', error);
   }

@@ -5,7 +5,7 @@ import './globals.css';
 import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/sonner';
 import dynamic from 'next/dynamic';
-// import { NodeSocketProvider, WalletProvider } from '@/context';
+import { NodeSocketProvider, WalletProvider } from '@/context';
 
 const unbounded = Unbounded({
   style: 'normal',
@@ -13,6 +13,11 @@ const unbounded = Unbounded({
   weight: ['200', '300', '400', '500', '600', '700', '800', '900'],
   variable: '--font-unbounded'
 });
+
+// const NodeSocketProvider = dynamic(() =>
+//   import('@/context').then(mod => mod.NodeSocketProvider)
+// );
+// const WalletProvider = dynamic(() => import('@/context').then(mod => mod.WalletProvider));
 
 export const metadata: Metadata = {
   title: 'RealXDeal',
@@ -25,11 +30,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const NodeSocketProvider = dynamic(() =>
-    import('@/context').then(mod => mod.NodeSocketProvider)
-  );
-  const WalletProvider = dynamic(() => import('@/context').then(mod => mod.WalletProvider));
-
   return (
     <html lang="en">
       <body
